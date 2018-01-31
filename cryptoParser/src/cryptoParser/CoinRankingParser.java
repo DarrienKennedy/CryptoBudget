@@ -100,16 +100,17 @@ public class CoinRankingParser {
     }
 
     public static String generateKey(String name){
-        //generate a unique foreign key for cryptovalue table
+        //generate a unique primary key for cryptovalue table
         Random rand = new Random();
         int key = rand.nextInt(100000);
         String formatted = String.format("%05d", key);
-        String foreignKey = name.substring(0, 3) + key;
-        return foreignKey;
+        String primaryKey = name.substring(0, 3) + key;
+        return primaryKey;
     }
 
     public static void selectAll(){
         //select all and display table
+        //TODO: will need more specific SQL select queries depending on needs of application
         String sql = "SELECT * FROM cryptoValue";
         java.sql.Connection cn = connect();
         try{
@@ -131,13 +132,14 @@ public class CoinRankingParser {
 
     public static void insertData(String name, String value, String percentChange){
         //populating a row in cryptoValue table
+        //TODO: will need a lot more query methods.  update, delete, etc
         String currentTime = new SimpleDateFormat("HH.mm.ss").format(new java.util.Date());
-        String foreignKey = generateKey(name);
+        String primaryKey = generateKey(name);
         String sql = "INSERT INTO cryptoValue VALUES(?,?,?,?,?)";
         try{
             java.sql.Connection cn = connect();
             PreparedStatement pstmt = cn.prepareStatement(sql);
-            pstmt.setString(1, foreignKey);
+            pstmt.setString(1, primaryKey);
             pstmt.setString(2, name);
             pstmt.setString(3, value);
             pstmt.setString(4, percentChange);
@@ -150,6 +152,7 @@ public class CoinRankingParser {
     }
 
     public static void createTable(){
+        //TODO: can make some columns NOT NULL or make a better primary key, foreign key to be added later
         //creates a table to store the crypto values
         java.sql.Connection dbConnect = connect();
         String sql = "CREATE TABLE IF NOT EXISTS cryptoValue (\n"
@@ -179,6 +182,7 @@ public class CoinRankingParser {
         try{
             cn = DriverManager.getConnection(DB_URL);
             if(cn != null) {
+                //just some testing code to display the connection and make sure it completed, can remove this
                 DatabaseMetaData dbInfo = cn.getMetaData();
                 //System.out.print("Connected to: " + dbInfo.getDriverName());
             }
@@ -190,6 +194,7 @@ public class CoinRankingParser {
     }
 
     public static void main(String [] args) {
+        //TODO: make sure we can add all values to database if searchAll=true
         ArrayList<String> test = new ArrayList();
         test.add("Bitcoin");
         test.add("Ethereum");
