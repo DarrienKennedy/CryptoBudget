@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/receiptReader.iml" filepath="$PROJECT_DIR$/receiptReader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CryptoBudget.iml" filepath="$PROJECT_DIR$/CryptoBudget.iml" />
     </modules>
   </component>
 </project>
