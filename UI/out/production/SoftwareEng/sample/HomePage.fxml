@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HomePageController">
+   <children>
+      <PieChart layoutX="115.0" layoutY="137.0" prefHeight="200.0" prefWidth="264.0" style="-fx-background-color: #65B891;" />
+      <Label layoutX="522.0" layoutY="129.0" text="Weekly Spending" textFill="#fcfcfc" />
+      <Label layoutX="198.0" layoutY="120.0" text="Savings Goal" textFill="WHITE" />
+      <Label layoutX="737.0" layoutY="7.0" prefHeight="15.0" prefWidth="15.0" text="X" textFill="WHITE">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <BarChart layoutX="379.0" layoutY="137.0" prefHeight="200.0" prefWidth="378.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+      <MenuButton layoutX="2.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
+         <items>
+            <MenuItem mnemonicParsing="false" text="Home" />
+            <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="CryptoCurrencies" />
+            <MenuItem mnemonicParsing="false" onAction="#goToAddTransaction" text="Add a Transaction" />
+            <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Set a Goal" />
+            <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
+            <MenuItem mnemonicParsing="false" onAction="#goToViewTransactions" text="View Transaction History" />
+            <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
+         </items>
+      </MenuButton>
+      <ImageView fitHeight="32.0" fitWidth="54.0" layoutX="-13.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../MenuImage.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
