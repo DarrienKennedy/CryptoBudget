@@ -46,7 +46,7 @@ public class AddTransactionController implements Initializable, ControlledScreen
     }
 
     @FXML
-    private void goToEditGoalsPage(ActionEvent event){ myController.setScreen(EditGoals.LoginID);
+    private void goToEditGoalsPage(ActionEvent event){ myController.setScreen(Main.EditGoalsID);
     }
 
 

@@ -22,10 +22,10 @@ public class Main extends Application {
     public static String ViewTransactionsFile = "ViewTransactions.fxml";
     public static String AddTransactionID = "AddTransaction";
     public static String AddTransactionFile = "AddTransaction.fxml";
-    public static String AddTransactionID = "EditGoals";
-    public static String AddTransactionFile = "EditGoals.fxml";
-    public static String AddTransactionID = "CreateAccount";
-    public static String AddTransactionFile = "CreateAccount.fxml";
+    public static String EditGoalsID = "EditGoals";
+    public static String EditGoalsFile = "EditGoals.fxml";
+    public static String CreateAccountID = "CreateAccount";
+    public static String CreateAccountFile = "CreateAccount.fxml";
 
 
     @Override
@@ -38,6 +38,8 @@ public class Main extends Application {
         mainContainer.loadScreen(Main.UpdateAccountID, Main.UpdateAccountFile);
         mainContainer.loadScreen(Main.ViewTransactionsID, Main.ViewTransactionsFile);
         mainContainer.loadScreen(Main.AddTransactionID, Main.AddTransactionFile);
+        mainContainer.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
+        mainContainer.loadScreen(Main.CreateAccountID, Main.CreateAccountFile);
 
         mainContainer.setScreen(Main.HomePageID);
 

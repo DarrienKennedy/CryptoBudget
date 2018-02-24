@@ -46,7 +46,7 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
     }
 
     @FXML
-    private void goToEditGoalsPage(ActionEvent event){ myController.setScreen(EditGoals.LoginID);
+    private void goToEditGoalsPage(ActionEvent event){ myController.setScreen(Main.EditGoalsID);
     }
 
 
