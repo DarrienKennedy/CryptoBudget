@@ -1,4 +1,3 @@
-import java.util.Calendar;
 import java.util.Date;
 
 public class Transaction {
@@ -166,15 +165,15 @@ public class Transaction {
     }
 
     /**
-     *
-     * @param endDateToSet
+     * Assign a new value for the end date of a recurring Transaction.
+     * @param endDateToSet Thew new value for the end date.
      */
     public void setEndDate(Date endDateToSet) {
         endDate = endDateToSet;
     }
 
     /**
-     * Concatinate the contents of the Transaction into a String.
+     * Concatenate the contents of the Transaction into a String.
      * @return A String containing fields of the Transaction.
      */
     public String toString() {

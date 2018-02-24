@@ -53,6 +53,8 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+        CryptoBudgetDatabase db = new CryptoBudgetDatabase();
+        db.createDatabase();
         launch(args);
     }
 }
