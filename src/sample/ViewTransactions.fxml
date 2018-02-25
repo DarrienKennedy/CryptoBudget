@@ -36,7 +36,7 @@
         <PieChart layoutY="46.0" prefHeight="146.0" prefWidth="192.0" />
         <JFXTextField focusColor="BLACK" layoutX="264.0" layoutY="34.0" unFocusColor="WHITE" />
         <Button layoutX="424.0" layoutY="34.0" mnemonicParsing="false" text="Search" />
-        <JFXComboBox focusColor="BLACK" layoutX="163.0" layoutY="40.0" prefHeight="25.0" prefWidth="92.0" unFocusColor="WHITE" />
+        <JFXComboBox fx:id="categoryComboBox" focusColor="BLACK" layoutX="163.0" layoutY="40.0" prefHeight="25.0" prefWidth="92.0" unFocusColor="WHITE" />
         <Label layoutX="253.0" layoutY="6.0" text="View Transactions" textFill="WHITE" />
     </children>
 </AnchorPane>

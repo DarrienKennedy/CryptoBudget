@@ -1,5 +1,8 @@
 package sample;
 
+import com.jfoenix.controls.JFXComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
@@ -9,10 +12,24 @@ import java.util.ResourceBundle;
 public class UpdateAccountController implements Initializable, ControlledScreen{
 
     ScreensController myController;
+    ObservableList<String> currencyList = FXCollections.observableArrayList("USD","Bitcoin", "RandomCoin");
+    ObservableList<String> refreshList = FXCollections.observableArrayList("1 Min","5 Min", "10 Min");
+
+    @FXML
+    private JFXComboBox currencyComboBox;
+
+    @FXML
+    private JFXComboBox refreshComboBox;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        currencyComboBox.setItems(currencyList);
+        currencyComboBox.setValue("USD");
 
+
+
+        refreshComboBox.setItems(refreshList);
+        refreshComboBox.setValue("1 Min");
     }
 
 

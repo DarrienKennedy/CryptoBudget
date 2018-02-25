@@ -1,5 +1,8 @@
 package sample;
 
+import com.jfoenix.controls.JFXComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
@@ -9,10 +12,15 @@ import java.util.ResourceBundle;
 public class AddTransactionController implements Initializable, ControlledScreen{
 
     ScreensController myController;
+    ObservableList<String> frequencyList = FXCollections.observableArrayList("One Time", "Weekly","Monthly", "Yearly");
+
+    @FXML
+    private JFXComboBox frequencyComboBox;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        frequencyComboBox.setItems(frequencyList);
+        frequencyComboBox.setValue("One Time");
     }
 
 
