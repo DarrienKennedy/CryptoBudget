@@ -1,26 +1,25 @@
-import java.util.Date;
+package sample;
 
 public class Transaction {
     protected int id;
-    protected String currencyType; // This will eventually be type CurrencyValue
+    protected int currencyType;
     protected double amount;
     protected int userId; // This will eventually be type User
     protected int frequency;
     protected String otherParty;
-    protected Date date;
-    protected Date endDate;
+    protected int date;
+    protected int endDate;
     protected boolean recurring;
 
     /**
      * Default Constructor for a Transaction.
      */
     public Transaction() {
-        this.setCurrencyType("USD");
+        this.setCurrencyType(1);
         this.setAmount(0);
-        this.setId(0);
         this.setUserId(0);
         this.setFrequency(0);
-        this.setDate(new Date());
+        this.setDate(0);
     }
 
     /**
@@ -28,10 +27,23 @@ public class Transaction {
      * @param newCurrencyType The new value for the type of currency.
      * @param newAmount The new value for amount.
      */
-    public Transaction(String newCurrencyType, double newAmount) {
-        new Transaction();
+    public Transaction(int newCurrencyType, double newAmount) {
+        this();
         this.setCurrencyType(newCurrencyType);
         this.setAmount(newAmount);
+    }
+
+    public Transaction(int newId, int newUserId, int newCurrencyType, double newAmount, int newDate, int newEndDate,
+                       int newFrequency, String newOtherParty) {
+        this();
+        this.id = newId;
+        this.setUserId(newUserId);
+        this.setCurrencyType(newCurrencyType);
+        this.setAmount(newAmount);
+        this.setDate(newDate);
+        this.setEndDate(newEndDate);
+        this.setFrequency(newFrequency);
+        this.setOtherParty(newOtherParty);
     }
 
     /**
@@ -46,7 +58,7 @@ public class Transaction {
      * Returns the Transaction's assigned currency type.
      * @return The value representing the currency used for the Transaction.
      */
-    public String getCurrencyType() {
+    public int getCurrencyType() {
         return currencyType;
     }
 
@@ -86,7 +98,7 @@ public class Transaction {
      * Returns the date of when the Transaction occurred.
      * @return The value representing the date of the Transaction.
      */
-    public Date getDate() {
+    public int getDate() {
         return date;
     }
 
@@ -94,25 +106,15 @@ public class Transaction {
      * Returns the end date of the Transaction. This only applies if the Transaction is recurring.
      * @return The value reprenting the end date of the recurring Transaction.
      */
-    public Date getEndDate() {
+    public int getEndDate() {
         return endDate;
-    }
-
-    /**
-     * Assign a new identifier for the Transaction.
-     * @param idToSet The new value for the id.
-     */
-    public void setId(int idToSet) {
-        if (idToSet >= 0) {
-            id = idToSet;
-        }
     }
 
     /**
      * Assign a new currency type for Transaction.
      * @param currencyTypeToSet The new value for the currency type.
      */
-    public void setCurrencyType(String currencyTypeToSet) {
+    public void setCurrencyType(int currencyTypeToSet) {
         // TODO Verify that it is a valid currency from the currency table?
         currencyType = currencyTypeToSet;
     }
@@ -160,7 +162,7 @@ public class Transaction {
      * Assign a new value for the date of the Transaction.
      * @param dateToSet The new value for the date.
      */
-    public void setDate(Date dateToSet) {
+    public void setDate(int dateToSet) {
         date = dateToSet;
     }
 
@@ -168,7 +170,7 @@ public class Transaction {
      * Assign a new value for the end date of a recurring Transaction.
      * @param endDateToSet Thew new value for the end date.
      */
-    public void setEndDate(Date endDateToSet) {
+    public void setEndDate(int endDateToSet) {
         endDate = endDateToSet;
     }
 
@@ -177,6 +179,6 @@ public class Transaction {
      * @return A String containing fields of the Transaction.
      */
     public String toString() {
-        return String.format("%.2f %s, recurring: %b", this.amount, this.currencyType, this.recurring);
+        return String.format("%d. %.2f %s, recurring: %b", this.id, this.amount, this.currencyType, this.recurring);
     }
 }
