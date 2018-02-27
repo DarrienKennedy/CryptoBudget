@@ -10,15 +10,21 @@ import javafx.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginController implements Initializable, ControlledScreen{
+public class CreateAccountController implements Initializable, ControlledScreen{
 
-    ScreensController myController;
+    private ScreensController myController;
 
     @FXML
     private JFXTextArea username;
 
     @FXML
     private JFXPasswordField password;
+
+    @FXML
+    private JFXTextField firstName;
+
+    @FXML
+    private JFXTextField lastName;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -32,19 +38,12 @@ public class LoginController implements Initializable, ControlledScreen{
 
     @FXML
     private void goToHomePage(ActionEvent event){
+        //username.getText();
+        //password.getText();
+        //firstName.getText();
+        //lastName.getText();
         myController.setScreen(Main.HomePageID);
-    }
 
-
-    @FXML
-    private void validateLogin(ActionEvent event){
-
-
-    }
-
-    @FXML
-    private void goToCreateAccount(ActionEvent event){
-        myController.setScreen(Main.CreateAccountID);
     }
 
     @FXML

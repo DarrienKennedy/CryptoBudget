@@ -24,12 +24,12 @@
                 <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
             </items>
         </MenuButton>
-        <JFXTextField focusColor="BLACK" layoutX="198.0" layoutY="89.0" unFocusColor="WHITE" />
-        <JFXTextField focusColor="BLACK" layoutX="198.0" layoutY="129.0" unFocusColor="WHITE" />
+        <JFXTextField fx:id="oldPassword" focusColor="BLACK" layoutX="198.0" layoutY="89.0" unFocusColor="WHITE" />
+        <JFXTextField fx:id="newPassword1" focusColor="BLACK" layoutX="198.0" layoutY="129.0" unFocusColor="WHITE" />
         <Label layoutX="103.0" layoutY="102.0" text="Old Password:" textFill="WHITE" />
         <Label layoutX="103.0" layoutY="146.0" text="New Password:" textFill="WHITE" />
         <Label layoutX="53.0" layoutY="174.0" text="Confirm New Password:" textFill="WHITE" />
-        <JFXTextField focusColor="BLACK" layoutX="198.0" layoutY="161.0" unFocusColor="WHITE" />
+        <JFXTextField fx:id="nexPassword2" focusColor="BLACK" layoutX="198.0" layoutY="161.0" unFocusColor="WHITE" />
         <Button layoutX="354.0" layoutY="170.0" mnemonicParsing="false" text="Change Password" />
         <JFXToggleButton layoutX="198.0" layoutY="211.0" text=" " toggleColor="#f5f5f5" />
         <Label layoutX="116.0" layoutY="232.0" text="Enable OCR:" textFill="WHITE" />

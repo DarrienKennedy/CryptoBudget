@@ -1,6 +1,7 @@
 package sample;
 
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,6 +22,16 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
     @FXML
     private JFXComboBox refreshComboBox;
 
+    @FXML
+    private JFXTextField oldPassword;
+
+    @FXML
+    private JFXTextField newPassword1;
+
+    @FXML
+    private JFXTextField newPassword2;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         currencyComboBox.setItems(currencyList);
@@ -30,6 +41,8 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
 
         refreshComboBox.setItems(refreshList);
         refreshComboBox.setValue("1 Min");
+
+
     }
 
 
@@ -66,6 +79,23 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
     private void goToEditGoalsPage(ActionEvent event){ myController.setScreen(Main.EditGoalsID);
     }
 
+    @FXML
+    private void changePassword(ActionEvent event){
+        //if(oldPassword.getText() =)
+
+    }
+
+    @FXML
+    private void changePCurrency(ActionEvent event){
+        String pCurrency = currencyComboBox.getValue().toString();
+
+    }
+
+    @FXML
+    private void changeRefreshRate(ActionEvent event){
+        String refreshRate = refreshComboBox.getValue().toString();
+
+    }
 
 
 }

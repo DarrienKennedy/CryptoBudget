@@ -14,6 +14,8 @@ public class EditGoalsController implements Initializable, ControlledScreen{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+
+
     }
 
 
