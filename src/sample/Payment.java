@@ -31,13 +31,13 @@ public class Payment extends Transaction {
                     "OTHERPARTY) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(savePayment);
-            prep.setInt(1, 0);
+            prep.setInt(1, this.userId);
             prep.setDouble(2, this.amount);
-            prep.setInt(3, 1999);
-            prep.setInt(4, 2001);
-            prep.setInt(5, 1);
-            prep.setInt(6, 0);
-            prep.setString(7, "Darrien");
+            prep.setInt(3, this.date);
+            prep.setInt(4, this.endDate);
+            prep.setInt(5, this.currencyType);
+            prep.setInt(6, this.frequency);
+            prep.setString(7, this.otherParty);
             prep.executeUpdate();
         } catch (SQLException e) {
             //e.printStackTrace();
@@ -64,6 +64,7 @@ public class Payment extends Transaction {
         }
     }
 
+    // TODO only for user to logged in
     public static Payment[] getAllPayments() {
         try {
             Statement stmt = CryptoBudgetDatabase.connection.createStatement();
@@ -91,6 +92,7 @@ public class Payment extends Transaction {
         return null;
     }
 
+    // TODO only for user logged in
     public static Payment getPayment(int findId) {
         try {
             Statement stmt = CryptoBudgetDatabase.connection.createStatement();
