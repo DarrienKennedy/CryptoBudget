@@ -1,5 +1,8 @@
 package sample;
 
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -10,6 +13,12 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable, ControlledScreen{
 
     ScreensController myController;
+
+    @FXML
+    private JFXTextArea username;
+
+    @FXML
+    private JFXPasswordField password;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -26,14 +35,21 @@ public class LoginController implements Initializable, ControlledScreen{
         myController.setScreen(Main.HomePageID);
     }
 
+
     @FXML
-    private void goToCrypto(ActionEvent event){
-        myController.setScreen(Main.CryptoCurrenciesID);
+    private void validateLogin(ActionEvent event){
+
+
     }
 
     @FXML
-    private void goToEditGoalsPage(ActionEvent event){ myController.setScreen(Main.EditGoalsID); }
+    private void goToCreateAccount(ActionEvent event){
+        myController.setScreen(Main.CreateAccountID);
+    }
 
-
+    @FXML
+    private void goToLogin(ActionEvent event){
+        myController.setScreen(Main.LoginID);
+    }
 
 }
