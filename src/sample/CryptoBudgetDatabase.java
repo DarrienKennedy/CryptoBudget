@@ -3,6 +3,8 @@ package sample;
 import java.sql.*;
 
 public class CryptoBudgetDatabase {
+    public static Connection connection;
+
     private static String[] govCurrencyNames = {"US Dollar",
             "Euro",
             "British Pound",
@@ -27,29 +29,24 @@ public class CryptoBudgetDatabase {
             0.009289,
             0.157754};
 
-    private static java.sql.Connection connect(){
+    private static Connection connect() {
         //saving the database in the src folder
         String dir = (System.getProperty("user.dir"));
         String OS = System.getProperty("os.name").toLowerCase();
-        String url;
-        if(OS.contains("mac")) {
-            url = "jdbc:sqlite:" + dir + "/src/CryptoBudget.db";
-        } else {
-            url = "jdbc:sqlite:" + dir + "\\src\\CryptoBudget.db";
-        }
-        java.sql.Connection connection = null;
+        String url =  String.format("jdbc:sqlite:%s/src/CryptoBudget.db", dir);
+        Connection connection = null;
 
         try{
             connection = DriverManager.getConnection(url);
         } catch(java.sql.SQLException e){
-
+            //e.printStackTrace();
         }
 
         return connection;
     }
 
     public void createDatabase() {
-        java.sql.Connection connection = connect();
+        connection = connect();
         Statement stmt = null;
 
         try {
@@ -64,7 +61,7 @@ public class CryptoBudgetDatabase {
                     " PASSWORDSALT       TEXT                          NOT NULL," +
                     " FIRSTNAME          TEXT," +
                     " LASTNAME           TEXT," +
-                    " LASTLOGIN          INT)";
+                    " LASTLOGIN          INT);";
 
             stmt.executeUpdate(accountLedger);
             stmt.close();
@@ -75,7 +72,7 @@ public class CryptoBudgetDatabase {
                     " CURRENCYNAME       TEXT                            NOT NULL," +
                     " CURRENCYVALUE      REAL                            NOT NULL," +
                     " LASTUPDATED        INT                             NOT NULL," +
-                    " PERCENTCHANGE      TEXT                            NOT NULL)";
+                    " PERCENTCHANGE      TEXT                            NOT NULL);";
 
             stmt.executeUpdate(currencyValue);
             stmt.close();
@@ -87,7 +84,7 @@ public class CryptoBudgetDatabase {
                     " CURRENCYID             INTEGER                     NOT NULL," +
                     " AMOUNTOFCURRENCY       REAL                        NOT NULL," +
                     " FOREIGN KEY (USERID)       REFERENCES ACCOUNTLEDGER(USERID)," +
-                    " FOREIGN KEY (CURRENCYID)   REFERENCES CURRENCYVALUE(CURRENCYID))";
+                    " FOREIGN KEY (CURRENCYID)   REFERENCES CURRENCYVALUE(CURRENCYID));";
 
             stmt.executeUpdate(accountCurrencies);
             stmt.close();
@@ -101,10 +98,9 @@ public class CryptoBudgetDatabase {
                     " ENDDATE              INT," +
                     " CURRENCYTYPE         INTEGER                         NOT NULL," +
                     " FREQUENCY            INT                             NOT NULL," +
-                    " PAYMENTTYPE          TEXT," +
                     " OTHERPARTY           TEXT," +
                     " FOREIGN KEY (USERID)         REFERENCES ACCOUNTLEDGER(USERID)," +
-                    " FOREIGN KEY (CURRENCYTYPE)   REFERENCES CURRENCYVALUE(CURRENCYID))";
+                    " FOREIGN KEY (CURRENCYTYPE)   REFERENCES CURRENCYVALUE(CURRENCYID));";
 
             stmt.executeUpdate(payment);
             stmt.close();
@@ -118,8 +114,9 @@ public class CryptoBudgetDatabase {
                     " FREQUENCY         INT                             NOT NULL," +
                     " DATE              INT," +
                     " ENDDATE           INT," +
+                    " OTHERPARTY        TEXT," +
                     " FOREIGN KEY (USERID)          REFERENCES ACCOUNTLEDGER(USERID)," +
-                    " FOREIGN KEY (CURRENCYTYPE)    REFERENCES CURRENCYVALUE(CURRENCYID))";
+                    " FOREIGN KEY (CURRENCYTYPE)    REFERENCES CURRENCYVALUE(CURRENCYID));";
 
             stmt.executeUpdate(income);
             stmt.close();
@@ -134,17 +131,17 @@ public class CryptoBudgetDatabase {
                     " GOALDESCRIPTION TEXT," +
                     " ISDONE          NUMERIC                         NOT NULL," +
                     " CURRENTAMOUNT   REAL                            NOT NULL," +
-                    " FOREIGN KEY (USERID)       REFERENCES ACCOUNTLEDGER(USERID))";
+                    " FOREIGN KEY (USERID)       REFERENCES ACCOUNTLEDGER(USERID));";
 
             stmt.executeUpdate(goals);
             stmt.close();
 
-            String isThereSQL = "SELECT * FROM CURRENCYVALUE";
+            String isThereSQL = "SELECT * FROM CURRENCYVALUE;";
             stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery((isThereSQL));
 
             if (!rs.isBeforeFirst()) {
-                String sql = "INSERT INTO CURRENCYVALUE (CURRENCYNAME, CURRENCYVALUE, LASTUPDATED, PERCENTCHANGE) VALUES ( ? , ? , ? , ? )";
+                String sql = "INSERT INTO CURRENCYVALUE (CURRENCYNAME, CURRENCYVALUE, LASTUPDATED, PERCENTCHANGE) VALUES ( ? , ? , ? , ? );";
                 PreparedStatement pstmt = connection.prepareStatement(sql);
 
                 for (int i = 0; i < govCurrencyNames.length; i++) {
@@ -157,12 +154,7 @@ public class CryptoBudgetDatabase {
             }
 
         } catch (Exception e) {
-            System.out.println(e);
-        }
-        try {
-            connection.close();
-        } catch (SQLException e) {
-
+            //System.out.println(e);
         }
     }
 }
