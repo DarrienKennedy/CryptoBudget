@@ -1,26 +1,27 @@
 package sample;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Date;
 
+import okhttp3.*;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.sql.*;
 
 
 public class CoinCrawler {
-    private static Connection db;
+    private static final OkHttpClient client = new OkHttpClient.Builder().build();
+    private static java.sql.Connection db = CryptoBudgetDatabase.connection;
     private static ArrayList<String> userCoins;
     private static boolean searchAll;
 
-    public CoinCrawler(Connection db, ArrayList<String> userCoins, boolean searchAll){
-        this.db = db;
+    public CoinCrawler(ArrayList<String> userCoins, boolean searchAll, Connection db){
         this.userCoins = userCoins;
         this.searchAll = searchAll;
+        this.db = db;
     }
 
     public void setUserCoins(ArrayList<String> userCoins){
@@ -31,86 +32,8 @@ public class CoinCrawler {
         this.searchAll = searchAll;
     }
 
-    private static ArrayList<String> parseSite(String siteURL){
-        String name;
-        String value;
-        String percentChange;
-        String upOrDown;
-        boolean isUp;
-
-        try {
-            Document doc = Jsoup.connect(siteURL).get();
-            Elements coins = doc.select(".coin-list__body a .wrapper .grid");
-
-            for (Element coin : coins) {
-                String coinName = coin.select(".coin-name").text();
-                if(searchAll){
-                    name = coin.select(".coin-name").text();
-                    value = coin.select(".coin-list__body__row__price__value").text();
-
-                    upOrDown = coin.select(".coin-list__body__row__change img").attr("alt");
-                    isUp = upOrDown.equals("24h change gone up");
-
-                    percentChange = coin.select(".coin-list__body__row__change").text();
-
-                    if (isUp) {
-                        percentChange = "+" + percentChange;
-                    } else {
-                        percentChange = "-" + percentChange;
-                    }
-
-                    insertData(coinName, value, percentChange, db);
-                } else if(userCoins.contains(coinName)) {
-                    //put this into the database
-                    name = coin.select(".coin-name").text();
-                    value = coin.select(".coin-list__body__row__price__value").text();
-                    percentChange = coin.select(".coin-list__body__row__change").text();
-                    upOrDown = coin.select(".coin-list__body__row__change img").attr("alt");
-                    isUp = upOrDown.equals("24h change gone up");
-
-                    if (isUp) {
-                        percentChange = "+" + percentChange;
-                    } else {
-                        percentChange = "-" + percentChange;
-                    }
-                    userCoins.remove(coinName);
-
-                    insertData(coinName, value, percentChange, db);
-                }
-                if(userCoins.isEmpty() && !searchAll){
-                    break;
-                }
-            }
-        } catch (IOException e){
-
-        }
-        return userCoins;
-    }
-
-
-    public void getCoins(){
-        userCoins = parseSite("https://coinranking.com/?");
-        try {
-            Document doc = Jsoup.connect("https://coinranking.com/?").get();
-            //Get the total pages
-            Elements totalPages = doc.select(".coin-list__footer .pagination__info b + b");
-
-            int currentPage = 2;
-            while (currentPage <= Integer.parseInt(totalPages.text())) {
-                String newPageURL = "https://coinranking.com/?page=" + String.valueOf(currentPage);
-                userCoins = parseSite(newPageURL);
-                if(userCoins.isEmpty() && !searchAll){
-                    break;
-                }
-                currentPage++;
-            }
-        } catch (IOException e) {
-
-        }
-    }
-
     //add the row in cryptoValue if it is not already there
-    public static void insertData(String name, String value, String percentChange, java.sql.Connection cn){
+    private static void insertData(String name, String value, String percentChange){
         //check if it was already there
         String selectSQL = "SELECT * " +
                 "FROM CURRENCYVALUE " +
@@ -119,7 +42,7 @@ public class CoinCrawler {
         boolean coinIsThere = false;
 
         try {
-            PreparedStatement pstmt = cn.prepareStatement(selectSQL);
+            PreparedStatement pstmt = db.prepareStatement(selectSQL);
             pstmt.setString(1, name);
 
             ResultSet rs = pstmt.executeQuery();
@@ -142,7 +65,7 @@ public class CoinCrawler {
             sql = "UPDATE CURRENCYVALUE SET currencyValue = ? , percentChange = ?, lastUpdated = ? WHERE currencyName = ?";
         }
         try{
-            PreparedStatement pstmt = cn.prepareStatement(sql);
+            PreparedStatement pstmt = db.prepareStatement(sql);
             if(coinIsThere){
                 pstmt.setString(1, value);
                 pstmt.setString(2, percentChange);
@@ -160,6 +83,88 @@ public class CoinCrawler {
         catch(SQLException e){
             e.printStackTrace();
         }
+    }
+
+    public static void updateCoins(){
+        try{
+            doGetRequest("https://coinranking.com/", true);
+        } catch (IOException e){
+
+        }
+    }
+
+    private static void doGetRequest(String url, boolean isFirst) throws IOException{
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request)
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(final Call call, IOException e) {
+                        // Error
+                    }
+
+                    @Override
+                    public void onResponse(Call call, final Response response) throws IOException {
+                        String value;
+                        String percentChange;
+                        String upOrDown;
+                        boolean isUp;
+                        String html = response.body().string();
+
+                        Elements coins = Jsoup.parse(html).select(".coin-list__body a .wrapper .grid");
+                        for (Element coin : coins) {
+                            String coinName = coin.select(".coin-name").text();
+                            if(searchAll) {
+                                value = coin.select(".coin-list__body__row__price__value").text();
+
+                                upOrDown = coin.select(".coin-list__body__row__change img").attr("alt");
+                                isUp = upOrDown.equals("24h change gone up");
+
+                                percentChange = coin.select(".coin-list__body__row__change").text();
+
+                                if (isUp) {
+                                    percentChange = "+" + percentChange;
+                                } else {
+                                    percentChange = "-" + percentChange;
+                                }
+                                System.out.println(coinName + " " + value + " " + percentChange);
+                                insertData(coinName, value, percentChange);
+                            } else if(userCoins.contains(coinName)) {
+                                //put this into the database
+                                value = coin.select(".coin-list__body__row__price__value").text();
+                                percentChange = coin.select(".coin-list__body__row__change").text();
+                                upOrDown = coin.select(".coin-list__body__row__change img").attr("alt");
+                                isUp = upOrDown.equals("24h change gone up");
+
+                                if (isUp) {
+                                    percentChange = "+" + percentChange;
+                                } else {
+                                    percentChange = "-" + percentChange;
+                                }
+                                userCoins.remove(coinName);
+
+                                insertData(coinName, value, percentChange);
+                            }
+                            if(userCoins.isEmpty() && !searchAll){
+                                break;
+                            }
+                        }
+                        if(isFirst){
+                            Elements totalPages = Jsoup.parse(html).select(".coin-list__footer .pagination__info b + b");
+                            int currentPage = 2;
+                            while (currentPage <= Integer.parseInt(totalPages.text())) {
+                                String newPageURL = "https://coinranking.com/?page=" + String.valueOf(currentPage);
+                                doGetRequest(newPageURL, false);
+                                if(userCoins.isEmpty() && !searchAll){
+                                    break;
+                                }
+                                currentPage++;
+                            }
+                        }
+                    }
+                });
     }
 }
 
