@@ -54,14 +54,15 @@ public class CryptoBudgetDatabase {
             String accountLedger = "CREATE TABLE IF NOT EXISTS ACCOUNTLEDGER " +
                     "(USERID             INTEGER        PRIMARY KEY    NOT NULL," +
                     " ENABLEOCR          NUMERIC                       NOT NULL," +
-                    " PRIMARYCURRENCY    TEXT                          NOT NULL," +
+                    " PRIMARYCURRENCY    INTEGER                       NOT NULL," +
                     " REFRESHRATE        TEXT                          NOT NULL," +
                     " USERNAME           TEXT                          NOT NULL," +
                     " PASSWORD           TEXT                          NOT NULL," +
                     " PASSWORDSALT       TEXT                          NOT NULL," +
                     " FIRSTNAME          TEXT," +
                     " LASTNAME           TEXT," +
-                    " LASTLOGIN          INT);";
+                    " LASTLOGIN          INT," +
+                    " FOREIGN KEY (PRIMARYCURRENCY)     REFERENCES CURRENCYVALUE(CURRENCYID));";
 
             stmt.executeUpdate(accountLedger);
             stmt.close();
