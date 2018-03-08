@@ -26,18 +26,16 @@ public class Income extends Transaction {
      */
     public void create() {
         try {
-            Statement stmt = CryptoBudgetDatabase.connection.createStatement();
             String create = "INSERT INTO INCOME (USERID, AMOUNT, DATE, ENDDATE, CURRENCYTYPE, FREQUENCY, " +
                     "OTHERPARTY) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(create);
-            prep.setInt(1, this.userId);
-            prep.setDouble(2, this.amount);
-            prep.setInt(3, this.date);
-            prep.setInt(4, this.endDate);
-            prep.setInt(5, this.currencyType);
-            prep.setInt(6, this.frequency);
-            prep.setString(7, this.otherParty);
+            prep.setInt(1, userId);
+            prep.setDouble(2, amount);
+            prep.setInt(3, date);
+            prep.setInt(4, endDate);
+            prep.setInt(5, currencyType);
+            prep.setInt(6, frequency);
+            prep.setString(7, otherParty);
             prep.executeUpdate();
         } catch (SQLException e) {
             //e.printStackTrace();
@@ -46,34 +44,30 @@ public class Income extends Transaction {
 
     public void update() {
         try {
-            Statement stmt = CryptoBudgetDatabase.connection.createStatement();
-            String update = "UPDATE INCOME SET USERID = ?, AMOUNT = ?, DATE = ?, ENDDATE = ?, CURRENCYTYPE = ?, " +
-                    "FREQUENCY = ?, OTHERPARTY = ? WHERE INCOMEID = ?;";
+            String update = "UPDATE INCOME SET AMOUNT = ?, DATE = ?, ENDDATE = ?, CURRENCYTYPE = ?, " +
+                    "FREQUENCY = ?, OTHERPARTY = ? WHERE INCOMEID = ? AND USERID = ?;";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(update);
-            prep.setInt(1, userId);
-            prep.setDouble(2, amount);
-            prep.setInt(3, date);
-            prep.setInt(4, endDate);
-            prep.setInt(5, currencyType);
-            prep.setInt(6, frequency);
-            prep.setString(7, otherParty);
-            prep.setInt(8, id);
-
+            prep.setDouble(1, amount);
+            prep.setInt(2, date);
+            prep.setInt(3, endDate);
+            prep.setInt(4, currencyType);
+            prep.setInt(5, frequency);
+            prep.setString(6, otherParty);
+            prep.setInt(7, id);
+            prep.setInt(8, Main.currentUser.getUserId());
             prep.executeUpdate();
         } catch (SQLException e) {
             //e.printStackTrace();
         }
     }
 
-    // TODO only for user currently logged in
     public static Income[] getAllIncome() {
         try {
-            Statement stmt = CryptoBudgetDatabase.connection.createStatement();
-            String getAll = String.format("SELECT * FROM INCOME;");
-            ResultSet rs = stmt.executeQuery(getAll);
-
+            String getAll = String.format("SELECT * FROM INCOME WHERE USERID = ?;");
+            PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(getAll);
+            prep.setInt(1, Main.currentUser.getUserId());
+            ResultSet rs = prep.executeQuery(getAll);
             ArrayList<Income> result = new ArrayList();
-
             while (rs.next()) {
                 int id = rs.getInt("INCOMEID");
                 int userId = rs.getInt("USERID");
@@ -84,7 +78,6 @@ public class Income extends Transaction {
                 int frequency = rs.getInt("FREQUENCY");
                 String otherParty = rs.getString("OTHERPARTY");
                 result.add(new Income(id, userId, currencyType, amount, date, endDate, frequency, otherParty));
-
             }
             return result.toArray(new Income[0]);
         } catch (SQLException e) {
@@ -93,15 +86,12 @@ public class Income extends Transaction {
         return null;
     }
 
-    // TODO only for user currently logged in
     public static Income getIncome(int findId) {
         try {
-            Statement stmt = CryptoBudgetDatabase.connection.createStatement();
-            String findIncome = "SELECT * FROM INCOME WHERE INCOMEID = ?;";
+            String findIncome = "SELECT * FROM INCOME WHERE INCOMEID = ? AND USERID = ?;";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(findIncome);
-
             prep.setInt(1, findId);
-
+            prep.setInt(2, Main.currentUser.getUserId());
             ResultSet rs = prep.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("INCOMEID");
@@ -112,7 +102,6 @@ public class Income extends Transaction {
                 int currencyType = rs.getInt("CURRENCYTYPE");
                 int frequency = rs.getInt("FREQUENCY");
                 String otherParty = rs.getString("OTHERPARTY");
-
                 Income result = new Income(id, userId, currencyType, amount, date, endDate, frequency, otherParty);
                 return result;
             }
@@ -125,9 +114,10 @@ public class Income extends Transaction {
     public static void removeIncome(int removeId) {
         try {
             Statement stmt = CryptoBudgetDatabase.connection.createStatement();
-            String remove = "DELETE FROM INCOME WHERE INCOMEID = ?;";
+            String remove = "DELETE FROM INCOME WHERE INCOMEID = ? AND USERID = ?;";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(remove);
             prep.setInt(1, removeId);
+            prep.setInt(2, Main.currentUser.getUserId());
             prep.executeUpdate();
         } catch (SQLException e) {
             //e.printStackTrace();

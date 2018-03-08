@@ -35,15 +35,16 @@ public class LoginController implements Initializable, ControlledScreen{
     private void validateLogin(ActionEvent event){
         String pass = password.getText();
         String user = username.getText();
-        if(user.equals("")){
-            if(pass.equals("")){
+        User testLogin = User.getUser(user);
+        if(testLogin != null){
+            if(pass.equals(testLogin.getPassword())){
+                Main.currentUser = testLogin;
                 myController.setScreen(Main.HomePageID);
             }
         }
         else{
             myController.setScreen(Main.LoginID);
         }
-
     }
 
     @FXML

@@ -32,13 +32,11 @@ public class Main extends Application {
     public static String CreateAccountID = "CreateAccount";
     public static String CreateAccountFile = "CreateAccount.fxml";
 
-    //User class currently not in sample
-    //public static User currentUser;
+    public static User currentUser;
 
 
     @Override
     public void start(Stage primaryStage) {
-
         ScreensController mainContainer = new ScreensController();
         mainContainer.loadScreen(Main.LoginID, Main.LoginFile);
         mainContainer.loadScreen(Main.HomePageID, Main.HomePageFile);
@@ -61,8 +59,18 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        //CryptoBudgetDatabase db = new CryptoBudgetDatabase();
-        //db.createDatabase();
-        //launch(args);
+        CryptoBudgetDatabase db = new CryptoBudgetDatabase();
+        db.createDatabase();
+        if (User.getUser("admin") == null) {
+            createAdmin();
+        }
+        launch(args);
+    }
+
+    public static void createAdmin() {
+        User admin = new User();
+        admin.setUserName("admin");
+        admin.setPassword("password");
+        admin.create();
     }
 }

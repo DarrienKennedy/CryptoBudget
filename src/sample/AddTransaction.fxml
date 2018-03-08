@@ -23,25 +23,33 @@
                 </items>
             </MenuButton>
             <Label layoutX="61.0" layoutY="65.0" text="Path to Image" textFill="WHITE" />
-            <JFXTextField focusColor="BLACK" layoutX="144.0" layoutY="61.0" unFocusColor="WHITE" />
+            <JFXTextField fx:id="imagePathField" focusColor="BLACK" layoutX="144.0" layoutY="61.0" unFocusColor="WHITE" />
+
             <Label layoutX="73.0" layoutY="111.0" text="Amount:" textFill="WHITE" />
-            <JFXTextField focusColor="BLACK" layoutX="143.0" layoutY="94.0" unFocusColor="WHITE" />
+            <JFXTextField fx:id="amountField" focusColor="BLACK" layoutX="143.0" layoutY="94.0" unFocusColor="WHITE" />
+
             <Label layoutX="73.0" layoutY="147.0" text="Currency:" textFill="WHITE" />
-            <JFXTextField focusColor="BLACK" layoutX="143.0" layoutY="130.0" unFocusColor="WHITE" />
+            <JFXTextField fx:id="currencyField" focusColor="BLACK" layoutX="143.0" layoutY="130.0" unFocusColor="WHITE" />
+
             <Label layoutX="73.0" layoutY="177.0" text="Frequency:" textFill="WHITE" />
             <JFXComboBox fx:id="frequencyComboBox" focusColor="BLACK" layoutX="143.0" layoutY="173.0" prefHeight="25.0" prefWidth="112.0" unFocusColor="WHITE" />
+
             <Label layoutX="39.0" layoutY="215.0" text="Transaction Type:" textFill="WHITE" />
-            <CheckBox layoutX="143.0" layoutY="215.0" mnemonicParsing="false" text="Payment" textFill="WHITE" />
-            <CheckBox layoutX="221.0" layoutY="215.0" mnemonicParsing="false" text="Income" textFill="WHITE" />
+            <CheckBox fx:id="paymentOption" layoutX="143.0" layoutY="215.0" mnemonicParsing="false" text="Payment" textFill="WHITE" />
+            <CheckBox fx:id="incomeOption" layoutX="221.0" layoutY="215.0" mnemonicParsing="false" text="Income" textFill="WHITE" />
+
             <Label layoutX="88.0" layoutY="253.0" text="Date:" textFill="WHITE" />
-            <JFXTextField focusColor="BLACK" layoutX="143.0" layoutY="236.0" unFocusColor="WHITE" />
-            <Label layoutX="82.0" layoutY="277.0" prefHeight="17.0" prefWidth="46.0" text="Paid To:" textFill="WHITE" />
-            <JFXTextField focusColor="BLACK" layoutX="143.0" layoutY="273.0" unFocusColor="WHITE" />
+            <JFXTextField fx:id="dateField" focusColor="BLACK" layoutX="143.0" layoutY="236.0" unFocusColor="WHITE" />
+
+            <Label layoutX="60.0" layoutY="277.0" prefHeight="17.0" prefWidth="70.0" text="Other Party:" textFill="WHITE" />
+            <JFXTextField fx:id="otherPartyField" focusColor="BLACK" layoutX="143.0" layoutY="273.0" unFocusColor="WHITE" />
+
             <Label layoutX="77.0" layoutY="312.0" text="Category:" textFill="WHITE" />
-            <JFXTextField focusColor="BLACK" layoutX="143.0" layoutY="308.0" promptText="Optional" unFocusColor="WHITE" />
-            <Button layoutX="143.0" layoutY="350.0" mnemonicParsing="false" text="Log" />
+            <JFXTextField fx:id="categoryField" focusColor="BLACK" layoutX="143.0" layoutY="308.0" promptText="Optional" unFocusColor="WHITE" />
+
+            <Button layoutX="143.0" layoutY="350.0" mnemonicParsing="false" onAction="#manualLog" text="Log" />
             <Label layoutX="245.0" layoutY="19.0" text="Log Transaction" textFill="WHITE" />
-            <Button layoutX="300.0" layoutY="61.0" mnemonicParsing="false" text="Scan Image" />
+            <Button layoutX="300.0" layoutY="61.0" mnemonicParsing="false" onAction="#useOCR" text="Scan Image" />
         </children>
     </AnchorPane>
 
