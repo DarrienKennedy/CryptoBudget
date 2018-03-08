@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TreeTableColumn?>
@@ -21,15 +22,15 @@
             </items>
         </MenuButton>
         <Label layoutX="274.0" layoutY="6.0" text="Edit Goals" textFill="WHITE" />
-        <JFXTreeTableView layoutX="83.0" layoutY="36.0" prefHeight="406.0" prefWidth="517.0">
+        <JFXTreeTableView fx:id="goalsTable" layoutX="83.0" layoutY="36.0" prefHeight="406.0" prefWidth="439.0">
             <columns>
                 <TreeTableColumn prefWidth="75.0" />
                 <TreeTableColumn prefWidth="75.0" text="Goal Date" />
                 <TreeTableColumn prefWidth="91.0" text="Goal Amount" />
                 <TreeTableColumn prefWidth="85.0" text="Goal Name" />
                 <TreeTableColumn prefWidth="113.0" text="Goal Description" />
-                <TreeTableColumn prefWidth="75.0" />
             </columns>
         </JFXTreeTableView>
+        <ListView fx:id="buttons" layoutX="522.0" layoutY="84.0" prefHeight="358.0" prefWidth="79.0" />
     </children>
 </AnchorPane>

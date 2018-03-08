@@ -30,26 +30,25 @@ public class LoginController implements Initializable, ControlledScreen{
         myController = screenParent;
     }
 
-    @FXML
-    private void goToHomePage(ActionEvent event){
-        myController.setScreen(Main.HomePageID);
-    }
-
 
     @FXML
     private void validateLogin(ActionEvent event){
-
+        String pass = password.getText();
+        String user = username.getText();
+        if(user.equals("")){
+            if(pass.equals("")){
+                myController.setScreen(Main.HomePageID);
+            }
+        }
+        else{
+            myController.setScreen(Main.LoginID);
+        }
 
     }
 
     @FXML
     private void goToCreateAccount(ActionEvent event){
         myController.setScreen(Main.CreateAccountID);
-    }
-
-    @FXML
-    private void goToLogin(ActionEvent event){
-        myController.setScreen(Main.LoginID);
     }
 
 }

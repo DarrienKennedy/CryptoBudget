@@ -27,6 +27,9 @@ public class Main extends Application {
     public static String CreateAccountID = "CreateAccount";
     public static String CreateAccountFile = "CreateAccount.fxml";
 
+    //User class currently not in sample
+    //public static User currentUser;
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -41,7 +44,7 @@ public class Main extends Application {
         mainContainer.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
         mainContainer.loadScreen(Main.CreateAccountID, Main.CreateAccountFile);
 
-        mainContainer.setScreen(Main.HomePageID);
+        mainContainer.setScreen(Main.LoginID);
 
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
@@ -53,8 +56,8 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        CryptoBudgetDatabase db = new CryptoBudgetDatabase();
-        db.createDatabase();
-        launch(args);
+        //CryptoBudgetDatabase db = new CryptoBudgetDatabase();
+        //db.createDatabase();
+        //launch(args);
     }
 }

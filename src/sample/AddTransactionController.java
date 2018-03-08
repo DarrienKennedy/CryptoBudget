@@ -28,6 +28,8 @@ public class AddTransactionController implements Initializable, ControlledScreen
         myController = screenParent;
     }
 
+
+
     @FXML
     private void goToHomePage(ActionEvent event){
         myController.setScreen(Main.HomePageID);

@@ -13,7 +13,7 @@
             <children>
                 <JFXTextArea fx:id="username" focusColor="BLACK" layoutX="44.0" layoutY="112.0" prefHeight="12.0" prefWidth="158.0" promptText="Username" unFocusColor="WHITE" />
                 <JFXPasswordField fx:id="password" focusColor="#070707" layoutX="44.0" layoutY="200.0" prefHeight="25.0" prefWidth="158.0" promptText="Password" unFocusColor="WHITE" />
-                <JFXButton layoutX="44.0" layoutY="257.0" onAction="#goToHomePage" style="-fx-background-color: #B5FFE1;" text="Sign in" />
+                <JFXButton layoutX="44.0" layoutY="257.0" onAction="#validateLogin" style="-fx-background-color: #B5FFE1;" text="Sign in" />
                 <Label alignment="TOP_CENTER" layoutX="13.0" layoutY="50.0" prefHeight="37.0" prefWidth="132.0" text="Sign In" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font size="22.0" />
