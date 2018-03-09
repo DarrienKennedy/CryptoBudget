@@ -13,18 +13,16 @@ import java.util.ResourceBundle;
 public class CreateAccountController implements Initializable, ControlledScreen{
 
     private ScreensController myController;
-
     @FXML
     private JFXTextArea username;
-
     @FXML
     private JFXPasswordField password;
-
     @FXML
     private JFXTextField firstName;
-
     @FXML
     private JFXTextField lastName;
+    private int userID = 1;
+    private User cUser;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -38,10 +36,9 @@ public class CreateAccountController implements Initializable, ControlledScreen{
 
     @FXML
     private void goToHomePage(ActionEvent event){
-        //username.getText();
-        //password.getText();
-        //firstName.getText();
-        //lastName.getText();
+        cUser = new User(username.getText(), firstName.getText(), lastName.getText(), password.getText());
+        cUser.setUserId(userID);
+        cUser.create();
         myController.setScreen(Main.HomePageID);
 
     }

@@ -26,11 +26,6 @@
                 <Font name="Bookman Old Style" size="30.0" />
             </font>
         </Label>
-        <JFXButton layoutX="405.0" layoutY="256.0" style="-fx-background-color: #B5FFE1;" text="Create an Account" />
-        <Label layoutX="683.0" layoutY="7.0" text="X" textFill="WHITE">
-            <font>
-                <Font size="10.0" />
-            </font>
-        </Label>
+        <JFXButton layoutX="405.0" layoutY="256.0" onAction="#goToCreateAccount" style="-fx-background-color: #B5FFE1;" text="Create an Account" />
     </children>
 </AnchorPane>
