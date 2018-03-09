@@ -8,11 +8,13 @@ import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javax.swing.text.html.ListView;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class EditGoalsController implements Initializable, ControlledScreen{
 
@@ -20,16 +22,40 @@ public class EditGoalsController implements Initializable, ControlledScreen{
 
     @FXML
     private JFXButton add;
+    public Button addButton;
+    public TextField textDate;
+    public TextField textAmount;
+    public TextField textName;
+    public TextField textDescription;
+
+    public TextField getTextAmount() {
+        return textAmount;
+    }
+
     public javafx.scene.control.ListView<JFXButton> buttons;
 
     //Initialize once user class is done
     //public ObservableList<Goal> goals;
+    public ArrayList<Goal> goalList = new ArrayList();
 
     private ObservableList<JFXButton> list = FXCollections.observableArrayList();
     int index = 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        textDate.setPromptText("Date");
+        textAmount.setPromptText("Amount");
+        textName.setPromptText("Name");
+        textDescription.setPromptText("Description");
+        /*
+        addButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        };
+        */
+
         buttons.setItems(list);
         while (index < 4) {
             JFXButton i = new JFXButton("Update");
@@ -44,6 +70,19 @@ public class EditGoalsController implements Initializable, ControlledScreen{
             list.add(i);
             index++;
         }
+    }
+
+    @FXML
+    public void handleAddButton(ActionEvent e){
+        goalList.add(new Goal(new Date(),
+                textName.getText(),
+                Double.valueOf(textAmount.getText()),
+                textDescription.getText()));
+        textDate.clear();
+        textAmount.clear();
+        textName.clear();
+        textDescription.clear();
+
     }
 
     public void setScreenParent(ScreensController screenParent){

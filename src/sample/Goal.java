@@ -31,8 +31,9 @@ public class Goal {
      * @param name -- name for the goal
      * @param description -- describes the nature of the goal
      */
-    public Goal(String name, double amount, String description){
+    public Goal(Date date, String name, double amount, String description){
         new Goal();
+        this.setGoalDate(date);
         this.setGoalName(name);
         this.setFinalGoal(amount);
         this.setGoalDescription(description);
@@ -228,4 +229,19 @@ public class Goal {
             e.printStackTrace();
         }
     }
+
+    /*
+    public Goal[] getAllGoals(){
+        try{
+            String sql = "SELECT * FROM GOALS WHERE GOALID = ?";
+            PreparedStatement ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
+            ps.setInt(1, getGoalId());
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+    */
+
 }

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.layout.AnchorPane?>
 
@@ -32,5 +34,10 @@
             </columns>
         </JFXTreeTableView>
         <ListView fx:id="buttons" layoutX="522.0" layoutY="84.0" prefHeight="358.0" prefWidth="79.0" />
+      <TextField fx:id="textDate" layoutX="83.0" layoutY="485.0" prefHeight="31.0" prefWidth="94.0" />
+      <TextField fx:id = "textAmount" layoutX="187.0" layoutY="485.0" prefHeight="31.0" prefWidth="94.0" />
+      <TextField fx:id = "textName" layoutX="293.0" layoutY="485.0" prefHeight="31.0" prefWidth="94.0" />
+      <TextField fx:id="textDescription" layoutX="398.0" layoutY="485.0" prefHeight="31.0" prefWidth="188.0" />
+      <Button fx:id="addButton" layoutX="20.0" layoutY="485.0" mnemonicParsing="false" text="OK" onAction="#handleAddButton"/>
     </children>
 </AnchorPane>
