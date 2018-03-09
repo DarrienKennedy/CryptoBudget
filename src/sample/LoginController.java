@@ -8,17 +8,21 @@ import javafx.fxml.Initializable;
 
 import javafx.event.ActionEvent;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable, ControlledScreen{
 
     ScreensController myController;
-
     @FXML
     private JFXTextArea username;
-
     @FXML
     private JFXPasswordField password;
+    private String pass;
+    private String user;
+    private User tempUser;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -33,12 +37,12 @@ public class LoginController implements Initializable, ControlledScreen{
 
     @FXML
     private void validateLogin(ActionEvent event){
-        String pass = password.getText();
-        String user = username.getText();
-        User testLogin = User.getUser(user);
-        if(testLogin != null){
-            if(pass.equals(testLogin.getPassword())){
-                Main.currentUser = testLogin;
+        pass = password.getText();
+        user = username.getText();
+        loadUserFromDatabase();
+        if(!user.isEmpty()){
+            if(pass.equals(tempUser.getPassword())){
+                Main.currentUser = tempUser;
                 myController.setScreen(Main.HomePageID);
                 username.setText("");
                 password.setText("");
@@ -47,6 +51,7 @@ public class LoginController implements Initializable, ControlledScreen{
         else{
             myController.setScreen(Main.LoginID);
         }
+
     }
 
     @FXML
@@ -54,4 +59,8 @@ public class LoginController implements Initializable, ControlledScreen{
         myController.setScreen(Main.CreateAccountID);
     }
 
+
+    private void loadUserFromDatabase(){
+        tempUser = User.getUser(user);
+    }
 }
