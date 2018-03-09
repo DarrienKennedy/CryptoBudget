@@ -7,7 +7,7 @@ public class Goal {
     protected int userId;   //type = user...
     protected String goalName;
     protected double finalGoal;
-    protected Date goalDate;
+    protected int goalDate;
     protected String goalDescription;
     protected boolean isDone;
     protected double currentAmount;
@@ -20,7 +20,7 @@ public class Goal {
         this.setUserId(0);
         this.setGoalName("DEFAULT NAME");
         this.setFinalGoal(100.00);
-        this.setGoalDate(new Date());
+        this.setGoalDate(000);
         this.setGoalDescription("DEFAULT DESCRIPTION");
         this.setDone(false);
         this.setCurrentAmount(0.00);
@@ -31,7 +31,7 @@ public class Goal {
      * @param name -- name for the goal
      * @param description -- describes the nature of the goal
      */
-    public Goal(Date date, String name, double amount, String description){
+    public Goal(String name, double amount, int date, String description){
         new Goal();
         this.setGoalDate(date);
         this.setGoalName(name);
@@ -70,7 +70,7 @@ public class Goal {
     /*
      * @return the value for the end date of the goal
      */
-    public Date getGoalDate(){
+    public int getGoalDate(){
         return goalDate;
     }
 
@@ -132,7 +132,7 @@ public class Goal {
      * sets the date for the goal to be completed
      * @param dateToSet -- end date for goal
      */
-    public void setGoalDate(Date dateToSet){
+    public void setGoalDate(int dateToSet){
         goalDate = dateToSet;
     }
 
