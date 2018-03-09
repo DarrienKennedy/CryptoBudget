@@ -14,66 +14,59 @@ import javax.swing.text.html.ListView;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 
 public class EditGoalsController implements Initializable, ControlledScreen{
 
     ScreensController myController;
-
     @FXML
-    private JFXButton add;
-    public Button addButton;
-    public TextField textDate;
-    public TextField textAmount;
-    public TextField textName;
-    public TextField textDescription;
-
-    public TextField getTextAmount() {
-        return textAmount;
-    }
-
-    public javafx.scene.control.ListView<JFXButton> buttons;
+    private Button addButton;
+    @FXML
+    private TextField textDate;
+    @FXML
+    private TextField textAmount;
+    @FXML
+    private TextField textName;
+    @FXML
+    private TextField textDescription;
 
     //Initialize once user class is done
     //public ObservableList<Goal> goals;
-    public ArrayList<Goal> goalList = new ArrayList();
+    private ArrayList<Goal> goalList = new ArrayList();
+    private PreparedStatement ps = null;
 
     private ObservableList<JFXButton> list = FXCollections.observableArrayList();
     int index = 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        textDate.setPromptText("Date");
-        textAmount.setPromptText("Amount");
-        textName.setPromptText("Name");
-        textDescription.setPromptText("Description");
-        /*
-        addButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-            }
-        };
-        */
-
-        buttons.setItems(list);
-        while (index < 4) {
-            JFXButton i = new JFXButton("Update");
-            i.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, new EventHandler<javafx.scene.input.MouseEvent>() {
-                @Override
-                public void handle(javafx.scene.input.MouseEvent event) {
-                    //update by set new values for goal
-                    //goals[index].setGoalName();
-
-                }
-            });
-            list.add(i);
-            index++;
-        }
+        setTextBoxes();
     }
 
     @FXML
     public void handleAddButton(ActionEvent e){
+        //TODO: real dates, and ability to select goals from table to update isdone and current amount
+        double amount = Double.valueOf(textAmount.getText());
+        int date = Integer.valueOf(textDate.getText());
+        String name = textName.getText();
+        String description = textDescription.getText();
+        String sql = "INSERT INTO GOALS (USERID, GOALNAME, GOALAMOUNT, GOALDATE, GOALDESCRIPTION, ISDONE, CURRENTAMOUNT)" +
+                "VALUES(?, ?, ?, ?, ?, ?, ?)";
+        try {
+            ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
+            ps.setInt(1, 000); //TODO: valid user id
+            ps.setString(2, name);
+            ps.setDouble(3, amount);
+            ps.setInt(4, date);
+            ps.setString(5, description);
+            ps.setBoolean(6, false);
+            ps.setDouble(7, 0.00);
+            ps.executeUpdate();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
         goalList.add(new Goal(new Date(),
                 textName.getText(),
                 Double.valueOf(textAmount.getText()),
@@ -82,7 +75,15 @@ public class EditGoalsController implements Initializable, ControlledScreen{
         textAmount.clear();
         textName.clear();
         textDescription.clear();
+        setTextBoxes();
 
+    }
+
+    public void setTextBoxes(){
+        textDate.setPromptText("Date");
+        textAmount.setPromptText("Amount");
+        textName.setPromptText("Name");
+        textDescription.setPromptText("Description");
     }
 
     public void setScreenParent(ScreensController screenParent){
