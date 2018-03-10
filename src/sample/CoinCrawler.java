@@ -34,6 +34,8 @@ public class CoinCrawler {
 
     //add the row in cryptoValue if it is not already there
     private static void insertData(String name, String value, String percentChange){
+        value = value.replace(",", "");
+
         //check if it was already there
         String selectSQL = "SELECT * " +
                 "FROM CURRENCYVALUE " +
@@ -129,7 +131,6 @@ public class CoinCrawler {
                                 } else {
                                     percentChange = "-" + percentChange;
                                 }
-                                System.out.println(coinName + " " + value + " " + percentChange);
                                 insertData(coinName, value, percentChange);
                             } else if(userCoins.contains(coinName)) {
                                 //put this into the database
