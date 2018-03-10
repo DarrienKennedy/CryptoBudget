@@ -132,7 +132,7 @@ public class Currency {
         updateCurrencyAmount(currencyId, amount);
     }
 
-    private boolean isUserHasCurrency(int currencyID){
+    public boolean isUserHasCurrency(int currencyID){
         //check if it was already there
         String selectSQL = "SELECT * " +
                 "FROM ACCOUNTCURRENCIES " +
@@ -145,6 +145,33 @@ public class Currency {
             PreparedStatement pstmt = connection.prepareStatement(selectSQL);
             pstmt.setInt(1, userId);
             pstmt.setInt(2, currencyID);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.isBeforeFirst()){
+                userHasCurrency = true;
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return userHasCurrency;
+    }
+
+    public boolean isUserHasCurrency(String currencyName){
+        //check if it was already there
+        String selectSQL = "SELECT * " +
+                "FROM ACCOUNTCURRENCIES " +
+                "WHERE USERID = ? " +
+                "AND CURRENCYNAME = ?;";
+
+        boolean userHasCurrency = false;
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(selectSQL);
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, currencyName);
 
             ResultSet rs = pstmt.executeQuery();
 
