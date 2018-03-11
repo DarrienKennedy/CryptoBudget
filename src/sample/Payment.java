@@ -16,6 +16,11 @@ public class Payment extends Transaction {
         super(newCurrencyType, newValue);
     }
 
+    //constructor used for ViewTransactionsController
+    public Payment(int newCurrencyType, double newAmount, String newOtherParty, int newDate) {
+        super(newCurrencyType, newAmount, newOtherParty, newDate, "Payment");
+    }
+
     public Payment(int id, int userId, int currencyType, double amount, int date, int endDate,
                    int frequency, String otherParty) {
         super(id, userId, currencyType, amount, date, endDate, frequency, otherParty);

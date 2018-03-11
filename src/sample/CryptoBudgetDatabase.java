@@ -108,16 +108,16 @@ public class CryptoBudgetDatabase {
 
             stmt = connection.createStatement();
             String income = "CREATE TABLE IF NOT EXISTS INCOME " +
-                    "(INCOMEID          INTEGER         PRIMARY KEY     NOT NULL," +
-                    " USERID            INTEGER                         NOT NULL," +
-                    " CURRENCYTYPE      INTEGER                         NOT NULL," +
-                    " AMOUNT            REAL                            NOT NULL," +
-                    " FREQUENCY         INT                             NOT NULL," +
-                    " DATE              INT," +
-                    " ENDDATE           INT," +
-                    " OTHERPARTY        TEXT," +
-                    " FOREIGN KEY (USERID)          REFERENCES ACCOUNTLEDGER(USERID)," +
-                    " FOREIGN KEY (CURRENCYTYPE)    REFERENCES CURRENCYVALUE(CURRENCYID));";
+                    "(INCOMEID             INTEGER         PRIMARY KEY     NOT NULL," +
+                    " USERID               INTEGER                         NOT NULL," +
+                    " AMOUNT               REAL                            NOT NULL," +
+                    " DATE                 INT," +
+                    " ENDDATE              INT," +
+                    " CURRENCYTYPE         INTEGER                         NOT NULL," +
+                    " FREQUENCY            INT                             NOT NULL," +
+                    " OTHERPARTY           TEXT," +
+                    " FOREIGN KEY (USERID)         REFERENCES ACCOUNTLEDGER(USERID)," +
+                    " FOREIGN KEY (CURRENCYTYPE)   REFERENCES CURRENCYVALUE(CURRENCYID));";
 
             stmt.executeUpdate(income);
             stmt.close();

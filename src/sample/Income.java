@@ -16,6 +16,11 @@ public class Income extends Transaction {
         super(newCurrencyType, newValue);
     }
 
+    //contructor used for ViewTransactionsController
+    public Income(int newCurrencyType, double newAmount, String newOtherParty, int newDate) {
+        super(newCurrencyType, newAmount, newOtherParty, newDate, "Income");
+    }
+
     public Income(int id, int userId, int currencyType, double amount, int date, int endDate,
                   int frequency, String otherParty) {
         super(id, userId, currencyType, amount, date, endDate, frequency, otherParty);

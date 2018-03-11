@@ -9,7 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.EditGoalsController">
+<AnchorPane prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.EditGoalsController">
     <children>
         <MenuButton layoutX="8.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" style="-fx-background-color: #B5FFE1;">
             <items>

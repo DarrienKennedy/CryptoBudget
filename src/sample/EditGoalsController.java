@@ -81,7 +81,7 @@ public class EditGoalsController implements Initializable, ControlledScreen{
             ps.setDouble(7, 0.00);
             int confirm = ps.executeUpdate();
             if(confirm == 1){
-                System.out.println("DB Insert successful.");
+                //System.out.println("DB Insert successful.");
                 loadDataFromDatabase();
             }
         } catch (SQLException e1) {

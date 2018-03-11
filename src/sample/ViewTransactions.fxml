@@ -24,12 +24,12 @@
                 <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
             </items>
         </MenuButton>
-        <TableView layoutX="179.0" layoutY="84.0" prefHeight="346.0" prefWidth="421.0">
+        <TableView fx:id="transactionTable" layoutX="179.0" layoutY="84.0" prefHeight="346.0" prefWidth="421.0">
             <columns>
-                <TableColumn prefWidth="75.0" text="Date" />
-                <TableColumn prefWidth="75.0" text="Amount" />
-                <TableColumn prefWidth="75.0" text="Category" />
-                <TableColumn prefWidth="147.0" text="Description" />
+                <TableColumn fx:id="dateCol" prefWidth="75.0" text="Date" />
+                <TableColumn fx:id="amountCol" prefWidth="75.0" text="Amount" />
+                <TableColumn fx:id="categoryCol" prefWidth="75.0" text="Category" />
+                <TableColumn fx:id="descriptionCol" prefWidth="147.0" text="Description" />
                 <TableColumn prefWidth="75.0" />
             </columns>
         </TableView>
