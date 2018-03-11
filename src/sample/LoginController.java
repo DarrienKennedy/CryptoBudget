@@ -48,10 +48,6 @@ public class LoginController implements Initializable, ControlledScreen{
                 password.setText("");
             }
         }
-        else{
-            myController.setScreen(Main.LoginID);
-        }
-
     }
 
     @FXML

@@ -1,85 +1,82 @@
 package sample;
 
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
+import javafx.stage.WindowEvent;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class UpdateAccountController implements Initializable, ControlledScreen{
 
     ScreensController myController;
-    ObservableList<String> currencyList = FXCollections.observableArrayList("USD","Bitcoin", "RandomCoin");
-    ObservableList<String> refreshList = FXCollections.observableArrayList("1 Min","5 Min", "10 Min");
-
-    @FXML
-    private JFXComboBox currencyComboBox;
+    ObservableList<String> refreshList = FXCollections.observableArrayList("1 Hour","12 Hours", "24 Hours", "On Login");
 
     @FXML
     private JFXComboBox refreshComboBox;
-
     @FXML
-    private JFXTextField oldPassword;
-
+    private JFXPasswordField oldPassword;
     @FXML
-    private JFXTextField newPassword1;
-
+    private JFXPasswordField newPassword1;
     @FXML
-    private JFXTextField newPassword2;
-
+    private JFXPasswordField newPassword2;
+    @FXML
+    private JFXTextField newPrimaryCurrency;
+    @FXML
+    private JFXToggleButton toggleOCR;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        currencyComboBox.setItems(currencyList);
-        currencyComboBox.setValue("USD");
-
-
+        newPrimaryCurrency.setText("USD");
 
         refreshComboBox.setItems(refreshList);
-        refreshComboBox.setValue("1 Min");
-
-
+        refreshComboBox.setValue("1 Hour");
     }
-
 
     public void setScreenParent(ScreensController screenParent){
         myController = screenParent;
     }
 
     @FXML
-    private void goToHomePage(ActionEvent event){ myController.setScreen(Main.HomePageID);}
+    private void goToHomePage(ActionEvent event){
+        goToPage(Main.HomePageID);
+    }
 
     @FXML
     private void goToCrypto(ActionEvent event){
-        myController.setScreen(Main.CryptoCurrenciesID);
+        goToPage(Main.CryptoCurrenciesID);
     }
 
     @FXML
     private void goToUpdateAccount(ActionEvent event){
-        myController.setScreen(Main.UpdateAccountID);
+        goToPage(Main.UpdateAccountID);
     }
 
     @FXML
     private void goToViewTransactions(ActionEvent event){
-        myController.setScreen(Main.ViewTransactionsID);
+        goToPage(Main.ViewTransactionsID);
     }
 
     @FXML
     private void goToAddTransaction(ActionEvent event){
-        myController.setScreen(Main.AddTransactionID);
+        goToPage(Main.AddTransactionID);
     }
 
     @FXML
     private void goToLoginPage(ActionEvent event){
-        myController.setScreen(Main.LoginID);
+        goToPage(Main.LoginID);
     }
 
     @FXML
-    private void goToEditGoalsPage(ActionEvent event){ myController.setScreen(Main.EditGoalsID);
+    private void goToEditGoalsPage(ActionEvent event){
+        goToPage(Main.EditGoalsID);
     }
 
     @FXML
@@ -90,7 +87,7 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
 
     @FXML
     private void changePCurrency(ActionEvent event){
-        String pCurrency = currencyComboBox.getValue().toString();
+
 
     }
 
@@ -100,5 +97,21 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
 
     }
 
+    private void goToPage(String pageId) {
+        myController.setScreen(pageId);
+        resetFields();
+    }
 
+    private void resetFields() {
+        oldPassword.setText("");
+        newPassword1.setText("");
+        newPassword2.setText("");
+
+        if (Main.currentUser.getOCR() == 1) {
+            toggleOCR.setSelected(true);
+        } else {
+            toggleOCR.setSelected(false);
+        }
+
+    }
 }
