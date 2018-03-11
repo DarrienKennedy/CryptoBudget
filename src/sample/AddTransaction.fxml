@@ -12,16 +12,6 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddTransactionController">
     <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
         <children>
-            <MenuButton layoutX="8.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" style="-fx-background-color: #B5FFE1;">
-                <items>
-                    <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="CryptoCurrencies" />
-                    <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Log Transaction" />
-                    <MenuItem mnemonicParsing="false" onAction="#goToEditGoalsPage" text="Edit Goals" />
-                    <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
-                    <MenuItem mnemonicParsing="false" onAction="#goToViewTransactions" text="View Transaction History" />
-                    <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
-                </items>
-            </MenuButton>
             <Label layoutX="61.0" layoutY="65.0" text="Path to Image" textFill="WHITE" />
             <JFXTextField fx:id="imagePathField" focusColor="BLACK" layoutX="144.0" layoutY="61.0" unFocusColor="WHITE" />
 
@@ -50,6 +40,17 @@
             <Button layoutX="143.0" layoutY="350.0" mnemonicParsing="false" onAction="#manualLog" text="Log" />
             <Label layoutX="245.0" layoutY="19.0" text="Log Transaction" textFill="WHITE" />
             <Button layoutX="300.0" layoutY="61.0" mnemonicParsing="false" onAction="#useOCR" text="Scan Image" />
+         <MenuButton layoutX="-4.0" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
+            <items>
+               <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />
+               <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="CryptoCurrencies" />
+               <MenuItem mnemonicParsing="false" onAction="#goToAddTransaction" text="Add a Transaction" />
+               <MenuItem mnemonicParsing="false" onAction="#goToEditGoalsPage" text="Edit Goals" />
+               <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
+               <MenuItem mnemonicParsing="false" onAction="#goToViewTransactions" text="View Transactions" />
+               <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
+            </items>
+         </MenuButton>
         </children>
     </AnchorPane>
 
