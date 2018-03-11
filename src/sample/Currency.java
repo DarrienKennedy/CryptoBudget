@@ -1,6 +1,7 @@
 package sample;
 
 import javax.swing.plaf.nimbus.State;
+import javax.xml.transform.Result;
 import java.security.spec.PSSParameterSpec;
 import java.sql.*;
 import java.util.ArrayList;
@@ -219,5 +220,32 @@ public class Currency {
         }
 
         return userHasCurrency;
+    }
+
+    /**
+     *
+     * @param abbr The abbreviation of a currency
+     * @return The Currency Name if it exists or an empty string if it doesn't
+     */
+    public String abbrToName(String abbr){
+        String currencyName = "";
+        if(abbr == ""){
+            return currencyName;
+        }
+
+        String selectSQL = "SELECT CURRENCYNAME FROM CURRENCYVALUE WHERE CURRENCYABBREVIATION = ?;";
+
+        try{
+            PreparedStatement pstmt = connection.prepareStatement(selectSQL);
+            pstmt.setString(1, abbr);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            currencyName = rs.getString("CURRENCYNAME");
+        } catch (SQLException e){
+
+        }
+
+        return currencyName;
     }
 }
