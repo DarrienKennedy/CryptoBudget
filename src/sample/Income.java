@@ -66,7 +66,7 @@ public class Income extends Transaction {
             String getAll = String.format("SELECT * FROM INCOME WHERE USERID = ?;");
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(getAll);
             prep.setInt(1, Main.currentUser.getUserId());
-            ResultSet rs = prep.executeQuery(getAll);
+            ResultSet rs = prep.executeQuery();
             ArrayList<Income> result = new ArrayList();
             while (rs.next()) {
                 int id = rs.getInt("INCOMEID");
