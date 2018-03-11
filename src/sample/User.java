@@ -34,7 +34,7 @@ public class User {
         this.setUserId(0);
         this.setEnableOCR(0);
         this.setPrimaryCurrency(0); // currency.getId(0) or something
-        this.setRefreshRate("0");
+        this.setRefreshRate("On Login");
         this.setUserName("defaultUsername");
         this.setFirstName("");
         this.setLastName("");
