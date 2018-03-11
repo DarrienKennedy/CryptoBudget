@@ -51,35 +51,35 @@ public class AddTransactionController implements Initializable, ControlledScreen
 
 
     @FXML
-    private void goToHomePage(ActionEvent event){ myController.setScreen(Main.HomePageID);}
+    private void goToHomePage(ActionEvent event){ goToScreen(Main.HomePageID);}
 
     @FXML
     private void goToCrypto(ActionEvent event){
-        myController.setScreen(Main.CryptoCurrenciesID);
+        goToScreen(Main.CryptoCurrenciesID);
     }
 
     @FXML
     private void goToUpdateAccount(ActionEvent event){
-        myController.setScreen(Main.UpdateAccountID);
+        goToScreen(Main.UpdateAccountID);
     }
 
     @FXML
     private void goToViewTransactions(ActionEvent event){
-        myController.setScreen(Main.ViewTransactionsID);
+        goToScreen(Main.ViewTransactionsID);
     }
 
     @FXML
     private void goToAddTransaction(ActionEvent event){
-        myController.setScreen(Main.AddTransactionID);
+        goToScreen(Main.AddTransactionID);
     }
 
     @FXML
     private void goToLoginPage(ActionEvent event){
-        myController.setScreen(Main.LoginID);
+        goToScreen(Main.LoginID);
     }
 
     @FXML
-    private void goToEditGoalsPage(ActionEvent event){ myController.setScreen(Main.EditGoalsID);
+    private void goToEditGoalsPage(ActionEvent event){ goToScreen(Main.EditGoalsID);
     }
 
     @FXML
@@ -93,9 +93,14 @@ public class AddTransactionController implements Initializable, ControlledScreen
             System.out.println("e: amount bad");
             missingRequired = true;
         }
-        // TODO implement this once currency class is done
-        // TODO required field, make it behave correctly
-        //Currency currency = Currency.getCurrency(currency.getText());
+        String currencyAbbr = currencyField.getText().trim().toUpperCase();
+        int currencyId = Currency.abbrToId(currencyAbbr);
+        if (currencyId == -1) {
+            // Default to user's primary default currency
+            currencyId = Main.currentUser.getPrimaryCurrency();
+        } else {
+            currencyId = currencyId;
+        }
         // TODO implement date parsing from string
         // String date = dateField.getText();
 
@@ -120,7 +125,7 @@ public class AddTransactionController implements Initializable, ControlledScreen
                 newPayment = new Payment();
             }
             newPayment.setAmount(amount);
-            newPayment.setCurrencyType(0); // TODO fix this with the currency class object
+            newPayment.setCurrencyType(currencyId);
             //newPayment.setDate(100); // TODO Fix date here
             newPayment.setOtherParty(otherParty);
             newPayment.setFrequency(frequency);
@@ -128,15 +133,15 @@ public class AddTransactionController implements Initializable, ControlledScreen
             newPayment.setUserId(Main.currentUser.getUserId());
             if (!missingRequired) {
                 newPayment.create();
+                goToScreen(Main.ViewTransactionsID);
             }
-            myController.setScreen(Main.ViewTransactionsID);
         } else if (typeIncome) {
             if (newIncome == null) {
                 newIncome = new Income();
             }
             // TODO make same changes as above.
             newIncome.setAmount(amount);
-            newIncome.setCurrencyType(0);
+            newIncome.setCurrencyType(currencyId);
             //newIncome.setDate(100);
             newIncome.setOtherParty(otherParty);
             newIncome.setFrequency(frequency);
@@ -144,8 +149,8 @@ public class AddTransactionController implements Initializable, ControlledScreen
             newIncome.setUserId(Main.currentUser.getUserId());
             if (!missingRequired) {
                 newIncome.create();
+                goToScreen(Main.ViewTransactionsID);
             }
-            myController.setScreen(Main.ViewTransactionsID);
         } else {
             // TODO highlight or color the check boxes to signify that it is required
         }
@@ -154,10 +159,25 @@ public class AddTransactionController implements Initializable, ControlledScreen
     @FXML
     private void useOCR(ActionEvent event) {
         String imagePath = imagePathField.getText();
-
         // TODO do ocr
     }
 
+    private void goToScreen(String screenId) {
+        myController.setScreen(screenId);
+        resetFields();
+    }
 
+    private void resetFields() {
+        newPayment = new Payment();
+        newIncome = new Income();
+        imagePathField.setText("");
+        amountField.setText("");
+        currencyField.setText("");
+        frequencyComboBox.setValue(frequencyList.get(0));
+        paymentOption.setSelected(false);
+        incomeOption.setSelected(false);
+        dateField.setText("");
+        otherPartyField.setText("");
+    }
 
 }
