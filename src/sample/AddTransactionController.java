@@ -51,9 +51,7 @@ public class AddTransactionController implements Initializable, ControlledScreen
 
 
     @FXML
-    private void goToHomePage(ActionEvent event){
-        myController.setScreen(Main.HomePageID);
-    }
+    private void goToHomePage(ActionEvent event){ myController.setScreen(Main.HomePageID);}
 
     @FXML
     private void goToCrypto(ActionEvent event){
@@ -68,6 +66,11 @@ public class AddTransactionController implements Initializable, ControlledScreen
     @FXML
     private void goToViewTransactions(ActionEvent event){
         myController.setScreen(Main.ViewTransactionsID);
+    }
+
+    @FXML
+    private void goToAddTransaction(ActionEvent event){
+        myController.setScreen(Main.AddTransactionID);
     }
 
     @FXML

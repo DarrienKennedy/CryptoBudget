@@ -4,7 +4,7 @@ public class Transaction {
     protected int id;
     protected int currencyType;
     protected double amount;
-    protected int userId; // This will eventually be type User
+    protected int userId; // This will eventually be type sample.User
     protected int frequency;
     protected String otherParty;
     protected int date;
@@ -71,8 +71,8 @@ public class Transaction {
     }
 
     /**
-     * Returns the User which made the Transaction.
-     * @return The identifier of the User which made the Transaction.
+     * Returns the sample.User which made the Transaction.
+     * @return The identifier of the sample.User which made the Transaction.
      */
     public int getUserId() {
         return userId;
@@ -130,8 +130,8 @@ public class Transaction {
     }
 
     /**
-     * Assign a new identifier for the User who owns the Transaction.
-     * @param userIdToSet The new value for the User's id.
+     * Assign a new identifier for the sample.User who owns the Transaction.
+     * @param userIdToSet The new value for the sample.User's id.
      */
     public void setUserId(int userIdToSet) {
         if (userIdToSet >= 0) {

@@ -22,6 +22,9 @@ public class HomePageController implements Initializable, ControlledScreen{
     }
 
     @FXML
+    private void goToHomePage(ActionEvent event){ myController.setScreen(Main.HomePageID);}
+
+    @FXML
     private void goToCrypto(ActionEvent event){
         myController.setScreen(Main.CryptoCurrenciesID);
     }

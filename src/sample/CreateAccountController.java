@@ -24,7 +24,6 @@ public class CreateAccountController implements Initializable, ControlledScreen{
     @FXML
     private JFXTextField lastNameField;
 
-    private int userID = 1;
     private User cUser;
 
     @Override

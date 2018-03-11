@@ -29,9 +29,8 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     }
 
     @FXML
-    private void goToHomePage(ActionEvent event){
-        myController.setScreen(Main.HomePageID);
-    }
+    private void goToHomePage(ActionEvent event){ myController.setScreen(Main.HomePageID);}
+
     @FXML
     private void goToCrypto(ActionEvent event){
         myController.setScreen(Main.CryptoCurrenciesID);
@@ -43,12 +42,17 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     }
 
     @FXML
+    private void goToViewTransactions(ActionEvent event){
+        myController.setScreen(Main.ViewTransactionsID);
+    }
+
+    @FXML
     private void goToAddTransaction(ActionEvent event){
         myController.setScreen(Main.AddTransactionID);
     }
 
     @FXML
-    private void goToLoginPage(javafx.event.ActionEvent event){
+    private void goToLoginPage(ActionEvent event){
         myController.setScreen(Main.LoginID);
     }
 

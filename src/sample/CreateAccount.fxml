@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXPasswordField?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CreateAccountController">
     <children>
@@ -23,6 +23,6 @@
         <Label layoutX="129.0" layoutY="250.0" text="Last Name:" textFill="WHITE" />
 
         <JFXButton layoutX="186.0" layoutY="304.0" mnemonicParsing="false" onAction="#attemptCreateAccount" style="-fx-background-color: #B5FFE1;" text="Create Account" />
-        <JFXButton layoutX="14.0" layoutY="7.0" mnemonicParsing="false" onAction="#goToLogin" style="-fx-background-color: #B5FFE1;" text="Back" />
+        <JFXButton layoutY="2.0" mnemonicParsing="false" onAction="#goToLogin" style="-fx-background-color: #B5FFE1;" text="Back" />
     </children>
 </AnchorPane>

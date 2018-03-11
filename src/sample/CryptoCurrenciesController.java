@@ -21,8 +21,11 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
     }
 
     @FXML
-    private void goToHomePage(ActionEvent event){
-        myController.setScreen(Main.HomePageID);
+    private void goToHomePage(ActionEvent event){ myController.setScreen(Main.HomePageID);}
+
+    @FXML
+    private void goToCrypto(ActionEvent event){
+        myController.setScreen(Main.CryptoCurrenciesID);
     }
 
     @FXML
@@ -48,6 +51,5 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
     @FXML
     private void goToEditGoalsPage(ActionEvent event){ myController.setScreen(Main.EditGoalsID);
     }
-
 
 }
