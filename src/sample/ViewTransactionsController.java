@@ -58,6 +58,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     private void displayItems() {
         payData = FXCollections.observableArrayList();
         setCells();
+        //TODO: use transaction/payment/income sql methods
         loadPaymentData();
         loadIncomeData();
         transactionTable.setItems(payData);
