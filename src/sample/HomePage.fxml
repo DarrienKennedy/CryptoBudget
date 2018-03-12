@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXProgressBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="700.0" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HomePageController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HomePageController">
     <children>
         <MenuButton layoutX="2.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
             <items>
@@ -20,18 +19,12 @@
                 <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
             </items>
         </MenuButton>
-        <Label layoutX="2.0" layoutY="104.0" text="Account Balance:" textFill="WHITE" />
-        <Label fx:id="curAbv" layoutX="182.0" layoutY="104.0" prefHeight="17.0" prefWidth="40.0" textFill="WHITE" />
-        <Label layoutX="115.0" layoutY="6.0" text="Welcome to CryptoBudget: " textFill="WHITE" />
-        <Label fx:id="name" layoutX="271.0" layoutY="6.0" prefHeight="17.0" prefWidth="200.0" textFill="WHITE" />
-        <Label fx:id="accountBalance" layoutX="92.0" layoutY="104.0" prefHeight="17.0" prefWidth="90.0" textFill="WHITE" />
-        <TableView fx:id="goalsTable" layoutX="224.0" layoutY="59.0" prefHeight="341.0" prefWidth="476.0">
-            <columns>
-                <TableColumn fx:id="dateCol" prefWidth="75.0" text="DATE" />
-                <TableColumn fx:id="amountCol" prefWidth="105.0" text="AMOUNT" />
-                <TableColumn fx:id="nameCol" prefWidth="105.0" text="NAME" />
-                <TableColumn fx:id="progressCol" prefWidth="190.0" text="PROGRESS" />
-            </columns>
-        </TableView>
+        <Label layoutX="85.0" layoutY="104.0" text="Account Balance:" textFill="WHITE" />
+        <JFXProgressBar layoutX="193.0" layoutY="184.0" />
+        <Label layoutX="92.0" layoutY="176.0" prefHeight="17.0" prefWidth="77.0" textFill="WHITE" />
+        <Label layoutX="430.0" layoutY="177.0" text="End Date:" textFill="WHITE" />
+        <Label layoutX="230.0" layoutY="19.0" text="Welcome to CryptoBudget" textFill="WHITE" />
+        <Label layoutX="193.0" layoutY="104.0" prefHeight="25.0" prefWidth="115.0" textFill="WHITE" />
+        <Label layoutX="495.0" layoutY="171.0" prefHeight="25.0" prefWidth="77.0" textFill="WHITE" />
     </children>
 </AnchorPane>

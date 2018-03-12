@@ -48,6 +48,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         categoryComboBox.setItems(categoryList);
         categoryComboBox.setValue("Date");
         setCells();
+        //TODO: use transaction/payment/income sql methods
         loadPaymentData();
         loadIncomeData();
         transactionTable.setItems(payData);

@@ -62,7 +62,7 @@ public class EditGoalsController implements Initializable, ControlledScreen{
     @FXML
     public void handleAddButton(ActionEvent e) throws SQLException {
         //TODO: real dates, and ability to select goals from table to update isdone and current amount
-        //TODO: remove Goals.create() db method?
+        //TODO: use goals class sql methods
         data.clear();
         double amount = Double.valueOf(textAmount.getText());
         int date = Integer.valueOf(textDate.getText());
