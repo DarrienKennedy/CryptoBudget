@@ -26,10 +26,10 @@
         </MenuButton>
         <TableView fx:id="transactionTable" layoutX="179.0" layoutY="84.0" prefHeight="346.0" prefWidth="421.0">
             <columns>
-                <TableColumn fx:id="dateCol" prefWidth="75.0" text="Date" />
-                <TableColumn fx:id="amountCol" prefWidth="75.0" text="Amount" />
-                <TableColumn fx:id="categoryCol" prefWidth="75.0" text="Category" />
-                <TableColumn fx:id="descriptionCol" prefWidth="147.0" text="Description" />
+                <TableColumn fx:id="col1" prefWidth="75.0" text="+/-" />
+                <TableColumn fx:id="col2" prefWidth="75.0" text="Amount" />
+                <TableColumn fx:id="col3" prefWidth="75.0" text="Currency" />
+                <TableColumn fx:id="col4" prefWidth="147.0" text="Other Party" />
                 <TableColumn prefWidth="75.0" />
             </columns>
         </TableView>
@@ -38,5 +38,6 @@
         <Button layoutX="424.0" layoutY="34.0" mnemonicParsing="false" text="Search" />
         <JFXComboBox fx:id="categoryComboBox" focusColor="BLACK" layoutX="154.0" layoutY="34.0" prefHeight="25.0" prefWidth="92.0" unFocusColor="WHITE" />
         <Label layoutX="253.0" layoutY="6.0" text="View Transactions" textFill="WHITE" />
+        <Button layoutX="500.0" layoutY="10.0" text="Reload" onAction="#displayItems" />
     </children>
 </AnchorPane>
