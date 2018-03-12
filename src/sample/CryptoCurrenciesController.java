@@ -25,7 +25,7 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
     @FXML
     private TextField textCurrencyValue;
     @FXML
-    private TextField textCurrencyLastUpdate;
+    private TextField textCurrencyAbbr;
     @FXML
     private TextField getTextCurrencyPercentChange;
     @FXML
@@ -35,7 +35,7 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
     @FXML
     private TableColumn<?, ?> currencyValue;
     @FXML
-    private TableColumn<?, ?> currencyLastUpdate;
+    private TableColumn<?, ?> currencyAbbr;
     @FXML
     private TableColumn<?, ?> currencyPercentChange;
 
@@ -57,7 +57,7 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
     private void setCells(){
         currencyName.setCellValueFactory(new PropertyValueFactory<>("name"));
         currencyValue.setCellValueFactory(new PropertyValueFactory<>("value"));
-        currencyLastUpdate.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
+        currencyAbbr.setCellValueFactory(new PropertyValueFactory<>("abbr"));
         currencyPercentChange.setCellValueFactory(new PropertyValueFactory<>("percentChange"));
 
     }
@@ -72,7 +72,7 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
                 //System.out.println(rs.getString(3) + " " + rs.getDouble(4) + " " + rs.getInt(5) + " " + rs.getString(6));
                 data.add(new CurrencyObj(rs.getString(2),
                         rs.getDouble(3),
-                        rs.getLong(4),
+                        rs.getString(6),
                         rs.getString(5)));
 
             }
@@ -85,11 +85,11 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
     private void setTextBoxes(){
         textCurrencyName.clear();
         textCurrencyValue.clear();
-        textCurrencyLastUpdate.clear();
+        textCurrencyAbbr.clear();
         getTextCurrencyPercentChange.clear();
         textCurrencyName.setPromptText("Name");
         textCurrencyValue.setPromptText("Value");
-        textCurrencyLastUpdate.setPromptText("Last Update");
+        textCurrencyAbbr.setPromptText("Abbreviation");
         getTextCurrencyPercentChange.setPromptText("24-hour % Change");
     }
 

@@ -7,13 +7,14 @@ import java.text.SimpleDateFormat;
 public class CurrencyObj {
     protected String name;
     protected double value;
-    protected long lastUpdate;
+    protected String abbr;
     protected String percentChange;
 
-    public CurrencyObj(String name, double value, long lastUpdate, String percentChange){
+
+    public CurrencyObj(String name, double value, String abbr, String percentChange){
         this.name = name;
         this.value = value;
-        this.lastUpdate = lastUpdate;
+        this.abbr = abbr;
         this.percentChange = percentChange;
     }
 
@@ -25,18 +26,22 @@ public class CurrencyObj {
         return value;
     }
 
-    public String getLastUpdate(){
-        if(lastUpdate == 0){
-            return "Never Updated";
-        }
-
-        Date date = new Date(lastUpdate);
-        Format format = new SimpleDateFormat("MM dd HH:mm:ss");
-        return format.format(date);
-    }
+//    public String getLastUpdate(){
+//        if(lastUpdate == 0){
+//            return "Never Updated";
+//        }
+//
+//        Date date = new Date(lastUpdate);
+//        Format format = new SimpleDateFormat("MM dd HH:mm:ss");
+//        return format.format(date);
+//    }
 
     public String getPercentChange(){
         return percentChange;
+    }
+
+    public String getAbbr(){
+        return abbr;
     }
 
 }

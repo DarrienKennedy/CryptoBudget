@@ -1,8 +1,5 @@
 package sample;
 
-import javax.swing.plaf.nimbus.State;
-import javax.xml.transform.Result;
-import java.security.spec.PSSParameterSpec;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -11,9 +8,9 @@ public class Currency {
     private int userId;
     private Connection connection;
 
-    public Currency(int userId, Connection connection){
-        this.userId = userId;
-        this.connection = connection;
+    public Currency(){
+        this.userId = Main.currentUser.getUserId();
+        this.connection = CryptoBudgetDatabase.connection;
     }
 
     /**
