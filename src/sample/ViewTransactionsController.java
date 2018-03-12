@@ -21,32 +21,42 @@ import java.util.ResourceBundle;
 public class ViewTransactionsController implements Initializable, ControlledScreen{
 
     ScreensController myController;
-    ObservableList<String> categoryList = FXCollections.observableArrayList("Date", "Amount","Category","Description");
+    ObservableList<String> categoryList = FXCollections.observableArrayList( "Amount","Currency","Other Party");
 
     @FXML
     private JFXComboBox categoryComboBox;
     @FXML
     private TableView<Transaction> transactionTable;
     @FXML
-    private TableColumn<?, ?> dateCol;
+    private TableColumn<?, ?> col1;
     @FXML
-    private TableColumn<?, ?> amountCol;
+    private TableColumn<?, ?> col2;
     @FXML
-    private TableColumn<?, ?> categoryCol;
+    private TableColumn<?, ?> col3;
     @FXML
-    private TableColumn<?, ?> descriptionCol;
+    private TableColumn<?, ?> col4;
 
     private PreparedStatement ps = null;
     private ResultSet rs = null;
     private ObservableList<Transaction> payData;
-    //private ArrayList<Income> allIncome;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        payData = FXCollections.observableArrayList();
         categoryComboBox.setItems(categoryList);
-        categoryComboBox.setValue("Date");
+        categoryComboBox.setValue(categoryList.get(0));
+    }
+
+    private void setCells(){
+        col1.setCellValueFactory(new PropertyValueFactory<>("transactionType"));
+        col2.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        col3.setCellValueFactory(new PropertyValueFactory<>("currencyAbbreviation"));
+        col4.setCellValueFactory(new PropertyValueFactory<>("otherParty"));
+    }
+
+    @FXML
+    private void displayItems() {
+        payData = FXCollections.observableArrayList();
         setCells();
         //TODO: use transaction/payment/income sql methods
         loadPaymentData();
@@ -54,47 +64,19 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         transactionTable.setItems(payData);
     }
 
-    private void setCells(){
-        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
-        amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        categoryCol.setCellValueFactory(new PropertyValueFactory<>("currencyType"));
-        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("transactionType"));
-    }
-
     private void loadPaymentData(){
-        String pay = "SELECT * FROM PAYMENT";
-        try {
-            ps = CryptoBudgetDatabase.connection.prepareStatement(pay);
-            rs = ps.executeQuery();
-            //constructor(tpye,amount,party,date)
-            while(rs.next()){
-                //Payment p = new Payment(rs.getInt(6) + " " + rs.getDouble(3) + " " + rs.getString(9) + " " + rs.getInt(4)));
-                payData.add((Transaction) new Payment(rs.getInt(6),
-                        rs.getDouble(3),
-                        rs.getString(8),
-                        rs.getInt(4)));
-                        //"Payment"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        Payment[] payments = Payment.getAllPayments();
+        for (Payment p : payments) {
+            p.setTransactionType("-");
+            payData.add(p);
         }
     }
 
     private void loadIncomeData(){
-        String income = "SELECT * FROM INCOME";
-        //allIncome = new ArrayList<>(Arrays.asList(Income.getAllIncome()));
-        try {
-            ps = CryptoBudgetDatabase.connection.prepareStatement(income);
-            rs = ps.executeQuery();
-            //constructor(tpye,amount,party,date)
-            while(rs.next()){
-                payData.add((Transaction) new Income(rs.getInt(6),
-                        rs.getDouble(3),
-                        rs.getString(8),
-                        rs.getInt(4)));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        Income[] income = Income.getAllIncome();
+        for (Income i : income) {
+            i.setTransactionType("+");
+            payData.add(i);
         }
     }
 

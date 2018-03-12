@@ -21,7 +21,7 @@ import java.util.Date;
 public class User {
     private int userId;
     private int enableOCR;
-    private int primaryCurrency; // This will become type currency at some point
+    private int primaryCurrency;
     private String refreshRate;
     private String userName;
     private String firstName;
@@ -32,8 +32,8 @@ public class User {
 
     public User(){
         this.setUserId(0);
-        this.setEnableOCR(0);
-        this.setPrimaryCurrency(0); // currency.getId(0) or something
+        this.setEnableOCR(1);
+        this.setPrimaryCurrency(1);
         this.setRefreshRate("On Login");
         this.setUserName("defaultUsername");
         this.setFirstName("");

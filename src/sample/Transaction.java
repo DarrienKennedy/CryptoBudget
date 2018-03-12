@@ -3,6 +3,7 @@ package sample;
 public class Transaction {
     protected int id;
     protected int currencyType;
+    protected String currencyAbbreviation;
     protected double amount;
     protected int userId; // This will eventually be type User
     protected int frequency;
@@ -124,6 +125,10 @@ public class Transaction {
 
     public String getTransactionType() { return transactionType; }
 
+    public String getCurrencyAbbreviation() {
+        return currencyAbbreviation;
+    }
+
     /**
      * Assign a new currency type for Transaction.
      * @param currencyTypeToSet The new value for the currency type.
@@ -131,6 +136,7 @@ public class Transaction {
     public void setCurrencyType(int currencyTypeToSet) {
         // TODO Verify that it is a valid currency from the currency table?
         currencyType = currencyTypeToSet;
+        currencyAbbreviation = Currency.idToAbbr(currencyTypeToSet);
     }
 
     /**

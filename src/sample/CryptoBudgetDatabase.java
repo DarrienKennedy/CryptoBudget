@@ -29,6 +29,18 @@ public class CryptoBudgetDatabase {
             0.009289,
             0.157754};
 
+    private static String[] govCurrencyAbbr = { "USD",
+            "EUR",
+            "GBP",
+            "INR",
+            "AUD",
+            "CAD",
+            "SGD",
+            "CHF",
+            "MYR",
+            "JPY",
+            "CNY"};
+
     private static Connection connect() {
         //saving the database in the src folder
         String dir = (System.getProperty("user.dir"));
@@ -73,7 +85,8 @@ public class CryptoBudgetDatabase {
                     " CURRENCYNAME       TEXT                            NOT NULL," +
                     " CURRENCYVALUE      REAL                            NOT NULL," +
                     " LASTUPDATED        INT                             NOT NULL," +
-                    " PERCENTCHANGE      TEXT                            NOT NULL);";
+                    " PERCENTCHANGE      TEXT                            NOT NULL," +
+                    " CURRENCYABBREVIATION TEXT                          NOT NULL);";
 
             stmt.executeUpdate(currencyValue);
             stmt.close();
@@ -142,7 +155,7 @@ public class CryptoBudgetDatabase {
             ResultSet rs = stmt.executeQuery((isThereSQL));
 
             if (!rs.isBeforeFirst()) {
-                String sql = "INSERT INTO CURRENCYVALUE (CURRENCYNAME, CURRENCYVALUE, LASTUPDATED, PERCENTCHANGE) VALUES ( ? , ? , ? , ? );";
+                String sql = "INSERT INTO CURRENCYVALUE (CURRENCYNAME, CURRENCYVALUE, LASTUPDATED, PERCENTCHANGE, CURRENCYABBREVIATION) VALUES ( ? , ? , ? , ? , ? );";
                 PreparedStatement pstmt = connection.prepareStatement(sql);
 
                 for (int i = 0; i < govCurrencyNames.length; i++) {
@@ -150,6 +163,7 @@ public class CryptoBudgetDatabase {
                     pstmt.setDouble(2, govCurrencyValues[i]);
                     pstmt.setInt(3, 0);
                     pstmt.setString(4, "None");
+                    pstmt.setString(5, govCurrencyAbbr[i]);
                     pstmt.executeUpdate();
                 }
             }
