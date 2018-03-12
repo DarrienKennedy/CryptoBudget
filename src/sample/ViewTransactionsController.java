@@ -39,19 +39,18 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     private PreparedStatement ps = null;
     private ResultSet rs = null;
     private ObservableList<Transaction> payData;
-    private ObservableList<Transaction> incomeData;
     //private ArrayList<Income> allIncome;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         payData = FXCollections.observableArrayList();
-        incomeData = FXCollections.observableArrayList();
         categoryComboBox.setItems(categoryList);
         categoryComboBox.setValue("Date");
         setCells();
         loadPaymentData();
-        loadIncomeDate();
+        loadIncomeData();
+        transactionTable.setItems(payData);
     }
 
     private void setCells(){
@@ -68,22 +67,19 @@ public class ViewTransactionsController implements Initializable, ControlledScre
             rs = ps.executeQuery();
             //constructor(tpye,amount,party,date)
             while(rs.next()){
-                System.out.println("[p]from db " + rs.getInt(6) + " " + rs.getDouble(3) + " " + rs.getString(9) + " " + rs.getInt(4));
                 //Payment p = new Payment(rs.getInt(6) + " " + rs.getDouble(3) + " " + rs.getString(9) + " " + rs.getInt(4)));
                 payData.add((Transaction) new Payment(rs.getInt(6),
                         rs.getDouble(3),
-                        rs.getString(9),
+                        rs.getString(8),
                         rs.getInt(4)));
                         //"Payment"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        transactionTable.setItems(payData);
-
     }
 
-    private void loadIncomeDate(){
+    private void loadIncomeData(){
         String income = "SELECT * FROM INCOME";
         //allIncome = new ArrayList<>(Arrays.asList(Income.getAllIncome()));
         try {
@@ -91,16 +87,14 @@ public class ViewTransactionsController implements Initializable, ControlledScre
             rs = ps.executeQuery();
             //constructor(tpye,amount,party,date)
             while(rs.next()){
-                System.out.println("[i]from db " + rs.getInt(6) + " " + rs.getDouble(3) + " " + rs.getString(9) + " " + rs.getInt(4));
-                incomeData.add((Transaction) new Income(rs.getInt(6),
+                payData.add((Transaction) new Income(rs.getInt(6),
                         rs.getDouble(3),
-                        rs.getString(9),
+                        rs.getString(8),
                         rs.getInt(4)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        transactionTable.setItems(incomeData);
     }
 
     public void setScreenParent(ScreensController screenParent){
