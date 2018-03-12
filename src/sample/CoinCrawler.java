@@ -24,16 +24,30 @@ public class CoinCrawler {
         this.db = db;
     }
 
+    /**
+     *
+     * @param userCoins The coin names
+     */
     public void setUserCoins(ArrayList<String> userCoins){
         this.userCoins = userCoins;
     }
 
+    /**
+     *
+     * @param searchAll True if user wants to search all coins
+     */
     public void setSearchAll(boolean searchAll){
         this.searchAll = searchAll;
     }
 
+    /**
+     *  Insert or update the value of a currency
+     * @param name The name of the currency
+     * @param value The value of the currency
+     * @param percentChange The percent change over 24 hours
+     */
     //add the row in cryptoValue if it is not already there
-    private static void insertData(String name, String value, String percentChange){
+    private static void insertData(String name, String value, String percentChange, String abbr){
         value = value.replace(",", "");
 
         //check if it was already there
@@ -61,7 +75,7 @@ public class CoinCrawler {
 
         Date date = new Date();
         long timeMilli = date.getTime();
-        String sql = "INSERT INTO CURRENCYVALUE (CURRENCYNAME, CURRENCYVALUE, LASTUPDATED, PERCENTCHANGE) VALUES ( ? , ? , ? , ? )";
+        String sql = "INSERT INTO CURRENCYVALUE (CURRENCYNAME, CURRENCYVALUE, LASTUPDATED, PERCENTCHANGE, CURRENCYABBREVIATION) VALUES ( ? , ? , ? , ? , ? )";
 
         if(coinIsThere){
             sql = "UPDATE CURRENCYVALUE SET currencyValue = ? , percentChange = ?, lastUpdated = ? WHERE currencyName = ?";
@@ -79,6 +93,7 @@ public class CoinCrawler {
                 pstmt.setString(2, value);
                 pstmt.setLong(3, timeMilli);
                 pstmt.setString(4, percentChange);
+                pstmt.setString(5, abbr);
             }
             pstmt.executeUpdate();
         }
@@ -87,6 +102,9 @@ public class CoinCrawler {
         }
     }
 
+    /**
+     * Update the CURRENCYVALUE table based on userCoins and searchAll
+     */
     public static void updateCoins(){
         try{
             doGetRequest("https://coinranking.com/", true);
@@ -112,6 +130,7 @@ public class CoinCrawler {
                         String value;
                         String percentChange;
                         String upOrDown;
+                        String abbr;
                         boolean isUp;
                         String html = response.body().string();
 
@@ -120,7 +139,8 @@ public class CoinCrawler {
                             String coinName = coin.select(".coin-name").text();
                             if(searchAll) {
                                 value = coin.select(".coin-list__body__row__price__value").text();
-
+                                abbr = coin.select(".coin-list__body__row__cryptocurrency__prepend__icon__img").attr("alt").replaceAll("(.+\\()", "");
+                                abbr = abbr.replaceAll("(\\).+)", "");
                                 upOrDown = coin.select(".coin-list__body__row__change img").attr("alt");
                                 isUp = upOrDown.equals("24h change gone up");
 
@@ -131,11 +151,13 @@ public class CoinCrawler {
                                 } else {
                                     percentChange = "-" + percentChange;
                                 }
-                                insertData(coinName, value, percentChange);
+                                insertData(coinName, value, percentChange, abbr);
                             } else if(userCoins.contains(coinName)) {
                                 //put this into the database
                                 value = coin.select(".coin-list__body__row__price__value").text();
                                 percentChange = coin.select(".coin-list__body__row__change").text();
+                                abbr = coin.select(".coin-list__body__row__cryptocurrency__prepend__icon__img").attr("alt").replaceAll("(.+\\()", "");
+                                abbr = abbr.replaceAll("(\\).+)", "");
                                 upOrDown = coin.select(".coin-list__body__row__change img").attr("alt");
                                 isUp = upOrDown.equals("24h change gone up");
 
@@ -146,7 +168,7 @@ public class CoinCrawler {
                                 }
                                 userCoins.remove(coinName);
 
-                                insertData(coinName, value, percentChange);
+                                insertData(coinName, value, percentChange, abbr);
                             }
                             if(userCoins.isEmpty() && !searchAll){
                                 break;

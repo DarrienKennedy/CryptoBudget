@@ -34,10 +34,10 @@ public class User {
         this.setUserId(0);
         this.setEnableOCR(0);
         this.setPrimaryCurrency(0); // currency.getId(0) or something
-        this.setRefreshRate("0");
-        this.setUserName("DEFAULT USERNAME");
-        this.setFirstName("DEFAULT FIRST NAME");
-        this.setLastName("DEFAULT LAST NAME");
+        this.setRefreshRate("On Login");
+        this.setUserName("defaultUsername");
+        this.setFirstName("");
+        this.setLastName("");
         //this.setLastLogin(new Date());
         this.setLastLogin(1000); // fix this
         this.setPassword("12345");

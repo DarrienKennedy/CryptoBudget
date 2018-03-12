@@ -1,6 +1,7 @@
 package sample;
 
 import javax.swing.plaf.nimbus.State;
+import javax.xml.transform.Result;
 import java.security.spec.PSSParameterSpec;
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,6 +16,11 @@ public class Currency {
         this.connection = connection;
     }
 
+    /**
+     *
+     * @param currencyId The id of the currency to search
+     * @return The value of the currency
+     */
     public double getCurrencyValue(int currencyId){
         double currencyValue = 0.0;
         try{
@@ -31,6 +37,11 @@ public class Currency {
         return currencyValue;
     }
 
+    /**
+     *
+     * @param currencyName The name of the currency to search
+     * @return the value of the currency
+     */
     public double getCurrencyValue(String currencyName){
         double currencyValue = 0.0;
         try{
@@ -46,6 +57,10 @@ public class Currency {
         return currencyValue;
     }
 
+    /**
+     *
+     * @return Get the currencyIDs of all the currencies the user has
+     */
     public int[] getUserCurrencies(){
         ArrayList<Integer> userCurrencies = new ArrayList<>();
         String getUserCurrencies = "SELECT CURRENCYID FROM ACCOUNTCURRENCIES WHERE USERID = ?;";
@@ -70,6 +85,12 @@ public class Currency {
         return userCurrencyNames;
     }
 
+
+    /**
+     *  Update or insert the updated amount of currency a user has
+     * @param currencyId The id of the currency
+     * @param amount The value to add to the current amount of currency
+     */
     public void updateCurrencyAmount(int currencyId, double amount){
         if(isUserHasCurrency(currencyId)){
             //get how much they have then add the amount to it
@@ -115,6 +136,11 @@ public class Currency {
         }
     }
 
+    /**
+     *  Update or insert the updated amount of currency a user has
+     * @param currencyName The name of the currency
+     * @param amount The value to add to the current amount of currency
+     */
     public void updateCurrencyAmount(String currencyName, double amount){
         //get the currency id then call updateCurrencyAmount with it
         String getCurrencyID = "SELECT CURRENCYID FROM CURRENCYVALUE WHERE CURRENCYNAME = ?";
@@ -132,7 +158,12 @@ public class Currency {
         updateCurrencyAmount(currencyId, amount);
     }
 
-    private boolean isUserHasCurrency(int currencyID){
+    /**
+     *
+     * @param currencyID The id of the currency
+     * @return True if the User ever owned this currency
+     */
+    public boolean isUserHasCurrency(int currencyID){
         //check if it was already there
         String selectSQL = "SELECT * " +
                 "FROM ACCOUNTCURRENCIES " +
@@ -157,5 +188,90 @@ public class Currency {
         }
 
         return userHasCurrency;
+    }
+
+    /**
+     *
+     * @param currencyName The id of the currency
+     * @return True if the User ever owned this currency
+     */
+    public boolean isUserHasCurrency(String currencyName){
+        //check if it was already there
+        String selectSQL = "SELECT * " +
+                "FROM ACCOUNTCURRENCIES " +
+                "WHERE USERID = ? " +
+                "AND CURRENCYNAME = ?;";
+
+        boolean userHasCurrency = false;
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(selectSQL);
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, currencyName);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.isBeforeFirst()){
+                userHasCurrency = true;
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return userHasCurrency;
+    }
+
+    /**
+     *
+     * @param abbr The abbreviation of a currency
+     * @return The Currency Name if it exists or an empty string if it doesn't
+     */
+    public String abbrToName(String abbr){
+        String currencyName = "";
+        if(abbr == ""){
+            return currencyName;
+        }
+        String selectSQL = "SELECT CURRENCYNAME FROM CURRENCYVALUE WHERE CURRENCYABBREVIATION = ?;";
+        try{
+            PreparedStatement pstmt = CryptoBudgetDatabase.connection.prepareStatement(selectSQL);
+            pstmt.setString(1, abbr);
+            ResultSet rs = pstmt.executeQuery();
+            currencyName = rs.getString("CURRENCYNAME");
+        } catch (SQLException e){
+
+        }
+
+        return currencyName;
+    }
+
+    public static int abbrToId(String abbr) {
+        String selectSQL = "SELECT CURRENCYID FROM CURRENCYVALUE WHERE CURRENCYABBREVIATION = ?;";
+        try {
+            PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(selectSQL);
+            prep.setString(1, abbr);
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("CURRENCYID");
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static String idToAbbr(int id) {
+        String selectSQL = "SELECT CURRENCYABBREVIATION FROM CURRENCYVALUE WHERE CURRENCYID = ?;";
+        try {
+            PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(selectSQL);
+            prep.setInt(1, id);
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                return rs.getString("CURRENCYABBREVIATION");
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+        return "";
     }
 }

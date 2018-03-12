@@ -71,7 +71,7 @@ public class Payment extends Transaction {
             String getAll = String.format("SELECT * FROM PAYMENT WHERE USERID = ?;");
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(getAll);
             prep.setInt(1, Main.currentUser.getUserId());
-            ResultSet rs = prep.executeQuery(getAll);
+            ResultSet rs = prep.executeQuery();
             ArrayList<Payment> result = new ArrayList();
             while (rs.next()) {
                 int id = rs.getInt("PAYMENTID");

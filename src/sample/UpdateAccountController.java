@@ -1,50 +1,52 @@
 package sample;
 
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
+import javafx.stage.WindowEvent;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class UpdateAccountController implements Initializable, ControlledScreen{
 
     ScreensController myController;
-    ObservableList<String> currencyList = FXCollections.observableArrayList("USD","Bitcoin", "RandomCoin");
-    ObservableList<String> refreshList = FXCollections.observableArrayList("1 Min","5 Min", "10 Min");
-
-    @FXML
-    private JFXComboBox currencyComboBox;
+    ObservableList<String> refreshList = FXCollections.observableArrayList("1 Hour","4 Hours", "12 Hours", "On Login");
 
     @FXML
     private JFXComboBox refreshComboBox;
-
     @FXML
-    private JFXTextField oldPassword;
-
+    private JFXPasswordField oldPassword;
     @FXML
-    private JFXTextField newPassword1;
-
+    private JFXPasswordField newPassword1;
     @FXML
-    private JFXTextField newPassword2;
-
+    private JFXPasswordField newPassword2;
+    @FXML
+    private JFXTextField newPrimaryCurrency;
+    @FXML
+    private JFXToggleButton toggleOCR;
+    @FXML
+    private Button passwordButton;
+    @FXML
+    private Button currencyButton;
+    @FXML
+    private Button refreshRateButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        currencyComboBox.setItems(currencyList);
-        currencyComboBox.setValue("USD");
-
-
-
+        if (Main.currentUser != null) {
+            resetFields();
+        }
         refreshComboBox.setItems(refreshList);
-        refreshComboBox.setValue("1 Min");
-
 
     }
-
 
     public void setScreenParent(ScreensController screenParent){
         myController = screenParent;
@@ -52,50 +54,118 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
 
     @FXML
     private void goToHomePage(ActionEvent event){
-        myController.setScreen(Main.HomePageID);
+        goToPage(Main.HomePageID);
     }
 
     @FXML
     private void goToCrypto(ActionEvent event){
-        myController.setScreen(Main.CryptoCurrenciesID);
+        goToPage(Main.CryptoCurrenciesID);
+    }
+
+    @FXML
+    private void goToUpdateAccount(ActionEvent event){
+        goToPage(Main.UpdateAccountID);
     }
 
     @FXML
     private void goToViewTransactions(ActionEvent event){
-        myController.setScreen(Main.ViewTransactionsID);
+        goToPage(Main.ViewTransactionsID);
     }
 
     @FXML
     private void goToAddTransaction(ActionEvent event){
-        myController.setScreen(Main.AddTransactionID);
+        goToPage(Main.AddTransactionID);
     }
 
     @FXML
     private void goToLoginPage(ActionEvent event){
-        myController.setScreen(Main.LoginID);
+        goToPage(Main.LoginID);
     }
 
     @FXML
-    private void goToEditGoalsPage(ActionEvent event){ myController.setScreen(Main.EditGoalsID);
+    private void goToEditGoalsPage(ActionEvent event){
+        goToPage(Main.EditGoalsID);
     }
 
     @FXML
     private void changePassword(ActionEvent event){
-        //if(oldPassword.getText() =)
+        if (Main.currentUser.getPassword().equals(oldPassword.getText())) {
+            String newPassword = newPassword1.getText();
+            if (newPassword.equals(newPassword2.getText())) {
+                Main.currentUser.setPassword(newPassword);
+                Main.currentUser.update();
 
+                oldPassword.setText("");
+                newPassword1.setText("");
+                newPassword2.setText("");
+                passwordButton.setText("Changed Password");
+                passwordButton.setDisable(true);
+            }
+        }
     }
 
     @FXML
-    private void changePCurrency(ActionEvent event){
-        String pCurrency = currencyComboBox.getValue().toString();
-
+    private void updatePrimaryCurrency(ActionEvent event){
+        String accronym = newPrimaryCurrency.getText().trim().toUpperCase();
+        int currencyId = Currency.abbrToId(accronym);
+        if (currencyId != -1) {
+            Main.currentUser.setPrimaryCurrency(currencyId);
+            Main.currentUser.update();
+            currencyButton.setText("Updated Primary Currency");
+            currencyButton.setDisable(true);
+        }
     }
 
     @FXML
     private void changeRefreshRate(ActionEvent event){
         String refreshRate = refreshComboBox.getValue().toString();
-
+        Main.currentUser.setRefreshRate(refreshRate);
+        Main.currentUser.update();
+        refreshRateButton.setText("Updated Refresh Rate");
+        refreshRateButton.setDisable(true);
     }
 
+    @FXML
+    private void updateValues(ActionEvent event) {
+        resetFields();
+    }
 
+    @FXML
+    private void toggleOCR(ActionEvent event) {
+        if (toggleOCR.isSelected()) {
+            Main.currentUser.setEnableOCR(1);
+            Main.currentUser.update();
+        } else {
+            Main.currentUser.setEnableOCR(0);
+            Main.currentUser.update();
+        }
+    }
+
+    private void goToPage(String pageId) {
+        myController.setScreen(pageId);
+        resetFields();
+    }
+
+    private void resetFields() {
+        oldPassword.setText("");
+        newPassword1.setText("");
+        newPassword2.setText("");
+
+        if (Main.currentUser.getOCR() == 1) {
+            toggleOCR.setSelected(true);
+        } else {
+            toggleOCR.setSelected(false);
+        }
+
+        passwordButton.setText("Change Password");
+        passwordButton.setDisable(false);
+
+        newPrimaryCurrency.setText(Currency.idToAbbr(Main.currentUser.getPrimaryCurrency()));
+        currencyButton.setText("Update Primary Currency");
+        currencyButton.setDisable(false);
+
+        refreshComboBox.setValue(Main.currentUser.getRefreshRate());
+        refreshRateButton.setText("Update Refresh Rate");
+        refreshRateButton.setDisable(false);
+    }
 }

@@ -17,7 +17,7 @@ public class LoginController implements Initializable, ControlledScreen{
 
     ScreensController myController;
     @FXML
-    private JFXTextArea username;
+    private JFXTextField username;
     @FXML
     private JFXPasswordField password;
     private String pass;
@@ -48,10 +48,6 @@ public class LoginController implements Initializable, ControlledScreen{
                 password.setText("");
             }
         }
-        else{
-            myController.setScreen(Main.LoginID);
-        }
-
     }
 
     @FXML

@@ -143,6 +143,9 @@ public class EditGoalsController implements Initializable, ControlledScreen{
     }
 
     @FXML
+    private void goToHomePage(ActionEvent event){ myController.setScreen(Main.HomePageID);}
+
+    @FXML
     private void goToCrypto(ActionEvent event){
         myController.setScreen(Main.CryptoCurrenciesID);
     }
@@ -165,10 +168,6 @@ public class EditGoalsController implements Initializable, ControlledScreen{
     @FXML
     private void goToLoginPage(ActionEvent event){
         myController.setScreen(Main.LoginID);
-    }
-
-    @FXML
-    private void goToHomePage(ActionEvent event){ myController.setScreen(Main.HomePageID);
     }
 
     @FXML
