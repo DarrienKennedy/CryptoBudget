@@ -52,8 +52,4 @@ public class HomePageController implements Initializable, ControlledScreen{
     @FXML
     private void goToEditGoalsPage(ActionEvent event){ myController.setScreen(Main.EditGoalsID);
     }
-
-
-
-
 }

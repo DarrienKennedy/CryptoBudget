@@ -3,6 +3,7 @@ package sample;
 public class Transaction {
     protected int id;
     protected int currencyType;
+    protected String currencyAbbreviation;
     protected double amount;
     protected int userId; // This will eventually be type User
     protected int frequency;
@@ -10,6 +11,7 @@ public class Transaction {
     protected int date;
     protected int endDate;
     protected boolean recurring;
+    protected String transactionType;
 
     /**
      * Default Constructor for a Transaction.
@@ -20,6 +22,7 @@ public class Transaction {
         this.setUserId(0);
         this.setFrequency(0);
         this.setDate(0);
+        this.setTransactionType("Transaction");
     }
 
     /**
@@ -31,6 +34,16 @@ public class Transaction {
         this();
         this.setCurrencyType(newCurrencyType);
         this.setAmount(newAmount);
+    }
+
+    //constructor used for ViewTransactionController
+    public Transaction(int newCurrencyType, double newAmount, String newOtherParty, int newDate, String newTransactionType){
+        this();
+        this.setCurrencyType(newCurrencyType);
+        this.setAmount(newAmount);
+        this.setOtherParty(newOtherParty);
+        this.setDate(newDate);
+        this.setTransactionType(newTransactionType);
     }
 
     public Transaction(int newId, int newUserId, int newCurrencyType, double newAmount, int newDate, int newEndDate,
@@ -110,6 +123,12 @@ public class Transaction {
         return endDate;
     }
 
+    public String getTransactionType() { return transactionType; }
+
+    public String getCurrencyAbbreviation() {
+        return currencyAbbreviation;
+    }
+
     /**
      * Assign a new currency type for Transaction.
      * @param currencyTypeToSet The new value for the currency type.
@@ -117,6 +136,7 @@ public class Transaction {
     public void setCurrencyType(int currencyTypeToSet) {
         // TODO Verify that it is a valid currency from the currency table?
         currencyType = currencyTypeToSet;
+        currencyAbbreviation = Currency.idToAbbr(currencyTypeToSet);
     }
 
     /**
@@ -173,6 +193,8 @@ public class Transaction {
     public void setEndDate(int endDateToSet) {
         endDate = endDateToSet;
     }
+
+    public void setTransactionType(String type) { transactionType = type; }
 
     /**
      * Concatenate the contents of the Transaction into a String.

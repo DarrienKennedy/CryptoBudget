@@ -24,7 +24,7 @@
         <Label layoutX="92.0" layoutY="176.0" prefHeight="17.0" prefWidth="77.0" textFill="WHITE" />
         <Label layoutX="430.0" layoutY="177.0" text="End Date:" textFill="WHITE" />
         <Label layoutX="230.0" layoutY="19.0" text="Welcome to CryptoBudget" textFill="WHITE" />
-      <Label layoutX="193.0" layoutY="104.0" prefHeight="25.0" prefWidth="115.0" textFill="WHITE" />
-      <Label layoutX="495.0" layoutY="171.0" prefHeight="25.0" prefWidth="77.0" textFill="WHITE" />
+        <Label layoutX="193.0" layoutY="104.0" prefHeight="25.0" prefWidth="115.0" textFill="WHITE" />
+        <Label layoutX="495.0" layoutY="171.0" prefHeight="25.0" prefWidth="77.0" textFill="WHITE" />
     </children>
 </AnchorPane>

@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
@@ -12,29 +13,31 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewTransactionsController">
     <children>
-        <TableView layoutX="126.0" layoutY="115.0" prefHeight="346.0" prefWidth="474.0">
+        <MenuButton layoutX="14.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" style="-fx-background-color: #B5FFE1;">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />
+                <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="CryptoCurrencies" />
+                <MenuItem mnemonicParsing="false" onAction="#goToAddTransaction" text="Add a Transaction" />
+                <MenuItem mnemonicParsing="false" onAction="#goToEditGoalsPage" text="Edit Goals" />
+                <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
+                <MenuItem mnemonicParsing="false" text="View Transactions" />
+                <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
+            </items>
+        </MenuButton>
+        <TableView fx:id="transactionTable" layoutX="179.0" layoutY="84.0" prefHeight="346.0" prefWidth="421.0">
             <columns>
-                <TableColumn prefWidth="99.0" text="Currency Type" />
-                <TableColumn prefWidth="94.0" text="Amount" />
-                <TableColumn prefWidth="79.0" text="Date" />
-                <TableColumn prefWidth="100.0" text="Frequency" />
-                <TableColumn prefWidth="102.0" text="Other Party" />
+                <TableColumn fx:id="col1" prefWidth="75.0" text="+/-" />
+                <TableColumn fx:id="col2" prefWidth="75.0" text="Amount" />
+                <TableColumn fx:id="col3" prefWidth="75.0" text="Currency" />
+                <TableColumn fx:id="col4" prefWidth="147.0" text="Other Party" />
+                <TableColumn prefWidth="75.0" />
             </columns>
         </TableView>
+        <PieChart layoutY="46.0" prefHeight="146.0" prefWidth="192.0" />
         <JFXTextField focusColor="BLACK" layoutX="264.0" layoutY="34.0" unFocusColor="WHITE" />
         <Button layoutX="424.0" layoutY="34.0" mnemonicParsing="false" text="Search" />
         <JFXComboBox fx:id="categoryComboBox" focusColor="BLACK" layoutX="154.0" layoutY="34.0" prefHeight="25.0" prefWidth="92.0" unFocusColor="WHITE" />
         <Label layoutX="253.0" layoutY="6.0" text="View Transactions" textFill="WHITE" />
-      <MenuButton layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
-         <items>
-            <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />
-            <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="CryptoCurrencies" />
-            <MenuItem mnemonicParsing="false" onAction="#goToAddTransaction" text="Add a Transaction" />
-            <MenuItem mnemonicParsing="false" onAction="#goToEditGoalsPage" text="Edit Goals" />
-            <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
-            <MenuItem mnemonicParsing="false" onAction="#goToViewTransactions" text="View Transactions" />
-            <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
-         </items>
-      </MenuButton>
+        <Button layoutX="500.0" layoutY="10.0" text="Reload" onAction="#displayItems" />
     </children>
 </AnchorPane>

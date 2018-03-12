@@ -232,20 +232,72 @@ public class Currency {
         if(abbr == ""){
             return currencyName;
         }
-
         String selectSQL = "SELECT CURRENCYNAME FROM CURRENCYVALUE WHERE CURRENCYABBREVIATION = ?;";
-
         try{
-            PreparedStatement pstmt = connection.prepareStatement(selectSQL);
+            PreparedStatement pstmt = CryptoBudgetDatabase.connection.prepareStatement(selectSQL);
             pstmt.setString(1, abbr);
-
             ResultSet rs = pstmt.executeQuery();
-
             currencyName = rs.getString("CURRENCYNAME");
         } catch (SQLException e){
 
         }
 
         return currencyName;
+    }
+
+    /**
+     *
+     * @param currencyName The currency name to check
+     * @return True if the currency name is valid
+     */
+    public boolean isCurrencyName(String currencyName){
+        boolean isValid = false;
+
+        String selectSQL = "SELECT * FROM CURRENCYVALUE WHERE CURRENCYNAME = ?;";
+
+        try{
+            PreparedStatement pstmt = connection.prepareStatement(selectSQL);
+            pstmt.setString(1, currencyName);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.isBeforeFirst()){
+                isValid = true;
+            }
+        } catch (SQLException e){
+
+        }
+
+        return isValid;
+    }
+
+    public static int abbrToId(String abbr) {
+        String selectSQL = "SELECT CURRENCYID FROM CURRENCYVALUE WHERE CURRENCYABBREVIATION = ?;";
+        try {
+            PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(selectSQL);
+            prep.setString(1, abbr);
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("CURRENCYID");
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static String idToAbbr(int id) {
+        String selectSQL = "SELECT CURRENCYABBREVIATION FROM CURRENCYVALUE WHERE CURRENCYID = ?;";
+        try {
+            PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(selectSQL);
+            prep.setInt(1, id);
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                return rs.getString("CURRENCYABBREVIATION");
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+        return "";
     }
 }
