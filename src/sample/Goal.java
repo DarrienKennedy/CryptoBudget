@@ -1,5 +1,7 @@
 package sample;
 
+import com.jfoenix.controls.JFXProgressBar;
+
 import java.sql.*;
 import java.util.Date;
 public class Goal {
@@ -11,6 +13,7 @@ public class Goal {
     protected String goalDescription;
     protected boolean isDone;
     protected double currentAmount;
+    protected JFXProgressBar progressBar = new JFXProgressBar();
 
     /*
      * Default constructor for a sample.Goal
@@ -24,6 +27,7 @@ public class Goal {
         this.setGoalDescription("DEFAULT DESCRIPTION");
         this.setDone(false);
         this.setCurrentAmount(0.00);
+        this.setProgressBar(0);
     }
 
     /*
@@ -37,6 +41,20 @@ public class Goal {
         this.setGoalName(name);
         this.setFinalGoal(amount);
         this.setGoalDescription(description);
+    }
+
+    /*
+     * Constructor which takes a name, amount, description, and progress bar
+     * @param name -- name for the goal
+     * @param description -- describes the nature of the goal
+     */
+    public Goal(String name, double amount, int date, String description, double progress){
+        new Goal();
+        this.setGoalDate(date);
+        this.setGoalName(name);
+        this.setFinalGoal(amount);
+        this.setGoalDescription(description);
+        this.setProgressBar(progress);
     }
 
     /*
@@ -87,6 +105,8 @@ public class Goal {
     public double getCurrentAmount(){
         return currentAmount;
     }
+
+    public JFXProgressBar getProgressBar() { return progressBar; }
 
     /*
      * @return value for whether or not goal is completed
@@ -164,6 +184,8 @@ public class Goal {
     public void addToCurrentAmount(double amount){
         currentAmount += amount;
     }
+
+    public void setProgressBar(double progress) { progressBar.setProgress(progress); }
 
     /*
      * database methods
