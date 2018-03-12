@@ -159,7 +159,9 @@ public class AddTransactionController implements Initializable, ControlledScreen
     @FXML
     private void useOCR(ActionEvent event) {
         String imagePath = imagePathField.getText();
-        // TODO do ocr
+        if (Main.currentUser.getOCR() == 1) {
+            amountField.setText(OCR.getTotalReceiptPrice(imagePath));
+        }
     }
 
     private void goToScreen(String screenId) {
