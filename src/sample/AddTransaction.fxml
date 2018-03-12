@@ -39,7 +39,7 @@
 
             <Button layoutX="143.0" layoutY="350.0" mnemonicParsing="false" onAction="#manualLog" text="Log" />
             <Label layoutX="245.0" layoutY="19.0" text="Log Transaction" textFill="WHITE" />
-            <Button layoutX="300.0" layoutY="61.0" mnemonicParsing="false" onAction="#useOCR" text="Scan Image" />
+            <Button fx:id="ocrButton" layoutX="300.0" layoutY="61.0" mnemonicParsing="false" onAction="#useOCR" text="Scan Image" />
          <MenuButton layoutX="-4.0" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
             <items>
                <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />

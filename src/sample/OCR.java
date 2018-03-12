@@ -29,7 +29,7 @@ public class OCR {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return total;
     }
