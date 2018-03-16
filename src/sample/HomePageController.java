@@ -61,7 +61,7 @@ public class HomePageController implements Initializable, ControlledScreen{
 
     @FXML
     private void refresh(){
-        currency = new Currency(Main.currentUser.getUserId(), CryptoBudgetDatabase.connection);
+        currency = new Currency();
         currency.updateCurrencyAmount(1, 100);
         setName();
         //setAccountBalance();
