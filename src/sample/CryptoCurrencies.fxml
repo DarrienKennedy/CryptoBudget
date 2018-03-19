@@ -10,13 +10,12 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CryptoCurrenciesController">
     <children>
-        <TableView layoutX="51.0" layoutY="55.0" prefHeight="385.0" prefWidth="323.0">
+        <TableView fx:id="CurrencyTable" layoutX="51.0" layoutY="55.0" prefHeight="385.0" prefWidth="445.0">
             <columns>
-                <TableColumn prefWidth="75.0" text="Type" />
-                <TableColumn prefWidth="75.0" text="Amount" />
-                <TableColumn prefWidth="75.0" text="Value" />
-                <TableColumn prefWidth="94.0" text="Change" />
-                <TableColumn prefWidth="128.0" />
+                <TableColumn fx:id="currencyName" prefWidth="150.0" text="Type" />
+                <TableColumn fx:id="currencyValue" prefWidth="75.0" text="Value" />
+                <TableColumn fx:id="currencyAbbr" prefWidth="120.0" text="Abbreviation" />
+                <TableColumn fx:id="currencyPercentChange" prefWidth="100.0" text="Change" />
             </columns>
         </TableView>
         <Label layoutX="263.0" layoutY="16.0" text="View Currency" textFill="WHITE" />

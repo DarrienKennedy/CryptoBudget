@@ -1,8 +1,5 @@
 package sample;
 
-import javax.swing.plaf.nimbus.State;
-import javax.xml.transform.Result;
-import java.security.spec.PSSParameterSpec;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -11,9 +8,9 @@ public class Currency {
     private int userId;
     private Connection connection;
 
-    public Currency(int userId, Connection connection){
-        this.userId = userId;
-        this.connection = connection;
+    public Currency(){
+        this.userId = Main.currentUser.getUserId();
+        this.connection = CryptoBudgetDatabase.connection;
     }
 
     /**
@@ -243,6 +240,32 @@ public class Currency {
         }
 
         return currencyName;
+    }
+
+    /**
+     *
+     * @param currencyName The currency name to check
+     * @return True if the currency name is valid
+     */
+    public boolean isCurrencyName(String currencyName){
+        boolean isValid = false;
+
+        String selectSQL = "SELECT * FROM CURRENCYVALUE WHERE CURRENCYNAME = ?;";
+
+        try{
+            PreparedStatement pstmt = connection.prepareStatement(selectSQL);
+            pstmt.setString(1, currencyName);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.isBeforeFirst()){
+                isValid = true;
+            }
+        } catch (SQLException e){
+
+        }
+
+        return isValid;
     }
 
     public static int abbrToId(String abbr) {

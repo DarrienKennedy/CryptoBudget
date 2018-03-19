@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 
 import java.net.URL;
@@ -37,14 +36,11 @@ public class AddTransactionController implements Initializable, ControlledScreen
     private JFXTextField dateField;
     @FXML
     private JFXTextField otherPartyField;
-    @FXML
-    private Button ocrButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         frequencyComboBox.setItems(frequencyList);
         frequencyComboBox.setValue("One Time");
-        ocrButton.setOnMouseEntered(e -> ocrButton.setDisable(Main.currentUser.getOCR() == 0));
     }
 
 
@@ -163,9 +159,9 @@ public class AddTransactionController implements Initializable, ControlledScreen
     @FXML
     private void useOCR(ActionEvent event) {
         String imagePath = imagePathField.getText();
-        amountField.setText(OCR.getTotalReceiptPrice(imagePath));
-        ocrButton.setText("Scanned");
-        ocrButton.setDisable(true);
+        if (Main.currentUser.getOCR() == 1) {
+            amountField.setText(OCR.getTotalReceiptPrice(imagePath));
+        }
     }
 
     private void goToScreen(String screenId) {
@@ -184,8 +180,6 @@ public class AddTransactionController implements Initializable, ControlledScreen
         incomeOption.setSelected(false);
         dateField.setText("");
         otherPartyField.setText("");
-        ocrButton.setText("Scan Image");
-        ocrButton.setDisable(false);
     }
 
 }
