@@ -43,6 +43,8 @@ public class LoginController implements Initializable, ControlledScreen{
         if(tempUser != null){
             if(pass.equals(tempUser.getPassword())){
                 Main.currentUser = tempUser;
+                myController.unloadScreen(Main.HomePageID);
+                myController.loadScreen(Main.HomePageID, Main.HomePageFile);
                 myController.setScreen(Main.HomePageID);
                 username.setText("");
                 password.setText("");

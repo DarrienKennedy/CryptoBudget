@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.stage.WindowEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -54,37 +55,51 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
 
     @FXML
     private void goToHomePage(ActionEvent event){
-        goToPage(Main.HomePageID);
+        myController.unloadScreen(Main.HomePageID);
+        myController.loadScreen(Main.HomePageID, Main.HomePageFile);
+        myController.setScreen(Main.HomePageID);
     }
 
     @FXML
     private void goToCrypto(ActionEvent event){
-        goToPage(Main.CryptoCurrenciesID);
+        myController.unloadScreen(Main.CryptoCurrenciesID);
+        myController.loadScreen(Main.CryptoCurrenciesID, Main.CryptoCurrenciesFile);
+        myController.setScreen(Main.CryptoCurrenciesID);
     }
 
     @FXML
     private void goToUpdateAccount(ActionEvent event){
-        goToPage(Main.UpdateAccountID);
+        myController.unloadScreen(Main.UpdateAccountID);
+        myController.loadScreen(Main.UpdateAccountID, Main.UpdateAccountFile);
+        myController.setScreen(Main.UpdateAccountID);
     }
 
     @FXML
-    private void goToViewTransactions(ActionEvent event){
-        goToPage(Main.ViewTransactionsID);
+    private void goToViewTransactions(ActionEvent event) throws IOException {
+        myController.unloadScreen(Main.ViewTransactionsID);
+        myController.loadScreen(Main.ViewTransactionsID, Main.ViewTransactionsFile);
+        myController.setScreen(Main.ViewTransactionsID);
     }
 
     @FXML
     private void goToAddTransaction(ActionEvent event){
-        goToPage(Main.AddTransactionID);
+        myController.unloadScreen(Main.AddTransactionID);
+        myController.loadScreen(Main.AddTransactionID, Main.AddTransactionFile);
+        myController.setScreen(Main.AddTransactionID);
     }
 
     @FXML
     private void goToLoginPage(ActionEvent event){
-        goToPage(Main.LoginID);
+        myController.unloadScreen(Main.LoginID);
+        myController.loadScreen(Main.LoginID, Main.LoginFile);
+        myController.setScreen(Main.LoginID);
     }
 
     @FXML
     private void goToEditGoalsPage(ActionEvent event){
-        goToPage(Main.EditGoalsID);
+        myController.unloadScreen(Main.EditGoalsID);
+        myController.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
+        myController.setScreen(Main.EditGoalsID);
     }
 
     @FXML

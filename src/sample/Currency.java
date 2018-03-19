@@ -8,8 +8,8 @@ public class Currency {
     private int userId;
     private Connection connection;
 
-    public Currency(){
-        this.userId = Main.currentUser.getUserId();
+    public Currency(int userID){
+        this.userId = userID;
         this.connection = CryptoBudgetDatabase.connection;
     }
 

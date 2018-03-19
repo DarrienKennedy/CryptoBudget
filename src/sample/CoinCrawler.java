@@ -11,7 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.sql.*;
 
-
+/**
 public class CoinCrawler {
     private static final OkHttpClient client = new OkHttpClient.Builder().build();
     private static java.sql.Connection db = CryptoBudgetDatabase.connection;
@@ -28,7 +28,7 @@ public class CoinCrawler {
      *
      * @param userCoins The coin names
      */
-    public void setUserCoins(ArrayList<String> userCoins){
+/**    public void setUserCoins(ArrayList<String> userCoins){
         this.userCoins = userCoins;
     }
 
@@ -36,7 +36,7 @@ public class CoinCrawler {
      *
      * @param searchAll True if user wants to search all coins
      */
-    public void setSearchAll(boolean searchAll){
+/**    public void setSearchAll(boolean searchAll){
         this.searchAll = searchAll;
     }
 
@@ -47,7 +47,7 @@ public class CoinCrawler {
      * @param percentChange The percent change over 24 hours
      */
     //add the row in cryptoValue if it is not already there
-    private static void insertData(String name, String value, String percentChange, String abbr){
+/**    private static void insertData(String name, String value, String percentChange, String abbr){
         value = value.replace(",", "");
 
         //check if it was already there
@@ -105,7 +105,7 @@ public class CoinCrawler {
     /**
      * Update the CURRENCYVALUE table based on userCoins and searchAll
      */
-    public static void updateCoins(){
+/**    public static void updateCoins(){
         try{
             doGetRequest("https://coinranking.com/", true);
         } catch (IOException e){
@@ -189,5 +189,5 @@ public class CoinCrawler {
                     }
                 });
     }
-}
+}**/
 
