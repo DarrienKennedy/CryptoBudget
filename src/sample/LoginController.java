@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class LoginController implements Initializable, ControlledScreen{
 
@@ -49,6 +51,18 @@ public class LoginController implements Initializable, ControlledScreen{
                 username.setText("");
                 password.setText("");
             }
+        }
+        String currentRefreshRate = Main.currentUser.getRefreshRate();
+        int refreshRateMS = 0;
+        if(currentRefreshRate.equals("1 Hour")){
+            refreshRateMS = 60 * 60 * 1000;
+        } else if( currentRefreshRate.equals("5 minutes")){
+            refreshRateMS = 5 * 1000;
+        } else if( currentRefreshRate.equals("10 minutes")){
+            refreshRateMS = 10 * 1000;
+        }
+        if(refreshRateMS>0){
+            Main.setTimer(refreshRateMS);
         }
     }
 

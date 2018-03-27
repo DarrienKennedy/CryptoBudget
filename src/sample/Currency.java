@@ -82,6 +82,29 @@ public class Currency {
         return userCurrencyNames;
     }
 
+    public String[] getUserCurrencyNames(){
+        ArrayList<String> userCurrencies = new ArrayList<>();
+        String getUserCurrencies = "SELECT CURRENCYNAME FROM ACCOUNTCURRENCIES WHERE USERID = ?;";
+        try{
+            PreparedStatement pstmt = connection.prepareStatement(getUserCurrencies);
+            pstmt.setInt(1, userId);
+            ResultSet rs  = pstmt.executeQuery();
+
+            while(rs.next()){
+                userCurrencies.add(rs.getString("CURRENCYNAME"));
+            }
+        } catch (SQLException e){
+
+        }
+
+        String[] userCurrencyNames = new String[userCurrencies.size()];
+
+        for(int i = 0; i < userCurrencyNames.length; i++){
+            userCurrencyNames[i] = userCurrencies.get(i);
+        }
+
+        return userCurrencyNames;
+    }
 
     /**
      *  Update or insert the updated amount of currency a user has

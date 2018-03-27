@@ -48,7 +48,6 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        data = FXCollections.observableArrayList();
         //setTextBoxes();
         setCells();
         loadDataFromDatabase();
@@ -63,24 +62,53 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
 
     }
 
-    private void loadDataFromDatabase(){
+    public void loadDataFromDatabase(){
+        data = FXCollections.observableArrayList();
         String sql = "SELECT * FROM CURRENCYVALUE";
         try {
             ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
-                //new Goal(name, amount, date, description)
-                //System.out.println(rs.getString(3) + " " + rs.getDouble(4) + " " + rs.getInt(5) + " " + rs.getString(6));
                 data.add(new CurrencyObj(rs.getString(2),
-                        rs.getDouble(3),
-                        rs.getString(6),
-                        rs.getString(5)));
-
+                rs.getDouble(3),
+                rs.getString(6),
+                rs.getString(5)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         CurrencyTable.setItems(data);
+    }
+
+    public void updateCoins(){
+        ArrayList<String> searchCoins = new ArrayList<>();
+        CoinCrawler crawler = new CoinCrawler(searchCoins, true, CryptoBudgetDatabase.connection);
+        crawler.updateCoins();
+    }
+
+    public void searchOwned(){
+        data = FXCollections.observableArrayList();
+        String sql = "SELECT * " +
+                     "FROM CURRENCYVALUE INNER JOIN ACCOUNTCURRENCIES ON CURRENCYVALUE.CURRENCYID = ACCOUNTCURRENCIES.CURRENCYID "+
+                     "WHERE USERID = ?";
+        try {
+            ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
+            ps.setInt(1, Main.currentUser.getUserId());
+            rs = ps.executeQuery();
+            while(rs.next()){
+                data.add(new CurrencyObj(rs.getString(2),
+                        rs.getDouble(3),
+                        rs.getString(6),
+                        rs.getString(5)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        CurrencyTable.setItems(data);
+    }
+
+    public void searchCurrency(){
+
     }
 
     private void setTextBoxes(){

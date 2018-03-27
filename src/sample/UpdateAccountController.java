@@ -15,6 +15,8 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class UpdateAccountController implements Initializable, ControlledScreen{
 
@@ -138,6 +140,17 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
         Main.currentUser.update();
         refreshRateButton.setText("Updated Refresh Rate");
         refreshRateButton.setDisable(true);
+        int refreshRateMS = 0;
+        if(refreshRate.equals("1 Hour")){
+            refreshRateMS = 60 * 60 * 1000;
+        } else if( refreshRate.equals("5 minutes")){
+            refreshRateMS = 5 * 60 * 1000;
+        } else if( refreshRate.equals("10 minutes")){
+            refreshRateMS = 10 * 1000;
+        }
+        if(refreshRateMS>0){
+            Main.setTimer(refreshRateMS);
+        }
     }
 
     @FXML
