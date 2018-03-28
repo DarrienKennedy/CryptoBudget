@@ -42,6 +42,7 @@ public class Payment extends Transaction {
             prep.setInt(6, frequency);
             prep.setString(7, otherParty);
             prep.executeUpdate();
+            Currency.updateCurrencyAmount(currencyType, -amount);
         } catch (SQLException e) {
             //e.printStackTrace();
         }
@@ -49,6 +50,15 @@ public class Payment extends Transaction {
 
     public void update() {
         try {
+            // Get previous amount value
+            PreparedStatement prev = CryptoBudgetDatabase.connection.prepareStatement("SELECT AMOUNT FROM PAYMENT " +
+                    "WHERE PAYMENTID = ? AND USERID = ?;");
+            prev.setInt(0, id);
+            prev.setInt(1, Main.currentUser.getUserId());
+            ResultSet rs = prev.executeQuery();
+            rs.next();
+            double prevAmount = rs.getDouble("AMOUNT");
+
             String update = "UPDATE PAYMENT SET AMOUNT = ?, DATE = ?, ENDDATE = ?, CURRENCYTYPE = ?, " +
                     "FREQUENCY = ?, OTHERPARTY = ? WHERE PAYMENTID = ? AND USERID = ?;";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(update);
@@ -61,6 +71,7 @@ public class Payment extends Transaction {
             prep.setInt(7, id);
             prep.setInt(8, Main.currentUser.getUserId());
             prep.executeUpdate();
+            Currency.updateCurrencyAmount(currencyType, -(amount - prevAmount));
         } catch (SQLException e) {
             //e.printStackTrace();
         }
@@ -116,11 +127,12 @@ public class Payment extends Transaction {
         return null;
     }
 
-    public static void removePayment(int removeId) {
+    public void remove() {
         try {
+            Currency.updateCurrencyAmount(id, amount);
             String remove = "DELETE FROM PAYMENT WHERE PAYMENTID = ? AND USERID = ?;";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(remove);
-            prep.setInt(1, removeId);
+            prep.setInt(1, id);
             prep.setInt(2, Main.currentUser.getUserId());
             prep.executeUpdate();
         } catch (SQLException e) {

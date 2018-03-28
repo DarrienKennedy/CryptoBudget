@@ -111,14 +111,14 @@ public class Currency {
      * @param currencyId The id of the currency
      * @param amount The value to add to the current amount of currency
      */
-    public void updateCurrencyAmount(int currencyId, double amount){
+    public static void updateCurrencyAmount(int currencyId, double amount){
         if(isUserHasCurrency(currencyId)){
             //get how much they have then add the amount to it
             double currentAmount = 0.0;
             String getCurrencyAmount = "SELECT AMOUNTOFCURRENCY FROM ACCOUNTCURRENCIES WHERE USERID = ? AND CURRENCYID = ?;";
             try{
-                PreparedStatement pstmt = connection.prepareStatement(getCurrencyAmount);
-                pstmt.setInt(1, userId);
+                PreparedStatement pstmt = CryptoBudgetDatabase.connection.prepareStatement(getCurrencyAmount);
+                pstmt.setInt(1, Main.currentUser.getUserId());
                 pstmt.setInt(2, currencyId);
                 ResultSet rs = pstmt.executeQuery();
 
@@ -131,9 +131,9 @@ public class Currency {
             String updateUserCurrency = "UPDATE ACCOUNTCURRENCIES SET AMOUNTOFCURRENCY = ? WHERE USERID = ? AND CURRENCYID = ?;";
 
             try{
-                PreparedStatement pstmt = connection.prepareStatement(updateUserCurrency);
+                PreparedStatement pstmt = CryptoBudgetDatabase.connection.prepareStatement(updateUserCurrency);
                 pstmt.setDouble(1, currentAmount);
-                pstmt.setInt(2, userId);
+                pstmt.setInt(2, Main.currentUser.getUserId());
                 pstmt.setInt(3, currencyId);
 
                 pstmt.executeUpdate();
@@ -144,8 +144,8 @@ public class Currency {
             //create a new row with the given amount
             String createNewAccountCurrency = "INSERT INTO ACCOUNTCURRENCIES (USERID, CURRENCYID, AMOUNTOFCURRENCY) VALUES ( ? , ? , ? )";
             try {
-                PreparedStatement pstmt = connection.prepareStatement(createNewAccountCurrency);
-                pstmt.setInt(1, userId);
+                PreparedStatement pstmt = CryptoBudgetDatabase.connection.prepareStatement(createNewAccountCurrency);
+                pstmt.setInt(1, Main.currentUser.getUserId());
                 pstmt.setInt(2, currencyId);
                 pstmt.setDouble(3, amount);
 
@@ -183,7 +183,7 @@ public class Currency {
      * @param currencyID The id of the currency
      * @return True if the User ever owned this currency
      */
-    public boolean isUserHasCurrency(int currencyID){
+    public static boolean isUserHasCurrency(int currencyID){
         //check if it was already there
         String selectSQL = "SELECT * " +
                 "FROM ACCOUNTCURRENCIES " +
@@ -193,8 +193,8 @@ public class Currency {
         boolean userHasCurrency = false;
 
         try {
-            PreparedStatement pstmt = connection.prepareStatement(selectSQL);
-            pstmt.setInt(1, userId);
+            PreparedStatement pstmt = CryptoBudgetDatabase.connection.prepareStatement(selectSQL);
+            pstmt.setInt(1, Main.currentUser.getUserId());
             pstmt.setInt(2, currencyID);
 
             ResultSet rs = pstmt.executeQuery();

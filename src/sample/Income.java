@@ -42,6 +42,7 @@ public class Income extends Transaction {
             prep.setInt(6, frequency);
             prep.setString(7, otherParty);
             prep.executeUpdate();
+            Currency.updateCurrencyAmount(currencyType, amount);
         } catch (SQLException e) {
             //e.printStackTrace();
         }
@@ -49,6 +50,15 @@ public class Income extends Transaction {
 
     public void update() {
         try {
+            // Get previous amount value
+            PreparedStatement prev = CryptoBudgetDatabase.connection.prepareStatement("SELECT AMOUNT FROM INCOME " +
+                    "WHERE INCOMEID = ? AND USERID = ?;");
+            prev.setInt(0, id);
+            prev.setInt(1, Main.currentUser.getUserId());
+            ResultSet rs = prev.executeQuery();
+            rs.next();
+            double prevAmount = rs.getDouble("AMOUNT");
+
             String update = "UPDATE INCOME SET AMOUNT = ?, DATE = ?, ENDDATE = ?, CURRENCYTYPE = ?, " +
                     "FREQUENCY = ?, OTHERPARTY = ? WHERE INCOMEID = ? AND USERID = ?;";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(update);
@@ -61,6 +71,7 @@ public class Income extends Transaction {
             prep.setInt(7, id);
             prep.setInt(8, Main.currentUser.getUserId());
             prep.executeUpdate();
+            Currency.updateCurrencyAmount(currencyType, amount - prevAmount);
         } catch (SQLException e) {
             //e.printStackTrace();
         }
@@ -116,12 +127,13 @@ public class Income extends Transaction {
         return null;
     }
 
-    public static void removeIncome(int removeId) {
+    public void remove() {
         try {
+            Currency.updateCurrencyAmount(id, -amount);
             Statement stmt = CryptoBudgetDatabase.connection.createStatement();
             String remove = "DELETE FROM INCOME WHERE INCOMEID = ? AND USERID = ?;";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(remove);
-            prep.setInt(1, removeId);
+            prep.setInt(1, id);
             prep.setInt(2, Main.currentUser.getUserId());
             prep.executeUpdate();
         } catch (SQLException e) {
