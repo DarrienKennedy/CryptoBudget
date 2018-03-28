@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -43,12 +44,24 @@ public class AddTransactionController implements Initializable, ControlledScreen
     private RadioButton payment;
     @FXML
     private RadioButton income;
+    @FXML
+    private AnchorPane ac;
+    @FXML
+    private AnchorPane ac2;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         frequencyComboBox.setItems(frequencyList);
         frequencyComboBox.setValue("One Time");
+        AnchorPane.setTopAnchor(ac, 0.0);
+        AnchorPane.setLeftAnchor(ac, 0.0);
+        AnchorPane.setRightAnchor(ac, 0.0);
+        AnchorPane.setBottomAnchor(ac, 0.0);
 
+        AnchorPane.setTopAnchor(ac2, 0.0);
+        AnchorPane.setLeftAnchor(ac2, 0.0);
+        AnchorPane.setRightAnchor(ac2, 0.0);
+        AnchorPane.setBottomAnchor(ac2, 0.0);
 //        ToggleGroup group = new ToggleGroup();
 //
 //        RadioButton rb1 = new RadioButton("Payment");

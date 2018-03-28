@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="700.0" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HomePageController">
+<AnchorPane fx:id="ac" maxHeight="Infinity" maxWidth="Infinity" minHeight="0" minWidth="0" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HomePageController">
     <children>
         <MenuButton layoutX="2.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
             <items>
@@ -25,7 +25,7 @@
         <Label layoutX="115.0" layoutY="6.0" text="Welcome to CryptoBudget: " textFill="WHITE" />
         <Label fx:id="name" layoutX="271.0" layoutY="6.0" prefHeight="17.0" prefWidth="200.0" textFill="WHITE" />
         <Label fx:id="accountBalance" layoutX="92.0" layoutY="104.0" prefHeight="17.0" prefWidth="46.0" textFill="WHITE" />
-        <TableView fx:id="goalsTable" layoutX="209.0" layoutY="59.0" prefHeight="341.0" prefWidth="491.0">
+        <TableView fx:id="goalsTable" editable="true" layoutX="209.0" layoutY="59.0" prefHeight="341.0" prefWidth="491.0">
             <columns>
                 <TableColumn fx:id="dateCol" prefWidth="75.0" text="DATE" />
                 <TableColumn fx:id="amountCol" prefWidth="105.0" text="AMOUNT" />

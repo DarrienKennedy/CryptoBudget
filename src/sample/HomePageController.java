@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,6 +47,8 @@ public class HomePageController implements Initializable, ControlledScreen{
     Label accountBalance;
     @FXML
     Label curAbv;
+    @FXML
+    AnchorPane ac;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,7 +61,12 @@ public class HomePageController implements Initializable, ControlledScreen{
             setCells();
             loadDataFromDatabase();
             goalsTable.setItems(data);
+
         }
+        AnchorPane.setTopAnchor(ac, 0.0);
+        AnchorPane.setLeftAnchor(ac, 0.0);
+        AnchorPane.setRightAnchor(ac, 0.0);
+        AnchorPane.setBottomAnchor(ac, 0.0);
     }
 
     private void setName(){

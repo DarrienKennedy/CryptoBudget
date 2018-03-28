@@ -1,11 +1,9 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.layout.AnchorPane;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,26 +30,29 @@ public class Main extends Application {
     public static String EditGoalsFile = "EditGoals.fxml";
     public static String CreateAccountID = "CreateAccount";
     public static String CreateAccountFile = "CreateAccount.fxml";
+    public static String testID = "test";
+    public static String testFile = "test.fxml";
     public static Timer timer = new Timer();
 
     public static User currentUser;
+    public static ScreensController sc;
 
-    public static void updateTimer(int updatedTimer){
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                ArrayList<String> searchCoins = new ArrayList<>();
-                CoinCrawler crawler = new CoinCrawler(searchCoins, true, CryptoBudgetDatabase.connection);
-                crawler.updateCoins();
-            }
-        };
-        timer.cancel();
-        timer.purge();
-        timer = new Timer();
-        if(updatedTimer>0){
-            timer.schedule(timerTask, 0,updatedTimer);
+public static void updateTimer(int updatedTimer){
+    TimerTask timerTask = new TimerTask() {
+        @Override
+        public void run() {
+            ArrayList<String> searchCoins = new ArrayList<>();
+            CoinCrawler crawler = new CoinCrawler(searchCoins, true, CryptoBudgetDatabase.connection);
+            crawler.updateCoins();
         }
+    };
+    timer.cancel();
+    timer.purge();
+    timer = new Timer();
+    if(updatedTimer>0){
+        timer.schedule(timerTask, 0,updatedTimer);
     }
+}
 
     public static void setTimer(int initTimer){
         TimerTask timerTask = new TimerTask() {
@@ -82,7 +83,6 @@ public class Main extends Application {
             return 0;
         }
     }
-
     @Override
     public void start(Stage primaryStage) {
         ScreensController mainContainer = new ScreensController();
@@ -95,16 +95,32 @@ public class Main extends Application {
         mainContainer.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
         mainContainer.loadScreen(Main.CreateAccountID, Main.CreateAccountFile);
 
-        mainContainer.setScreen(Main.LoginID);
+        sc = mainContainer;
+        AnchorPane.setTopAnchor(sc, 0.0);
+        AnchorPane.setLeftAnchor(sc, 0.0);
+        AnchorPane.setRightAnchor(sc, 0.0);
+        AnchorPane.setBottomAnchor(sc, 0.0);
+        sc.setScreen(Main.LoginID);
 
-        Group root = new Group();
-        root.getChildren().addAll(mainContainer);
+
+        AnchorPane root = new AnchorPane();
+        root.getChildren().addAll(sc);
+        AnchorPane.setTopAnchor(root, 0.0);
+        AnchorPane.setLeftAnchor(root, 0.0);
+        AnchorPane.setRightAnchor(root, 0.0);
+        AnchorPane.setBottomAnchor(root, 0.0);
+        sc.prefHeightProperty().bind(root.scaleYProperty());
+        sc.prefWidthProperty().bind(root.scaleXProperty());
         Scene scene = new Scene(root);
         primaryStage.setTitle("CryptoBudget");
+        primaryStage.setResizable(true);
         primaryStage.setScene(scene);
+
+
         primaryStage.show();
 
     }
+
 
     public static void main(String[] args) {
         CryptoBudgetDatabase db = new CryptoBudgetDatabase();
@@ -112,10 +128,6 @@ public class Main extends Application {
         if (User.getUser("admin") == null) {
             createAdmin();
         }
-
-        ArrayList<String> searchCoins = new ArrayList<>();
-        CoinCrawler crawler = new CoinCrawler(searchCoins, false, CryptoBudgetDatabase.connection);
-        crawler.updateCoins();
         launch(args);
     }
 
