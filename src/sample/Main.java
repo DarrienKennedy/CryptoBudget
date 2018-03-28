@@ -48,7 +48,9 @@ public class Main extends Application {
         timer.cancel();
         timer.purge();
         timer = new Timer();
-        timer.schedule(timerTask, 0,updatedTimer);
+        if(updatedTimer>0){
+            timer.schedule(timerTask, 0,updatedTimer);
+        }
     }
 
     public static void setTimer(int initTimer){
@@ -60,7 +62,9 @@ public class Main extends Application {
                 crawler.updateCoins();
             }
         };
-        timer.schedule(timerTask, 0, initTimer);
+        if (initTimer > 0) {
+            timer.schedule(timerTask, 0, initTimer);
+        }
     }
 
     public static long dateToLong(String date){

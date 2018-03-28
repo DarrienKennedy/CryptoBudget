@@ -22,6 +22,8 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
 
     ScreensController myController;
     @FXML
+    private TextField coinname;
+    @FXML
     private TextField textCurrencyName;
     @FXML
     private TextField textCurrencyValue;
@@ -50,7 +52,7 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
     public void initialize(URL location, ResourceBundle resources) {
         //setTextBoxes();
         setCells();
-        loadDataFromDatabase();
+        //loadDataFromDatabase();
     }
 
 
@@ -108,7 +110,38 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
     }
 
     public void searchCurrency(){
-
+        data = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM CURRENCYVALUE WHERE CURRENCYNAME = ?";
+        try {
+            ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
+            ps.setString(1, coinname.getText().toUpperCase());
+            rs = ps.executeQuery();
+            while(rs.next()){
+                data.add(new CurrencyObj(rs.getString(2),
+                        rs.getDouble(3),
+                        rs.getString(6),
+                        rs.getString(5)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(data.isEmpty()){
+            sql = "SELECT * FROM CURRENCYVALUE WHERE CURRENCYABBREVIATION = ?";
+            try {
+                ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
+                ps.setString(1, coinname.getText().toUpperCase());
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    data.add(new CurrencyObj(rs.getString(2),
+                            rs.getDouble(3),
+                            rs.getString(6),
+                            rs.getString(5)));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        CurrencyTable.setItems(data);
     }
 
     private void setTextBoxes(){

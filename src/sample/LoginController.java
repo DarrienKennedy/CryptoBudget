@@ -57,9 +57,11 @@ public class LoginController implements Initializable, ControlledScreen{
         if(currentRefreshRate.equals("1 Hour")){
             refreshRateMS = 60 * 60 * 1000;
         } else if( currentRefreshRate.equals("5 minutes")){
-            refreshRateMS = 5 * 1000;
+            refreshRateMS = 5 * 60 * 1000;
         } else if( currentRefreshRate.equals("10 minutes")){
-            refreshRateMS = 10 * 1000;
+            refreshRateMS = 10 * 60 * 1000;
+        } else if(currentRefreshRate.equals(("30 minutes"))){
+            refreshRateMS = 30 * 60 * 1000;
         }
         if(refreshRateMS>0){
             Main.setTimer(refreshRateMS);

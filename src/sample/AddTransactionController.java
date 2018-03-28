@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,11 +39,26 @@ public class AddTransactionController implements Initializable, ControlledScreen
     private JFXTextField dateField;
     @FXML
     private JFXTextField otherPartyField;
+    @FXML
+    private RadioButton payment;
+    @FXML
+    private RadioButton income;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         frequencyComboBox.setItems(frequencyList);
         frequencyComboBox.setValue("One Time");
+
+//        ToggleGroup group = new ToggleGroup();
+//
+//        RadioButton rb1 = new RadioButton("Payment");
+//        rb1.setUserData("Payment");
+//        rb1.setToggleGroup(group);
+//        rb1.setSelected(true);
+//
+//        RadioButton rb2 = new RadioButton("Income");
+//        rb2.setUserData("Income");
+//        rb2.setToggleGroup(group);
     }
 
 
@@ -123,8 +140,8 @@ public class AddTransactionController implements Initializable, ControlledScreen
         // String date = dateField.getText();
 
         String otherParty = otherPartyField.getText();
-        boolean typePayment = paymentOption.isSelected();
-        boolean typeIncome = incomeOption.isSelected();
+        boolean typePayment = payment.isSelected();
+        boolean typeIncome = income.isSelected();
 
         int frequency = 0;
         String frequencySelected = frequencyComboBox.getValue().toString();
@@ -139,6 +156,7 @@ public class AddTransactionController implements Initializable, ControlledScreen
         }
 
         if (typePayment) {
+            System.out.println("ispayment");
             if (newPayment == null) {
                 newPayment = new Payment();
             }
@@ -154,6 +172,7 @@ public class AddTransactionController implements Initializable, ControlledScreen
                 goToScreen(Main.ViewTransactionsID);
             }
         } else if (typeIncome) {
+            System.out.println("isincome");
             if (newIncome == null) {
                 newIncome = new Income();
             }
@@ -194,8 +213,7 @@ public class AddTransactionController implements Initializable, ControlledScreen
         amountField.setText("");
         currencyField.setText("");
         frequencyComboBox.setValue(frequencyList.get(0));
-        paymentOption.setSelected(false);
-        incomeOption.setSelected(false);
+        payment.setSelected(true);
         dateField.setText("");
         otherPartyField.setText("");
     }

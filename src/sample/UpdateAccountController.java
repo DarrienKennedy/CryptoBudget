@@ -21,7 +21,7 @@ import java.util.TimerTask;
 public class UpdateAccountController implements Initializable, ControlledScreen{
 
     ScreensController myController;
-    ObservableList<String> refreshList = FXCollections.observableArrayList("1 Hour","4 Hours", "12 Hours", "On Login");
+    ObservableList<String> refreshList = FXCollections.observableArrayList("1 Hour", "30 minutes", "10 minutes", "5 minutes", "Never");
 
     @FXML
     private JFXComboBox refreshComboBox;
@@ -146,10 +146,12 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
         } else if( refreshRate.equals("5 minutes")){
             refreshRateMS = 5 * 60 * 1000;
         } else if( refreshRate.equals("10 minutes")){
-            refreshRateMS = 10 * 1000;
+            refreshRateMS = 10 * 60 * 1000;
+        } else if( refreshRate.equals(("30 minutes"))){
+            refreshRateMS = 30 * 60  * 1000;
         }
         if(refreshRateMS>0){
-            Main.setTimer(refreshRateMS);
+            Main.updateTimer(refreshRateMS);
         }
     }
 

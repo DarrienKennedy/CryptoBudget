@@ -48,58 +48,58 @@ public class CoinCrawler {
      */
     //add the row in cryptoValue if it is not already there
     private static void insertData(String name, String value, String percentChange, String abbr){
-        value = value.replace(",", "");
+        if(!abbr.isEmpty()) {
+            name = name.toUpperCase();
+            value = value.replace(",", "");
 
-        //check if it was already there
-        String selectSQL = "SELECT * " +
-                "FROM CURRENCYVALUE " +
-                "WHERE currencyName = ?";
+            //check if it was already there
+            String selectSQL = "SELECT * " +
+                    "FROM CURRENCYVALUE " +
+                    "WHERE currencyName = ?";
 
-        boolean coinIsThere = false;
+            boolean coinIsThere = false;
 
-        try {
-            PreparedStatement pstmt = db.prepareStatement(selectSQL);
-            pstmt.setString(1, name);
-
-            ResultSet rs = pstmt.executeQuery();
-
-            if(rs.isBeforeFirst()){
-                coinIsThere = true;
-            } else {
-                coinIsThere = false;
-            }
-        }
-        catch(SQLException e){
-            System.out.println("error");
-            e.printStackTrace();
-        }
-
-        Date date = new Date();
-        long timeMilli = date.getTime();
-        String sql = "INSERT INTO CURRENCYVALUE (CURRENCYNAME, CURRENCYVALUE, LASTUPDATED, PERCENTCHANGE, CURRENCYABBREVIATION) VALUES ( ? , ? , ? , ? , ? )";
-
-        if(coinIsThere){
-            sql = "UPDATE CURRENCYVALUE SET currencyValue = ? , percentChange = ?, lastUpdated = ? WHERE currencyName = ?";
-        }
-        try{
-            PreparedStatement pstmt = db.prepareStatement(sql);
-            if(coinIsThere){
-                pstmt.setString(1, value);
-                pstmt.setString(2, percentChange);
-                pstmt.setLong(3, timeMilli);
-                pstmt.setString(4, name);
-            }
-            else {
+            try {
+                PreparedStatement pstmt = db.prepareStatement(selectSQL);
                 pstmt.setString(1, name);
-                pstmt.setString(2, value);
-                pstmt.setLong(3, timeMilli);
-                pstmt.setString(4, percentChange);
-                pstmt.setString(5, abbr);
+
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.isBeforeFirst()) {
+                    coinIsThere = true;
+                } else {
+                    coinIsThere = false;
+                }
+            } catch (SQLException e) {
+                System.out.println("error");
+                e.printStackTrace();
             }
-            pstmt.executeUpdate();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
+
+            Date date = new Date();
+            long timeMilli = date.getTime();
+            String sql = "INSERT INTO CURRENCYVALUE (CURRENCYNAME, CURRENCYVALUE, LASTUPDATED, PERCENTCHANGE, CURRENCYABBREVIATION) VALUES ( ? , ? , ? , ? , ? )";
+
+            if (coinIsThere) {
+                sql = "UPDATE CURRENCYVALUE SET currencyValue = ? , percentChange = ?, lastUpdated = ? WHERE currencyName = ?";
+            }
+            try {
+                PreparedStatement pstmt = db.prepareStatement(sql);
+                if (coinIsThere) {
+                    pstmt.setString(1, value);
+                    pstmt.setString(2, percentChange);
+                    pstmt.setLong(3, timeMilli);
+                    pstmt.setString(4, name);
+                } else {
+                    pstmt.setString(1, name);
+                    pstmt.setString(2, value);
+                    pstmt.setLong(3, timeMilli);
+                    pstmt.setString(4, percentChange);
+                    pstmt.setString(5, abbr);
+                }
+                pstmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
