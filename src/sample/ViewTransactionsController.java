@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -36,10 +37,18 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     private TableColumn<?, ?> col3;
     @FXML
     private TableColumn<?, ?> col4;
+    @FXML
+    private RadioButton payment;
+    @FXML
+    private RadioButton income;
+    @FXML
+    private RadioButton both;
 
     private PreparedStatement ps = null;
     private ResultSet rs = null;
     private ObservableList<Transaction> payData;
+    private Payment[] allPayments;
+    private Income[] allIncome;
 
     public ViewTransactionsController getController(){
         return this;
@@ -49,6 +58,8 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if(Main.currentUser!=null) {
+            allIncome = Income.getAllIncome();
+            allPayments = Payment.getAllPayments();
             categoryComboBox.setItems(categoryList);
             categoryComboBox.setValue(categoryList.get(0));
             displayItems();
@@ -72,8 +83,54 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         transactionTable.setItems(payData);
     }
 
+    public void getPaymentDataAfterDate(int dateInMS){
+        Payment[] payments = allPayments;
+        for (Payment p : payments) {
+            p.setTransactionType("-");
+            if(p.date>dateInMS){
+                payData.add(p);
+            }
+        }
+    }
+
+    public void getPaymentDataBeforeDate(int dateInMS){
+        Payment[] payments = allPayments;
+        for (Payment p : payments) {
+            p.setTransactionType("-");
+            if(p.date<dateInMS){
+                payData.add(p);
+            }
+        }
+    }
+
+    public void getIncomeDataAfterDate(int dateInMS){
+        Income[] income = allIncome;
+        for (Income i : income) {
+            i.setTransactionType("+");
+            if(i.date>dateInMS){
+                payData.add(i);
+            }
+        }
+    }
+
+    public void getIncomeDataOverAmount(String currencyAmount){
+        Income[] income = allIncome;
+        String[] inputStrings = currencyAmount.split(" ");
+    }
+
+
+    public void getIncomeDataBeforeDate(int dateInMS){
+        Income[] income = allIncome;
+        for (Income i : income) {
+            i.setTransactionType("+");
+            if(i.date<dateInMS){
+                payData.add(i);
+            }
+        }
+    }
+
     private void loadPaymentData(){
-        Payment[] payments = Payment.getAllPayments();
+        Payment[] payments = allPayments;
         for (Payment p : payments) {
             p.setTransactionType("-");
             payData.add(p);
@@ -81,7 +138,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     }
 
     private void loadIncomeData(){
-        Income[] income = Income.getAllIncome();
+        Income[] income = allIncome;
         for (Income i : income) {
             i.setTransactionType("+");
             payData.add(i);

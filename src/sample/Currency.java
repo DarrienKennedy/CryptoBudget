@@ -5,20 +5,15 @@ import java.util.ArrayList;
 
 public class Currency {
 
-    private int userId;
-    private Connection connection;
-
-    public Currency(int userID){
-        this.userId = userID;
-        this.connection = CryptoBudgetDatabase.connection;
-    }
+    private static int userId = Main.currentUser.getUserId();
+    private static Connection connection = CryptoBudgetDatabase.connection;
 
     /**
      *
      * @param currencyId The id of the currency to search
      * @return The value of the currency
      */
-    public double getCurrencyValue(int currencyId){
+    public static double getCurrencyValue(int currencyId){
         double currencyValue = 0.0;
         try{
             Statement stmt = connection.createStatement();
@@ -39,7 +34,7 @@ public class Currency {
      * @param currencyName The name of the currency to search
      * @return the value of the currency
      */
-    public double getCurrencyValue(String currencyName){
+    public static double getCurrencyValue(String currencyName){
         double currencyValue = 0.0;
         try{
             String valueSQL = "SELECT CURRENCYVALUE FROM CURRENCYVALUE WHERE CURRENCYNAME = ?;";
@@ -58,7 +53,7 @@ public class Currency {
      *
      * @return Get the currencyIDs of all the currencies the user has
      */
-    public int[] getUserCurrencies(){
+    public static int[] getUserCurrencies(){
         ArrayList<Integer> userCurrencies = new ArrayList<>();
         String getUserCurrencies = "SELECT CURRENCYID FROM ACCOUNTCURRENCIES WHERE USERID = ?;";
         try{
@@ -82,7 +77,7 @@ public class Currency {
         return userCurrencyNames;
     }
 
-    public String[] getUserCurrencyNames(){
+    public static String[] getUserCurrencyNames(){
         ArrayList<String> userCurrencies = new ArrayList<>();
         String getUserCurrencies = "SELECT CURRENCYNAME FROM ACCOUNTCURRENCIES WHERE USERID = ?;";
         try{
@@ -161,7 +156,7 @@ public class Currency {
      * @param currencyName The name of the currency
      * @param amount The value to add to the current amount of currency
      */
-    public void updateCurrencyAmount(String currencyName, double amount){
+    public static void updateCurrencyAmount(String currencyName, double amount){
         //get the currency id then call updateCurrencyAmount with it
         String getCurrencyID = "SELECT CURRENCYID FROM CURRENCYVALUE WHERE CURRENCYNAME = ?";
         int currencyId = 0;
@@ -215,7 +210,7 @@ public class Currency {
      * @param currencyName The id of the currency
      * @return True if the User ever owned this currency
      */
-    public boolean isUserHasCurrency(String currencyName){
+    public static boolean isUserHasCurrency(String currencyName){
         //check if it was already there
         String selectSQL = "SELECT * " +
                 "FROM ACCOUNTCURRENCIES " +
@@ -247,7 +242,7 @@ public class Currency {
      * @param abbr The abbreviation of a currency
      * @return The Currency Name if it exists or an empty string if it doesn't
      */
-    public String abbrToName(String abbr){
+    public static String abbrToName(String abbr){
         String currencyName = "";
         if(abbr == ""){
             return currencyName;
@@ -270,7 +265,7 @@ public class Currency {
      * @param currencyName The currency name to check
      * @return True if the currency name is valid
      */
-    public boolean isCurrencyName(String currencyName){
+    public static boolean isCurrencyName(String currencyName){
         boolean isValid = false;
 
         String selectSQL = "SELECT * FROM CURRENCYVALUE WHERE CURRENCYNAME = ?;";

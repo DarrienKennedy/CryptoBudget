@@ -33,7 +33,6 @@ public class HomePageController implements Initializable, ControlledScreen{
     private ObservableList<Goal> data;
     private PreparedStatement ps;
     private ResultSet rs;
-    Currency currency;
     int[] userCurrencies;
     double[] currencyValues;
     double[] amounts;
@@ -51,7 +50,6 @@ public class HomePageController implements Initializable, ControlledScreen{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if(Main.currentUser!=null) {
-            currency = new Currency(Main.currentUser.getUserId());
             setName();
             setAccountBalance();
             convert(usdAmount);
@@ -83,7 +81,6 @@ public class HomePageController implements Initializable, ControlledScreen{
         String sql = "SELECT * FROM GOALS WHERE USERID = ?;";
         try {
             ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
-            System.out.println(Main.currentUser.getUserId());
             ps.setInt(1, Main.currentUser.getUserId());
             rs = ps.executeQuery();
             while(rs.next()){
@@ -103,12 +100,12 @@ public class HomePageController implements Initializable, ControlledScreen{
      }
 
      private void setAccountBalance(){
-        if(currency.getUserCurrencies()!=null) {
-            userCurrencies = currency.getUserCurrencies();
+        if(Currency.getUserCurrencies()!=null) {
+            userCurrencies = Currency.getUserCurrencies();
             currencyValues = new double[userCurrencies.length];
             amounts = new double[userCurrencies.length];
             for (int i = 0; i < userCurrencies.length; i++) {
-                currencyValues[i] = currency.getCurrencyValue(userCurrencies[i]);
+                currencyValues[i] = Currency.getCurrencyValue(userCurrencies[i]);
                 amounts[i] = getAmount(userCurrencies[i]);
                 usdAmount = usdAmount + (currencyValues[i] * amounts[i]);
             }
@@ -131,7 +128,7 @@ public class HomePageController implements Initializable, ControlledScreen{
 
      private void convert(double usdAmount){
         int primId = Main.currentUser.getPrimaryCurrency();
-        double primValue = currency.getCurrencyValue(primId);
+        double primValue = Currency.getCurrencyValue(primId);
         accountBalance.setText(""+usdAmount/primValue);
      }
 
