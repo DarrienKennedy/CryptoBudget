@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXProgressBar;
 import java.sql.*;
 import java.util.Date;
 public class Goal {
+    //TODO: return goal closest to completion
     protected int goalId;
     protected int userId;   //type = user...
     protected String goalName;

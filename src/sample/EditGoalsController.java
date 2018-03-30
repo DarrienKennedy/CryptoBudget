@@ -58,10 +58,12 @@ public class EditGoalsController implements Initializable, ControlledScreen{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        data = FXCollections.observableArrayList();
-        setTextBoxes();
-        setCells();
-        loadDataFromDatabase();
+        if(Main.currentUser!=null){
+            data = FXCollections.observableArrayList();
+            setTextBoxes();
+            setCells();
+            loadDataFromDatabase();
+        }
         AnchorPane.setTopAnchor(ac, 0.0);
         AnchorPane.setLeftAnchor(ac, 0.0);
         AnchorPane.setRightAnchor(ac, 0.0);
@@ -117,9 +119,10 @@ public class EditGoalsController implements Initializable, ControlledScreen{
     }
 
     private void loadDataFromDatabase(){
-        String sql = "SELECT * FROM GOALS";
+        String sql = "SELECT * FROM GOALS WHERE USERID = ?;";
         try {
             ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
+            ps.setInt(1, Main.currentUser.getUserId()); //TODO: valid user id
             rs = ps.executeQuery();
             while(rs.next()){
                 //new Goal(name, amount, date, description)
