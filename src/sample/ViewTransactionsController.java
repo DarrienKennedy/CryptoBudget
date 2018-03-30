@@ -82,6 +82,8 @@ public class ViewTransactionsController implements Initializable, ControlledScre
 
     @FXML
     public void displayItems() {
+        categoryComboBox.setItems(categoryList);
+        categoryComboBox.setValue(categoryList.get(0));
         payData = FXCollections.observableArrayList();
         setCells();
         //TODO: use transaction/payment/income sql methods
