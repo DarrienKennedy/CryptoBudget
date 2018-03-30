@@ -10,7 +10,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -44,8 +43,6 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     private RadioButton income;
     @FXML
     private RadioButton both;
-    @FXML
-    private AnchorPane ac;
 
     private PreparedStatement ps = null;
     private ResultSet rs = null;
@@ -67,10 +64,6 @@ public class ViewTransactionsController implements Initializable, ControlledScre
             categoryComboBox.setValue(categoryList.get(0));
             displayItems();
         }
-        AnchorPane.setTopAnchor(ac, 0.0);
-        AnchorPane.setLeftAnchor(ac, 0.0);
-        AnchorPane.setRightAnchor(ac, 0.0);
-        AnchorPane.setBottomAnchor(ac, 0.0);
     }
 
     private void setCells(){

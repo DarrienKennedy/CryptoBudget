@@ -122,21 +122,11 @@ public class CoinCrawler {
         client.newCall(request)
                 .enqueue(new Callback() {
                     @Override
-                    public void onFailure(Request request, IOException e) {
-
-                    }
-
-                    @Override
-                    public void onResponse(Response response) throws IOException {
-
-                    }
-
-                    //@Override
                     public void onFailure(final Call call, IOException e) {
                         // Error
                     }
 
-                    //@Override
+                    @Override
                     public void onResponse(Call call, final Response response) throws IOException {
                         String value;
                         String percentChange;

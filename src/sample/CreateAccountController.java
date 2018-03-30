@@ -7,8 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.event.ActionEvent;
-import javafx.scene.layout.AnchorPane;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -17,8 +15,6 @@ public class CreateAccountController implements Initializable, ControlledScreen{
     private ScreensController myController;
     @FXML
     private JFXTextField usernameField;
-    @FXML
-    private AnchorPane ac;
     @FXML
     private JFXPasswordField passwordField;
     @FXML
@@ -32,10 +28,7 @@ public class CreateAccountController implements Initializable, ControlledScreen{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        AnchorPane.setTopAnchor(ac, 0.0);
-        AnchorPane.setLeftAnchor(ac, 0.0);
-        AnchorPane.setRightAnchor(ac, 0.0);
-        AnchorPane.setBottomAnchor(ac, 0.0);
+
     }
 
     public void setScreenParent(ScreensController screenParent){

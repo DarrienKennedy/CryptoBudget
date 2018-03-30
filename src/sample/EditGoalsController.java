@@ -13,8 +13,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-
 import javax.swing.text.html.ListView;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -48,8 +46,6 @@ public class EditGoalsController implements Initializable, ControlledScreen{
     private TableColumn<?, ?> nameCol;
     @FXML
     private TableColumn<?, ?> descriptionCol;
-    @FXML
-    private AnchorPane ac;
 
     private ArrayList<Goal> goalList = new ArrayList();
     private PreparedStatement ps = null;
@@ -62,10 +58,6 @@ public class EditGoalsController implements Initializable, ControlledScreen{
         setTextBoxes();
         setCells();
         loadDataFromDatabase();
-        AnchorPane.setTopAnchor(ac, 0.0);
-        AnchorPane.setLeftAnchor(ac, 0.0);
-        AnchorPane.setRightAnchor(ac, 0.0);
-        AnchorPane.setBottomAnchor(ac, 0.0);
     }
 
     @FXML

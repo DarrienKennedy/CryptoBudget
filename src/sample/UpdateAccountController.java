@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
@@ -42,21 +41,14 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
     private Button currencyButton;
     @FXML
     private Button refreshRateButton;
-    @FXML
-    private AnchorPane ac;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (Main.currentUser != null) {
             resetFields();
-
         }
         refreshComboBox.setItems(refreshList);
 
-        AnchorPane.setTopAnchor(ac, 0.0);
-        AnchorPane.setLeftAnchor(ac, 0.0);
-        AnchorPane.setRightAnchor(ac, 0.0);
-        AnchorPane.setBottomAnchor(ac, 0.0);
     }
 
     public void setScreenParent(ScreensController screenParent){

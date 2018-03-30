@@ -170,6 +170,32 @@ public class User {
         }
     }
 
+    public static User getUser(int findId) {
+        try {
+            String findUser = "SELECT * FROM ACCOUNTLEDGER WHERE USERID = ?;";
+            PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(findUser);
+            prep.setInt(1, findId);
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                User result = new User();
+                result.setUserId(rs.getInt("USERID"));
+                result.setEnableOCR(rs.getInt("ENABLEOCR"));
+                result.setPrimaryCurrency(rs.getInt("PRIMARYCURRENCY"));
+                result.setRefreshRate(rs.getString("REFRESHRATE"));
+                result.setUserName(rs.getString("USERNAME"));
+                result.setPassword(rs.getString("PASSWORD"));
+                result.setPasswordSalt(rs.getString("PASSWORDSALT"));
+                result.setFirstName(rs.getString("FIRSTNAME"));
+                result.setLastName(rs.getString("LASTNAME"));
+                result.setLastLogin(rs.getLong("LASTLOGIN"));
+                return result;
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+        return null;
+    }
+
     public static User getUser(String findUsername) {
         try {
             Statement stmt = CryptoBudgetDatabase.connection.createStatement();

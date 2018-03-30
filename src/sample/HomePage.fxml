@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXProgressBar?>
-<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="ac" maxHeight="Infinity" maxWidth="Infinity" minHeight="0" minWidth="0" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HomePageController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="700.0" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HomePageController">
     <children>
         <MenuButton layoutX="2.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
             <items>
@@ -21,19 +21,17 @@
             </items>
         </MenuButton>
         <Label layoutX="2.0" layoutY="104.0" text="Account Balance:" textFill="WHITE" />
+        <Label fx:id="curAbv" layoutX="150.0" layoutY="104.0" prefHeight="17.0" prefWidth="77.0" textFill="WHITE" />
         <Label layoutX="115.0" layoutY="6.0" text="Welcome to CryptoBudget: " textFill="WHITE" />
         <Label fx:id="name" layoutX="271.0" layoutY="6.0" prefHeight="17.0" prefWidth="200.0" textFill="WHITE" />
-        <Label fx:id="accountBalance" layoutX="104.0" layoutY="104.0" prefHeight="17.0" prefWidth="567.0" textFill="WHITE" />
-      <Label layoutX="14.0" layoutY="242.0" prefHeight="17.0" prefWidth="71.0" text="Goal Name" textFill="WHITE" />
-      <Label layoutX="115.0" layoutY="242.0" prefHeight="17.0" prefWidth="71.0" text="End Date" textFill="WHITE" />
-      <Label layoutX="301.0" layoutY="242.0" prefHeight="17.0" prefWidth="98.0" text="Amount Saved" textFill="WHITE" />
-      <JFXProgressBar fx:id="g_progress" layoutX="424.0" layoutY="279.0" prefHeight="17.0" />
-      <Label layoutX="201.0" layoutY="242.0" prefHeight="17.0" prefWidth="71.0" text="Goal Amount" textFill="WHITE" />
-      <PieChart fx:id="cur_piechart" layoutX="444.0" layoutY="55.0" prefHeight="177.0" prefWidth="256.0" />
-      <Label layoutX="511.0" layoutY="66.0" prefHeight="17.0" prefWidth="123.0" text="Account Currencies" textFill="WHITE" />
-      <Label fx:id="gn_label" layoutX="14.0" layoutY="263.0" prefHeight="17.0" prefWidth="71.0" textFill="WHITE" />
-      <Label fx:id="ed_label" layoutX="115.0" layoutY="271.0" prefHeight="17.0" prefWidth="71.0" textFill="WHITE" />
-      <Label fx:id="ga_label" layoutX="201.0" layoutY="271.0" prefHeight="17.0" prefWidth="71.0" textFill="WHITE" />
-      <Label fx:id="as_label" layoutX="301.0" layoutY="271.0" prefHeight="17.0" prefWidth="71.0" textFill="WHITE" />
+        <Label fx:id="accountBalance" layoutX="92.0" layoutY="104.0" prefHeight="17.0" prefWidth="46.0" textFill="WHITE" />
+        <TableView fx:id="goalsTable" layoutX="209.0" layoutY="59.0" prefHeight="341.0" prefWidth="491.0">
+            <columns>
+                <TableColumn fx:id="dateCol" prefWidth="75.0" text="DATE" />
+                <TableColumn fx:id="amountCol" prefWidth="105.0" text="AMOUNT" />
+                <TableColumn fx:id="nameCol" prefWidth="105.0" text="NAME" />
+                <TableColumn fx:id="progressCol" prefWidth="190.0" text="Progress" />
+            </columns>
+        </TableView>
     </children>
 </AnchorPane>
