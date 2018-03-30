@@ -65,7 +65,9 @@ public class HomePageController implements Initializable, ControlledScreen{
             setAmountLabels();
             data = FXCollections.observableArrayList();
             loadDataFromDatabase();
-            homepageGoal = data.remove(goalIndex);
+            if(!data.isEmpty()){
+                homepageGoal = data.remove(goalIndex);
+            }
             if(homepageGoal!=null) {
                 gn_label.setText("" + homepageGoal.getGoalName());
                 ed_label.setText("" + homepageGoal.getGoalDate());
