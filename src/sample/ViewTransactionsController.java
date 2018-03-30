@@ -103,6 +103,59 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         }
     }
 
+    public void getPaymentDataOverAmount(String currencyAmount){
+        Payment[] payments = allPayments;
+        String[] inputStrings = currencyAmount.split(" ");
+        int currencyID = Currency.abbrToId(inputStrings[0]);
+        double inputAmount = Double.parseDouble(inputStrings[1]);
+        if(!(currencyID == -1 || inputAmount<0)) {
+            for (Payment p : payments) {
+                p.setTransactionType("-");
+                if (p.currencyType == currencyID && p.amount > inputAmount) {
+                    payData.add(p);
+                }
+            }
+        }
+    }
+
+    public void getPaymentDataUnderAmount(String currencyAmount){
+        Payment[] payments = allPayments;
+        String[] inputStrings = currencyAmount.split(" ");
+        int currencyID = Currency.abbrToId(inputStrings[0]);
+        double inputAmount = Double.parseDouble(inputStrings[1]);
+        if(!(currencyID == -1 || inputAmount<0)) {
+            for (Payment p : payments) {
+                p.setTransactionType("-");
+                if (p.currencyType == currencyID && p.amount < inputAmount) {
+                    payData.add(p);
+                }
+            }
+        }
+    }
+
+    public void getPaymentDataWithCurrency(String currency){
+        Payment[] payments = allPayments;
+        int currencyID = Currency.abbrToId(currency);
+        if(!(currencyID == -1)) {
+            for (Payment p : payments) {
+                p.setTransactionType("-");
+                if (p.currencyType == currencyID) {
+                    payData.add(p);
+                }
+            }
+        }
+    }
+
+    public void getPaymentDataWithOtherParty(String otherParty){
+        Payment[] payments = allPayments;
+        for (Payment p : payments) {
+            p.setTransactionType("-");
+            if (p.otherParty.matches("*"+otherParty+"*")) {
+                payData.add(p);
+            }
+        }
+    }
+
     public void getIncomeDataAfterDate(int dateInMS){
         Income[] income = allIncome;
         for (Income i : income) {
@@ -116,15 +169,51 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     public void getIncomeDataOverAmount(String currencyAmount){
         Income[] income = allIncome;
         String[] inputStrings = currencyAmount.split(" ");
+        int currencyID = Currency.abbrToId(inputStrings[0]);
+        double inputAmount = Double.parseDouble(inputStrings[1]);
+        if(!(currencyID == -1 || inputAmount<0)) {
+            for (Income i : income) {
+                i.setTransactionType("+");
+                if (i.currencyType == currencyID && i.amount > inputAmount) {
+                    payData.add(i);
+                }
+            }
+        }
     }
 
-
+    public void getIncomeDataUnderAmount(String currencyAmount){
+        Income[] income = allIncome;
+        String[] inputStrings = currencyAmount.split(" ");
+        int currencyID = Currency.abbrToId(inputStrings[0]);
+        double inputAmount = Double.parseDouble(inputStrings[1]);
+        if(!(currencyID == -1 || inputAmount<0)) {
+            for (Income i : income) {
+                i.setTransactionType("+");
+                if (i.currencyType == currencyID && i.amount < inputAmount) {
+                    payData.add(i);
+                }
+            }
+        }
+    }
     public void getIncomeDataBeforeDate(int dateInMS){
         Income[] income = allIncome;
         for (Income i : income) {
             i.setTransactionType("+");
             if(i.date<dateInMS){
                 payData.add(i);
+            }
+        }
+    }
+
+    public void getIncomeDataWithCurrency(String currency){
+        Income[] income = allIncome;
+        int currencyID = Currency.abbrToId(currency);
+        if(!(currencyID == -1)) {
+            for (Income i : income) {
+                i.setTransactionType("+");
+                if (i.currencyType == currencyID) {
+                    payData.add(i);
+                }
             }
         }
     }
