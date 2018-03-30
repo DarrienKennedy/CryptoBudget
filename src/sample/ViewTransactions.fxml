@@ -18,11 +18,10 @@
         <MenuButton layoutX="14.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" style="-fx-background-color: #B5FFE1;">
             <items>
                 <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />
+                <MenuItem mnemonicParsing="false" text="Transactions" />
                 <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="CryptoCurrencies" />
-                <MenuItem mnemonicParsing="false" onAction="#goToAddTransaction" text="Add a Transaction" />
                 <MenuItem mnemonicParsing="false" onAction="#goToEditGoalsPage" text="Edit Goals" />
                 <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
-                <MenuItem mnemonicParsing="false" text="View Transactions" />
                 <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
             </items>
         </MenuButton>
@@ -46,6 +45,7 @@
         <Button layoutX="424.0" layoutY="34.0" mnemonicParsing="false" text="Search" />
         <JFXComboBox fx:id="categoryComboBox" focusColor="BLACK" layoutX="154.0" layoutY="34.0" prefHeight="25.0" prefWidth="92.0" unFocusColor="WHITE" />
         <Label layoutX="253.0" layoutY="6.0" text="View Transactions" textFill="WHITE" />
+        <Button layoutX="500.0" layoutY="40.0" text="+" onAction="#addTransaction" />
         <Button layoutX="500.0" layoutY="10.0" text="Reload" onAction="#displayItems" />
     </children>
 </AnchorPane>

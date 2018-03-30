@@ -27,13 +27,12 @@
         <JFXButton layoutX="443.0" layoutY="16.0" onAction="#searchCurrency" mnemonicParsing="false" text="Search Currency" style="-fx-background-color: #B5FFE1;"/>
       <MenuButton layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
          <items>
-            <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />
-            <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="CryptoCurrencies" />
-            <MenuItem mnemonicParsing="false" onAction="#goToAddTransaction" text="Add a Transaction" />
-            <MenuItem mnemonicParsing="false" onAction="#goToEditGoalsPage" text="Edit Goals" />
-            <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
-            <MenuItem mnemonicParsing="false" onAction="#goToViewTransactions" text="View Transactions" />
-            <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
+             <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />
+             <MenuItem mnemonicParsing="false" onAction="#goToViewTransactions" text="Transactions" />
+             <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="CryptoCurrencies" />
+             <MenuItem mnemonicParsing="false" onAction="#goToEditGoalsPage" text="Edit Goals" />
+             <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
+             <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
          </items>
       </MenuButton>
     </children>
