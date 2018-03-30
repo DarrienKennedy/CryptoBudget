@@ -208,5 +208,13 @@ public class EditGoalsController implements Initializable, ControlledScreen{
         myController.setScreen(Main.EditGoalsID);
     }
 
+    @FXML
+    private void goToViewGoals(ActionEvent event){
+        myController.unloadScreen(Main.ViewGoalsID);
+        myController.loadScreen(Main.ViewGoalsID, Main.ViewGoalsFile);
+        myController.setScreen(Main.ViewGoalsID);
+    }
+
+
 
 }

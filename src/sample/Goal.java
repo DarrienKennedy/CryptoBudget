@@ -3,6 +3,7 @@ package sample;
 import com.jfoenix.controls.JFXProgressBar;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
 public class Goal {
     //TODO: return goal closest to completion
@@ -56,6 +57,19 @@ public class Goal {
         this.setFinalGoal(amount);
         this.setGoalDescription(description);
         this.setProgressBar(progress);
+    }
+
+    //result.add(new Goal(id, userId, name, amount, date, description, isDone, currentAmount))
+    public Goal(int goalId, int userId, String name, double amount, int date, String description, boolean isDone, double currentAmount){
+        new Goal();
+        this.goalId = goalId;
+        this.setUserId(userId);
+        this.setGoalName(name);
+        this.setFinalGoal(amount);
+        this.setGoalDate(date);
+        this.setGoalDescription(description);
+        this.setDone(isDone);
+        this.setCurrentAmount(currentAmount);
     }
 
     /*
@@ -227,7 +241,7 @@ public class Goal {
     }
 
     //sets description for the goal given a primary key ID
-    public void setDescription(String note){
+    public void updateDescription(String note){
         try{
             String sql = "UPDATE GOALS SET GOALDESCRIPTION = ? WHERE GOALID = ?";
             PreparedStatement ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
@@ -253,18 +267,29 @@ public class Goal {
         }
     }
 
-    /*
-    public Goal[] getAllGoals(){
-        try{
-            String sql = "SELECT * FROM GOALS WHERE GOALID = ?";
-            PreparedStatement ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
-            ps.setInt(1, getGoalId());
+    public static Goal[] getAllGoals() {
+        try {
+            String getAll = String.format("SELECT * FROM GOALS WHERE USERID = ?;");
+            PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(getAll);
+            prep.setInt(1, Main.currentUser.getUserId());
+            ResultSet rs = prep.executeQuery();
+            ArrayList<Goal> result = new ArrayList();
+            while (rs.next()) {
+                int id = rs.getInt("GOALID");
+                int userId = rs.getInt("USERID");
+                String name = rs.getString("GOALNAME");
+                double amount = rs.getDouble("GOALAMOUNT");
+                int date = rs.getInt("GOALDATE");
+                String description = rs.getString("GOALDESCRIPTION");
+                boolean isDone = rs.getBoolean("ISDONE");
+                double currentAmount = rs.getDouble("CURRENTAMOUNT");
+                result.add(new Goal(id, userId, name, amount, date, description, isDone, currentAmount));
+            }
+            return result.toArray(new Goal[0]);
+        } catch (SQLException e) {
+            //e.printStackTrace();
         }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-
+        return null;
     }
-    */
 
 }

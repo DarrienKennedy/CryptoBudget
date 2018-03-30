@@ -23,6 +23,7 @@
                 <MenuItem mnemonicParsing="false" onAction="#goToEditGoalsPage" text="Edit Goals" />
                 <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
                 <MenuItem mnemonicParsing="false" text="View Transactions" />
+                <MenuItem mnemonicParsing="false" onAction="#goToViewGoals" text="View Goals" />
                 <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
             </items>
         </MenuButton>
