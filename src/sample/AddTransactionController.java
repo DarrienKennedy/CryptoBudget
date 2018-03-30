@@ -175,7 +175,6 @@ public class AddTransactionController implements Initializable, ControlledScreen
         }
 
         if (typePayment) {
-            System.out.println("ispayment");
             if (newPayment == null) {
                 newPayment = new Payment();
             }
@@ -188,10 +187,11 @@ public class AddTransactionController implements Initializable, ControlledScreen
             newPayment.setUserId(Main.currentUser.getUserId());
             if (!missingRequired) {
                 newPayment.create();
-                goToScreen(Main.ViewTransactionsID);
+                myController.unloadScreen(Main.ViewTransactionsID);
+                myController.loadScreen(Main.ViewTransactionsID, Main.ViewTransactionsFile);
+                myController.setScreen(Main.ViewTransactionsID);
             }
         } else if (typeIncome) {
-            System.out.println("isincome");
             if (newIncome == null) {
                 newIncome = new Income();
             }
@@ -205,7 +205,9 @@ public class AddTransactionController implements Initializable, ControlledScreen
             newIncome.setUserId(Main.currentUser.getUserId());
             if (!missingRequired) {
                 newIncome.create();
-                goToScreen(Main.ViewTransactionsID);
+                myController.unloadScreen(Main.ViewTransactionsID);
+                myController.loadScreen(Main.ViewTransactionsID, Main.ViewTransactionsFile);
+                myController.setScreen(Main.ViewTransactionsID);
             }
         } else {
             // TODO highlight or color the check boxes to signify that it is required

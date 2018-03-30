@@ -92,6 +92,13 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         transactionTable.setItems(payData);
     }
 
+    @FXML
+    public void addTransaction() {
+        myController.unloadScreen(Main.AddTransactionID);
+        myController.loadScreen(Main.AddTransactionID, Main.AddTransactionFile);
+        myController.setScreen(Main.AddTransactionID);
+    }
+
     public void getPaymentDataAfterDate(int dateInMS){
         Payment[] payments = allPayments;
         for (Payment p : payments) {
