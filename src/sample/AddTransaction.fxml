@@ -12,8 +12,8 @@
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.RadioButton?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddTransactionController">
-    <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="ac" maxHeight="Infinity" maxWidth="Infinity" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddTransactionController">
+    <AnchorPane fx:id="ac2" maxHeight="Infinity" maxWidth="Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
         <children>
             <Label layoutX="61.0" layoutY="65.0" text="Path to Image" textFill="WHITE" />
             <JFXTextField fx:id="imagePathField" focusColor="BLACK" layoutX="144.0" layoutY="61.0" unFocusColor="WHITE" />

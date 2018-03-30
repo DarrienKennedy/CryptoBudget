@@ -5,10 +5,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,45 +23,67 @@ import java.util.ResourceBundle;
 public class HomePageController implements Initializable, ControlledScreen{
 
     ScreensController myController;
-    @FXML
-    private TableView<Goal> goalsTable;
-    @FXML
-    private TableColumn<?, ?> dateCol;
-    @FXML
-    private TableColumn<?, ?> amountCol;
-    @FXML
-    private TableColumn<?, ?> nameCol;
-    @FXML
-    private TableColumn<?, ?> progressCol;
     private ObservableList<Goal> data;
     private PreparedStatement ps;
     private ResultSet rs;
+    private int index =0;
+    private int goalIndex=0;
+    private double maxProgress;
     int[] userCurrencies;
     double[] currencyValues;
     double[] amounts;
     double progress;
     double amount;
     double usdAmount;
-    String currencyAbv;
+    private Goal homepageGoal;
+    private double primAmount;
+    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
     @FXML
     Label name;
     @FXML
     Label accountBalance;
     @FXML
-    Label curAbv;
+    AnchorPane ac;
+    @FXML
+    Label gn_label;
+    @FXML
+    Label ed_label;
+    @FXML
+    Label ga_label;
+    @FXML
+    Label as_label;
+    @FXML
+    ProgressBar g_progress;
+    @FXML
+    PieChart cur_piechart;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if(Main.currentUser!=null) {
             setName();
             setAccountBalance();
-            convert(usdAmount);
             setAmountLabels();
             data = FXCollections.observableArrayList();
-            setCells();
             loadDataFromDatabase();
-            goalsTable.setItems(data);
+            homepageGoal = data.remove(goalIndex);
+            if(homepageGoal!=null) {
+                gn_label.setText("" + homepageGoal.getGoalName());
+                ed_label.setText("" + homepageGoal.getGoalDate());
+                ga_label.setText("" + homepageGoal.getFinalGoal());
+                as_label.setText("" + homepageGoal.getCurrentAmount());
+                if(homepageGoal.currentAmount!=0.0){
+                    g_progress.setProgress(homepageGoal.currentAmount / homepageGoal.getFinalGoal());
+                }
+                else{
+                    g_progress.setProgress(0.0);
+                }
+
+            }
         }
+        AnchorPane.setTopAnchor(ac, 0.0);
+        AnchorPane.setLeftAnchor(ac, 0.0);
+        AnchorPane.setRightAnchor(ac, 0.0);
+        AnchorPane.setBottomAnchor(ac, 0.0);
     }
 
     private void setName(){
@@ -68,13 +93,6 @@ public class HomePageController implements Initializable, ControlledScreen{
         else{
             name.setText(Main.currentUser.getUserName());
         }
-     }
-
-     private void setCells(){
-        dateCol.setCellValueFactory(new PropertyValueFactory<>("goalDate"));
-        amountCol.setCellValueFactory(new PropertyValueFactory<>("finalGoal"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("goalName"));
-        progressCol.setCellValueFactory(new PropertyValueFactory<>("progressBar"));
      }
 
      private void loadDataFromDatabase(){
@@ -91,24 +109,51 @@ public class HomePageController implements Initializable, ControlledScreen{
                 String description = rs.getString(6);
                 progress = rs.getDouble(8);
                 progress = progress/finalAmount;
+                if(maxProgress < progress && index < 0){
+                    maxProgress = progress;
+                    goalIndex = index;
+                }
+                else {
+                    maxProgress = progress;
+                    goalIndex = index;
+                }
                 data.add(new Goal(name, finalAmount, date, description, progress));
                 }
+            index++;
             }catch (SQLException e) {
                 e.printStackTrace();
             }
-        goalsTable.setItems(data);
      }
 
      private void setAccountBalance(){
         if(Currency.getUserCurrencies()!=null) {
+            int primId = Main.currentUser.getPrimaryCurrency();
+            double primValue = Currency.getCurrencyValue(primId);
+            String name = null;
             userCurrencies = Currency.getUserCurrencies();
             currencyValues = new double[userCurrencies.length];
             amounts = new double[userCurrencies.length];
+            String[] names = Currency.getUserCurrencyNames();
             for (int i = 0; i < userCurrencies.length; i++) {
                 currencyValues[i] = Currency.getCurrencyValue(userCurrencies[i]);
                 amounts[i] = getAmount(userCurrencies[i]);
-                usdAmount = usdAmount + (currencyValues[i] * amounts[i]);
+                double tempUSDAmount = currencyValues[i] * amounts[i];
+                usdAmount = usdAmount + (tempUSDAmount);
+                primAmount = tempUSDAmount/primValue;
+                String selectSQL = "SELECT CURRENCYNAME FROM CURRENCYVALUE WHERE CURRENCYVALUE = ?;";
+                try{
+                    ps = CryptoBudgetDatabase.connection.prepareStatement(selectSQL);
+                    ps.setDouble(1, currencyValues[i]);
+                    rs = ps.executeQuery();
+                    name = rs.getString("CURRENCYNAME");
+                } catch (SQLException e){
+
+                }
+                pieChartData.add(new PieChart.Data(name, primAmount));
             }
+            cur_piechart.setData(pieChartData);
+
+            accountBalance.setText(""+usdAmount/primValue);
         }
     }
 
@@ -126,23 +171,16 @@ public class HomePageController implements Initializable, ControlledScreen{
         return amount;
      }
 
-     private void convert(double usdAmount){
-        int primId = Main.currentUser.getPrimaryCurrency();
-        double primValue = Currency.getCurrencyValue(primId);
-        accountBalance.setText(""+usdAmount/primValue);
-     }
-
      private void setAmountLabels(){
         String selectSQL = "SELECT CURRENCYNAME FROM CURRENCYVALUE WHERE CURRENCYID = ?;";
         try{
             ps = CryptoBudgetDatabase.connection.prepareStatement(selectSQL);
             ps.setInt(1, Main.currentUser.getPrimaryCurrency());
             rs = ps.executeQuery();
-            currencyAbv = rs.getString("CURRENCYNAME");
+            accountBalance.setText(accountBalance.getText() + "   " +rs.getString("CURRENCYNAME") + "s");
      } catch (SQLException e){
 
      }
-     curAbv.setText(currencyAbv);
      }
 
     public void setScreenParent(ScreensController screenParent){

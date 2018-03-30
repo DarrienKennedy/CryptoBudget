@@ -9,6 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,7 +42,8 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
     private TableColumn<?, ?> currencyAbbr;
     @FXML
     private TableColumn<?, ?> currencyPercentChange;
-
+    @FXML
+    private AnchorPane ac;
 
     //private ArrayList<CurrencyObj> currencyList = new ArrayList();
     private PreparedStatement ps = null;
@@ -53,6 +55,10 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
         //setTextBoxes();
         setCells();
         //loadDataFromDatabase();
+        AnchorPane.setTopAnchor(ac, 0.0);
+        AnchorPane.setLeftAnchor(ac, 0.0);
+        AnchorPane.setRightAnchor(ac, 0.0);
+        AnchorPane.setBottomAnchor(ac, 0.0);
     }
 
 
