@@ -110,7 +110,7 @@ public class HomePageController implements Initializable, ControlledScreen{
                 //new Goal(name, amount, date, description, progress)
                 String name = rs.getString(3);
                 double finalAmount = rs.getDouble(4);
-                int date = rs.getInt(5);
+                String date = rs.getString(5);
                 String description = rs.getString(6);
                 progress = rs.getDouble(8);
                 progress = progress/finalAmount;

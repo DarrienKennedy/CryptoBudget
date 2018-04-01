@@ -1,9 +1,14 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventType;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
@@ -14,16 +19,50 @@ import java.util.*;
 
 public class ViewGoalsController implements Initializable, ControlledScreen {
     ScreensController myController;
+    private Goal[] allGoals;
+    private ObservableList<Goal> goalData;
 
+    @FXML
+    private TableView<Goal> goalsTable;
+    @FXML
+    private TableColumn<?, ?> dateCol;
+    @FXML
+    private TableColumn<?, ?> amountCol;
+    @FXML
+    private TableColumn<?, ?> nameCol;
+    @FXML
+    private TableColumn<?, ?> descriptionCol;
     @FXML
     private AnchorPane ac;
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
+        if(Main.currentUser != null){
+            allGoals = Goal.getAllGoals();
+            goalData = FXCollections.observableArrayList();;
+            setCells();
+            loadData();
+        }
+
         AnchorPane.setTopAnchor(ac, 0.0);
         AnchorPane.setLeftAnchor(ac, 0.0);
         AnchorPane.setRightAnchor(ac, 0.0);
         AnchorPane.setBottomAnchor(ac, 0.0);
+
+    }
+
+    private void loadData(){
+        for(Goal g : allGoals){
+            goalData.add(g);
+        }
+        goalsTable.setItems(goalData);
+    }
+
+    private void setCells(){
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("goalDate"));
+        amountCol.setCellValueFactory(new PropertyValueFactory<>("finalGoal"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("goalName"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("goalDescription"));
 
     }
 
