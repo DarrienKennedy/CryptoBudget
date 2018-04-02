@@ -169,7 +169,6 @@ public class AddTransactionController implements Initializable, ControlledScreen
         }
 
         if (typePayment) {
-            System.out.println("ispayment");
             if (newPayment == null) {
                 newPayment = new Payment();
             }

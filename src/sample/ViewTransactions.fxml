@@ -13,6 +13,7 @@
 
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import com.jfoenix.controls.JFXButton?>
 <AnchorPane fx:id="ac" maxHeight="Infinity" maxWidth="Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewTransactionsController">
     <children>
         <MenuButton layoutX="14.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" style="-fx-background-color: #B5FFE1;">
@@ -42,8 +43,8 @@
             </columns>
         </TableView>
         <PieChart layoutY="46.0" prefHeight="146.0" prefWidth="192.0" />
-        <JFXTextField focusColor="BLACK" layoutX="264.0" layoutY="34.0" unFocusColor="WHITE" />
-        <Button layoutX="424.0" layoutY="34.0" mnemonicParsing="false" text="Search" />
+        <JFXTextField fx:id="queryString" focusColor="BLACK" layoutX="264.0" layoutY="34.0" unFocusColor="WHITE" />
+        <JFXButton layoutX="424.0" layoutY="34.0" mnemonicParsing="false" text="Search" onAction="#search"/>
         <JFXComboBox fx:id="categoryComboBox" focusColor="BLACK" layoutX="154.0" layoutY="34.0" prefHeight="25.0" prefWidth="92.0" unFocusColor="WHITE" />
         <Label layoutX="253.0" layoutY="6.0" text="View Transactions" textFill="WHITE" />
         <Button layoutX="500.0" layoutY="10.0" text="Reload" onAction="#displayItems" />

@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
@@ -24,8 +25,10 @@ import java.util.ResourceBundle;
 public class ViewTransactionsController implements Initializable, ControlledScreen{
 
     ScreensController myController;
-    ObservableList<String> categoryList = FXCollections.observableArrayList( "Amount","Currency","Other Party");
+    ObservableList<String> categoryList = FXCollections.observableArrayList( "Amount Greater Than", "Amount Less Than", "Date After", "Date Before", "Currency","Other Party");
 
+    @FXML
+    private TextField queryString;
     @FXML
     private JFXComboBox categoryComboBox;
     @FXML
@@ -90,21 +93,98 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         transactionTable.setItems(payData);
     }
 
-    public void getPaymentDataAfterDate(int dateInMS){
-        Payment[] payments = allPayments;
+    public void search(){
+        payData.clear();
+        boolean transactionTypePayment = payment.isSelected();
+        boolean transactionTypeIncome = income.isSelected();
+        boolean transactionTypeBoth = both.isSelected();
+
+        String searchTransaction = categoryComboBox.getValue().toString();
+        String inputString = queryString.getText().trim();
+
+        if(searchTransaction.equals("Amount Greater Than")){
+            if(transactionTypePayment){
+                getPaymentDataOverAmount(inputString);
+            }else if(transactionTypeIncome){
+                getIncomeDataOverAmount(inputString);
+            }else if(transactionTypeBoth){
+                getPaymentDataOverAmount(inputString);
+                getIncomeDataOverAmount(inputString);
+            }
+
+        }else if(searchTransaction.equals("Amount Less Than")){
+            if(transactionTypePayment){
+                getPaymentDataUnderAmount(inputString);
+            }else if(transactionTypeIncome){
+                getIncomeDataUnderAmount(inputString);
+            }else if(transactionTypeBoth){
+                getPaymentDataUnderAmount(inputString);
+                getIncomeDataUnderAmount(inputString);
+            }
+        }else if(searchTransaction.equals("Date After")){
+            if(transactionTypePayment){
+                getPaymentDataAfterDate(inputString);
+            }else if(transactionTypeIncome){
+                getIncomeDataAfterDate(inputString);
+            }else if(transactionTypeBoth){
+                getPaymentDataAfterDate(inputString);
+                getIncomeDataAfterDate(inputString);
+            }
+        }else if(searchTransaction.equals("Date Before")){
+            if(transactionTypePayment){
+                getPaymentDataBeforeDate(inputString);
+            }else if(transactionTypeIncome){
+                getIncomeDataBeforeDate(inputString);
+            }else if(transactionTypeBoth){
+                getPaymentDataBeforeDate(inputString);
+                getIncomeDataBeforeDate(inputString);
+            }
+        }else if(searchTransaction.equals("Currency")){
+            if(transactionTypePayment){
+                getPaymentDataWithCurrency(inputString);
+            }else if(transactionTypeIncome){
+                getIncomeDataWithCurrency(inputString);
+            }else if(transactionTypeBoth){
+                getPaymentDataWithCurrency(inputString);
+                getIncomeDataWithCurrency(inputString);
+            }
+        }else if(searchTransaction.equals("Other Party")){
+            if(transactionTypePayment){
+                getPaymentDataWithOtherParty(inputString);
+            }else if(transactionTypeIncome){
+                getIncomeDataWithOtherParty(inputString);
+            }else if(transactionTypeBoth){
+                getPaymentDataWithOtherParty(inputString);
+                getIncomeDataWithOtherParty(inputString);
+            }
+        }
+        transactionTable.setItems(payData);
+    }
+
+
+    public void getPaymentDataAfterDate(String dateInMS){
+        long stringDateToLong = Main.dateToLong(dateInMS);
+        Payment[] payments = new Payment[0];
+        if(stringDateToLong != 0){
+            payments = allPayments;
+        }
         for (Payment p : payments) {
             p.setTransactionType("-");
-            if(p.date>dateInMS){
+            if(p.date>stringDateToLong){
                 payData.add(p);
             }
         }
     }
 
-    public void getPaymentDataBeforeDate(int dateInMS){
-        Payment[] payments = allPayments;
+    public void getPaymentDataBeforeDate(String dateInMS){
+        long stringDateToLong = Main.dateToLong(dateInMS);
+        Payment[] payments = new Payment[0];
+        if(stringDateToLong != 0){
+            payments = allPayments;
+        }
         for (Payment p : payments) {
             p.setTransactionType("-");
-            if(p.date<dateInMS){
+            if(p.date<stringDateToLong){
                 payData.add(p);
             }
         }
@@ -113,7 +193,8 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     public void getPaymentDataOverAmount(String currencyAmount){
         Payment[] payments = allPayments;
         String[] inputStrings = currencyAmount.split(" ");
-        int currencyID = Currency.abbrToId(inputStrings[0]);
+        int currencyID = Currency.abbrToId(inputStrings[0].toUpperCase());
+
         double inputAmount = Double.parseDouble(inputStrings[1]);
         if(!(currencyID == -1 || inputAmount<0)) {
             for (Payment p : payments) {
@@ -128,7 +209,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     public void getPaymentDataUnderAmount(String currencyAmount){
         Payment[] payments = allPayments;
         String[] inputStrings = currencyAmount.split(" ");
-        int currencyID = Currency.abbrToId(inputStrings[0]);
+        int currencyID = Currency.abbrToId(inputStrings[0].toUpperCase());
         double inputAmount = Double.parseDouble(inputStrings[1]);
         if(!(currencyID == -1 || inputAmount<0)) {
             for (Payment p : payments) {
@@ -142,7 +223,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
 
     public void getPaymentDataWithCurrency(String currency){
         Payment[] payments = allPayments;
-        int currencyID = Currency.abbrToId(currency);
+        int currencyID = Currency.abbrToId(currency.toUpperCase());
         if(!(currencyID == -1)) {
             for (Payment p : payments) {
                 p.setTransactionType("-");
@@ -163,11 +244,15 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         }
     }
 
-    public void getIncomeDataAfterDate(int dateInMS){
-        Income[] income = allIncome;
+    public void getIncomeDataAfterDate(String dateInMS){
+        long stringDateToLong = Main.dateToLong(dateInMS);
+        Income[] income = new Income[0];
+        if(stringDateToLong != 0){
+            income = allIncome;
+        }
         for (Income i : income) {
             i.setTransactionType("+");
-            if(i.date>dateInMS){
+            if(i.date>stringDateToLong){
                 payData.add(i);
             }
         }
@@ -176,7 +261,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     public void getIncomeDataOverAmount(String currencyAmount){
         Income[] income = allIncome;
         String[] inputStrings = currencyAmount.split(" ");
-        int currencyID = Currency.abbrToId(inputStrings[0]);
+        int currencyID = Currency.abbrToId(inputStrings[0].toUpperCase());
         double inputAmount = Double.parseDouble(inputStrings[1]);
         if(!(currencyID == -1 || inputAmount<0)) {
             for (Income i : income) {
@@ -191,7 +276,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     public void getIncomeDataUnderAmount(String currencyAmount){
         Income[] income = allIncome;
         String[] inputStrings = currencyAmount.split(" ");
-        int currencyID = Currency.abbrToId(inputStrings[0]);
+        int currencyID = Currency.abbrToId(inputStrings[0].toUpperCase());
         double inputAmount = Double.parseDouble(inputStrings[1]);
         if(!(currencyID == -1 || inputAmount<0)) {
             for (Income i : income) {
@@ -202,11 +287,15 @@ public class ViewTransactionsController implements Initializable, ControlledScre
             }
         }
     }
-    public void getIncomeDataBeforeDate(int dateInMS){
-        Income[] income = allIncome;
+    public void getIncomeDataBeforeDate(String dateInMS){
+        long stringDateToLong = Main.dateToLong(dateInMS);
+        Income[] income = new Income[0];
+        if(stringDateToLong != 0){
+            income = allIncome;
+        }
         for (Income i : income) {
             i.setTransactionType("+");
-            if(i.date<dateInMS){
+            if(i.date<stringDateToLong){
                 payData.add(i);
             }
         }
@@ -214,7 +303,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
 
     public void getIncomeDataWithCurrency(String currency){
         Income[] income = allIncome;
-        int currencyID = Currency.abbrToId(currency);
+        int currencyID = Currency.abbrToId(currency.toUpperCase());
         if(!(currencyID == -1)) {
             for (Income i : income) {
                 i.setTransactionType("+");
@@ -225,6 +314,15 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         }
     }
 
+    public void getIncomeDataWithOtherParty(String otherParty){
+        Income[] income = allIncome;
+        for (Income i : income) {
+            i.setTransactionType("+");
+            if (i.otherParty.matches("*"+otherParty+"*")) {
+                payData.add(i);
+            }
+        }
+    }
     private void loadPaymentData(){
         Payment[] payments = allPayments;
         for (Payment p : payments) {
