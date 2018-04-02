@@ -214,4 +214,11 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
         myController.setScreen(Main.EditGoalsID);
     }
 
+    @FXML
+    private void goToViewGoals(ActionEvent event){
+        myController.unloadScreen(Main.ViewGoalsID);
+        myController.loadScreen(Main.ViewGoalsID, Main.ViewGoalsFile);
+        myController.setScreen(Main.ViewGoalsID);
+    }
+
 }

@@ -141,7 +141,7 @@ public class CryptoBudgetDatabase {
                     " USERID          INTEGER                         NOT NULL," +
                     " GOALNAME        TEXT                            NOT NULL," +
                     " GOALAMOUNT      REAL                            NOT NULL," +
-                    " GOALDATE        INT                             NOT NULL," +
+                    " GOALDATE        TEXT                            NOT NULL," +
                     " GOALDESCRIPTION TEXT," +
                     " ISDONE          NUMERIC                         NOT NULL," +
                     " CURRENTAMOUNT   REAL                            NOT NULL," +

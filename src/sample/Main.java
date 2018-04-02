@@ -28,6 +28,8 @@ public class Main extends Application {
     public static String AddTransactionFile = "AddTransaction.fxml";
     public static String EditGoalsID = "EditGoals";
     public static String EditGoalsFile = "EditGoals.fxml";
+    public static String ViewGoalsID = "ViewGoals";
+    public static String ViewGoalsFile = "ViewGoals.fxml";
     public static String CreateAccountID = "CreateAccount";
     public static String CreateAccountFile = "CreateAccount.fxml";
     public static String testID = "test";
@@ -94,6 +96,7 @@ public static void updateTimer(int updatedTimer){
         mainContainer.loadScreen(Main.AddTransactionID, Main.AddTransactionFile);
         mainContainer.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
         mainContainer.loadScreen(Main.CreateAccountID, Main.CreateAccountFile);
+        mainContainer.loadScreen(Main.ViewGoalsID, Main.ViewTransactionsFile);
 
         sc = mainContainer;
         AnchorPane.setTopAnchor(sc, 0.0);

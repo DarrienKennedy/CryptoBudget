@@ -89,10 +89,13 @@ public class HomePageController implements Initializable, ControlledScreen{
     }
 
     private void setName(){
-        if(!Main.currentUser.getFirstName().isEmpty() && !Main.currentUser.getLastName().isEmpty()){
-            name.setText(Main.currentUser.getFirstName()+ " " + Main.currentUser.getLastName());
-        }
-        else{
+        if (!Main.currentUser.getFirstName().isEmpty()) {
+            if (!Main.currentUser.getLastName().isEmpty()) {
+                name.setText(Main.currentUser.getFirstName() + " " + Main.currentUser.getLastName());
+            } else {
+                name.setText(Main.currentUser.getFirstName());
+            }
+        } else {
             name.setText(Main.currentUser.getUserName());
         }
      }
@@ -107,7 +110,7 @@ public class HomePageController implements Initializable, ControlledScreen{
                 //new Goal(name, amount, date, description, progress)
                 String name = rs.getString(3);
                 double finalAmount = rs.getDouble(4);
-                int date = rs.getInt(5);
+                String date = rs.getString(5);
                 String description = rs.getString(6);
                 progress = rs.getDouble(8);
                 progress = progress/finalAmount;
@@ -155,7 +158,7 @@ public class HomePageController implements Initializable, ControlledScreen{
             }
             cur_piechart.setData(pieChartData);
 
-            accountBalance.setText(""+usdAmount/primValue);
+            accountBalance.setText(String.format("%.2f", usdAmount / primValue));
         }
     }
 
@@ -180,9 +183,9 @@ public class HomePageController implements Initializable, ControlledScreen{
             ps.setInt(1, Main.currentUser.getPrimaryCurrency());
             rs = ps.executeQuery();
             accountBalance.setText(accountBalance.getText() + "   " +rs.getString("CURRENCYNAME") + "s");
-     } catch (SQLException e){
+         } catch (SQLException e){
 
-     }
+         }
      }
 
     public void setScreenParent(ScreensController screenParent){
@@ -236,6 +239,13 @@ public class HomePageController implements Initializable, ControlledScreen{
         myController.unloadScreen(Main.EditGoalsID);
         myController.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
         myController.setScreen(Main.EditGoalsID);
+    }
+
+    @FXML
+    private void goToViewGoals(ActionEvent event){
+        myController.unloadScreen(Main.ViewGoalsID);
+        myController.loadScreen(Main.ViewGoalsID, Main.ViewGoalsFile);
+        myController.setScreen(Main.ViewGoalsID);
     }
 
 

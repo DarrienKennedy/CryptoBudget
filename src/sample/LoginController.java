@@ -67,29 +67,30 @@ public class LoginController implements Initializable, ControlledScreen{
         pass = password.getText();
         user = username.getText();
         loadUserFromDatabase();
-        if(tempUser != null){
-            if(pass.equals(tempUser.getPassword())){
+        if(tempUser != null) {
+            if (pass.equals(tempUser.getPassword())) {
                 Main.currentUser = tempUser;
                 myController.unloadScreen(Main.HomePageID);
                 myController.loadScreen(Main.HomePageID, Main.HomePageFile);
                 myController.setScreen(Main.HomePageID);
                 username.setText("");
                 password.setText("");
+
+                String currentRefreshRate = Main.currentUser.getRefreshRate();
+                int refreshRateMS = 0;
+                if (currentRefreshRate.equals("1 Hour")) {
+                    refreshRateMS = 60 * 60 * 1000;
+                } else if (currentRefreshRate.equals("5 minutes")) {
+                    refreshRateMS = 5 * 60 * 1000;
+                } else if (currentRefreshRate.equals("10 minutes")) {
+                    refreshRateMS = 10 * 60 * 1000;
+                } else if (currentRefreshRate.equals(("30 minutes"))) {
+                    refreshRateMS = 30 * 60 * 1000;
+                }
+                if (refreshRateMS > 0) {
+                    Main.setTimer(refreshRateMS);
+                }
             }
-        }
-        String currentRefreshRate = Main.currentUser.getRefreshRate();
-        int refreshRateMS = 0;
-        if(currentRefreshRate.equals("1 Hour")){
-            refreshRateMS = 60 * 60 * 1000;
-        } else if( currentRefreshRate.equals("5 minutes")){
-            refreshRateMS = 5 * 60 * 1000;
-        } else if( currentRefreshRate.equals("10 minutes")){
-            refreshRateMS = 10 * 60 * 1000;
-        } else if(currentRefreshRate.equals(("30 minutes"))){
-            refreshRateMS = 30 * 60 * 1000;
-        }
-        if(refreshRateMS>0){
-            Main.setTimer(refreshRateMS);
         }
     }
 

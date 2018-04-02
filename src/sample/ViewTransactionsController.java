@@ -85,6 +85,8 @@ public class ViewTransactionsController implements Initializable, ControlledScre
 
     @FXML
     public void displayItems() {
+        categoryComboBox.setItems(categoryList);
+        categoryComboBox.setValue(categoryList.get(0));
         payData = FXCollections.observableArrayList();
         setCells();
         //TODO: use transaction/payment/income sql methods
@@ -168,6 +170,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         if(stringDateToLong != 0){
             payments = allPayments;
         }
+
         for (Payment p : payments) {
             p.setTransactionType("-");
             if(p.date>stringDateToLong){
@@ -390,6 +393,13 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         myController.unloadScreen(Main.EditGoalsID);
         myController.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
         myController.setScreen(Main.EditGoalsID);
+    }
+
+    @FXML
+    private void goToViewGoals(ActionEvent event){
+        myController.unloadScreen(Main.ViewGoalsID);
+        myController.loadScreen(Main.ViewGoalsID, Main.ViewGoalsFile);
+        myController.setScreen(Main.ViewGoalsID);
     }
 
 }

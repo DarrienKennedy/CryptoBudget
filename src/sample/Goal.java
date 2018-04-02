@@ -3,13 +3,15 @@ package sample;
 import com.jfoenix.controls.JFXProgressBar;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
 public class Goal {
+    //TODO: return goal closest to completion
     protected int goalId;
     protected int userId;   //type = user...
     protected String goalName;
     protected double finalGoal;
-    protected int goalDate;
+    protected String goalDate;
     protected String goalDescription;
     protected boolean isDone;
     protected double currentAmount;
@@ -20,10 +22,10 @@ public class Goal {
      */
     public Goal(){
         //this.setGoalId(0);
-        this.setUserId(0);
+        this.setUserId(0000);
         this.setGoalName("DEFAULT NAME");
-        this.setFinalGoal(100.00);
-        this.setGoalDate(000);
+        this.setFinalGoal(10.0);
+        this.setGoalDate("01-01-2011");
         this.setGoalDescription("DEFAULT DESCRIPTION");
         this.setDone(false);
         this.setCurrentAmount(0.00);
@@ -35,7 +37,7 @@ public class Goal {
      * @param name -- name for the goal
      * @param description -- describes the nature of the goal
      */
-    public Goal(String name, double amount, int date, String description){
+    public Goal(String name, double amount, String date, String description){
         new Goal();
         this.setGoalDate(date);
         this.setGoalName(name);
@@ -48,13 +50,26 @@ public class Goal {
      * @param name -- name for the goal
      * @param description -- describes the nature of the goal
      */
-    public Goal(String name, double amount, int date, String description, double progress){
+    public Goal(String name, double amount, String date, String description, double progress){
         new Goal();
         this.setGoalDate(date);
         this.setGoalName(name);
         this.setFinalGoal(amount);
         this.setGoalDescription(description);
         this.setProgressBar(progress);
+    }
+
+    //result.add(new Goal(id, userId, name, amount, date, description, isDone, currentAmount))
+    public Goal(int goalId, int userId, String name, double amount, String date, String description, boolean isDone, double currentAmount){
+        new Goal();
+        this.goalId = goalId;
+        this.setUserId(userId);
+        this.setGoalName(name);
+        this.setFinalGoal(amount);
+        this.setGoalDate(date);
+        this.setGoalDescription(description);
+        this.setDone(isDone);
+        this.setCurrentAmount(currentAmount);
     }
 
     /*
@@ -88,7 +103,7 @@ public class Goal {
     /*
      * @return the value for the end date of the goal
      */
-    public int getGoalDate(){
+    public String getGoalDate(){
         return goalDate;
     }
 
@@ -152,7 +167,7 @@ public class Goal {
      * sets the date for the goal to be completed
      * @param dateToSet -- end date for goal
      */
-    public void setGoalDate(int dateToSet){
+    public void setGoalDate(String dateToSet){
         goalDate = dateToSet;
     }
 
@@ -192,15 +207,16 @@ public class Goal {
      */
     public void create(){
         try{
-            String sql = "INSERT INTO GOALS (USERID, GOALAMOUNT, GOALDATE, GOALDESCRIPTION, " +
-                    "ISDONE, CURRENTAMOUNT)" + "VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO GOALS (USERID, GOALNAME, GOALAMOUNT, GOALDATE, GOALDESCRIPTION, " +
+                    "ISDONE, CURRENTAMOUNT)" + "VALUES (?, ?, ?, DATE(?), ?, ?, ?)";
             PreparedStatement ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
             ps.setInt(1, userId);
-            ps.setDouble(2, finalGoal);
-            ps.setInt(3, 000); //change goalDate to type int, or to  type date in cbdb.java
-            ps.setString(4, goalDescription);
-            ps.setBoolean(5, isDone);
-            ps.setDouble(6, currentAmount);
+            ps.setString(2, goalName);
+            ps.setDouble(3, finalGoal);
+            ps.setString(4, goalDate); //change goalDate to type int, or to  type date in cbdb.java
+            ps.setString(5, goalDescription);
+            ps.setBoolean(6, isDone);
+            ps.setDouble(7, currentAmount);
             ps.executeUpdate();
         }
         catch (SQLException e){
@@ -226,7 +242,7 @@ public class Goal {
     }
 
     //sets description for the goal given a primary key ID
-    public void setDescription(String note){
+    public void updateDescription(String note){
         try{
             String sql = "UPDATE GOALS SET GOALDESCRIPTION = ? WHERE GOALID = ?";
             PreparedStatement ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
@@ -252,18 +268,29 @@ public class Goal {
         }
     }
 
-    /*
-    public Goal[] getAllGoals(){
-        try{
-            String sql = "SELECT * FROM GOALS WHERE GOALID = ?";
-            PreparedStatement ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
-            ps.setInt(1, getGoalId());
+    public static Goal[] getAllGoals() {
+        try {
+            String getAll = String.format("SELECT * FROM GOALS WHERE USERID = ?;");
+            PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(getAll);
+            prep.setInt(1, Main.currentUser.getUserId());
+            ResultSet rs = prep.executeQuery();
+            ArrayList<Goal> result = new ArrayList();
+            while (rs.next()) {
+                int id = rs.getInt("GOALID");
+                int userId = rs.getInt("USERID");
+                String name = rs.getString("GOALNAME");
+                double amount = rs.getDouble("GOALAMOUNT");
+                String date = rs.getString("GOALDATE");
+                String description = rs.getString("GOALDESCRIPTION");
+                boolean isDone = rs.getBoolean("ISDONE");
+                double currentAmount = rs.getDouble("CURRENTAMOUNT");
+                result.add(new Goal(id, userId, name, amount, date, description, isDone, currentAmount));
+            }
+            return result.toArray(new Goal[0]);
+        } catch (SQLException e) {
+            //e.printStackTrace();
         }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-
+        return null;
     }
-    */
 
 }
