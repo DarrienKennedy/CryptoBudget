@@ -53,8 +53,8 @@ public class Income extends Transaction {
             // Get previous amount value
             PreparedStatement prev = CryptoBudgetDatabase.connection.prepareStatement("SELECT AMOUNT FROM INCOME " +
                     "WHERE INCOMEID = ? AND USERID = ?;");
-            prev.setInt(0, id);
-            prev.setInt(1, Main.currentUser.getUserId());
+            prev.setInt(1, id);
+            prev.setInt(2, Main.currentUser.getUserId());
             ResultSet rs = prev.executeQuery();
             rs.next();
             double prevAmount = rs.getDouble("AMOUNT");

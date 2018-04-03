@@ -14,6 +14,7 @@ import javax.print.DocFlavor;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -42,9 +43,20 @@ public class EditTransactionController implements Initializable, ControlledScree
             Transaction transaction = ViewTransactionsController.currentlyEditting;
             amountField.setText(String.format("%.2f", transaction.getAmount()));
             currencyField.setText(Currency.idToAbbr(transaction.getCurrencyType()));
-            //frequencyComboBox.setValue(transaction.getFrequency());
+
+            int freq = transaction.getFrequency();
+            if (freq == 0) {
+                frequencyComboBox.setValue(frequencyList.get(0));
+            } else if (freq == 52) {
+                frequencyComboBox.setValue(frequencyList.get(1));
+            } else if (freq == 12) {
+                frequencyComboBox.setValue(frequencyList.get(2));
+            } else if (freq == 1) {
+                frequencyComboBox.setValue(frequencyList.get(3));
+            }
+
             otherPartyField.setText(transaction.getOtherParty());
-            //datePicker.setValue(transaction.getDate());
+            datePicker.setValue(LocalDate.ofEpochDay(transaction.getDate() / 86400000)); // millisecond to day
         }
         AnchorPane.setTopAnchor(ac, 0.0);
         AnchorPane.setLeftAnchor(ac, 0.0);
@@ -54,7 +66,56 @@ public class EditTransactionController implements Initializable, ControlledScree
 
     @FXML
     public void update() {
-        System.out.println("done");
+        Transaction t = ViewTransactionsController.currentlyEditting;
+        try {
+            t.setAmount(Double.parseDouble(amountField.getText()));
+        } catch (NumberFormatException invalidAmountE) {
+            // TODO change the color of the amount field or something
+            System.out.println("e: amount bad");
+        }
+
+        String currencyAbbr = currencyField.getText().trim().toUpperCase();
+        int currencyId = Currency.abbrToId(currencyAbbr);
+        if (currencyId != -1) {
+            t.setCurrencyType(currencyId);
+        }
+
+        long epoch;
+        try {
+            LocalDate date = datePicker.getValue();
+            ZoneId zoneId = ZoneId.systemDefault();
+            epoch = date.atStartOfDay(zoneId).toEpochSecond() * 1000;
+            t.setDate(epoch);
+        } catch (Exception e) {
+            System.out.println("e: date bad");
+        }
+
+        t.setOtherParty(otherPartyField.getText());
+
+        String frequencySelected = frequencyComboBox.getValue().toString();
+        if (frequencySelected.equals(frequencyList.get(0))) {
+            t.setFrequency(0);
+        } else if (frequencySelected.equals(frequencyList.get(1))) {
+            t.setFrequency(52);
+        } else if (frequencySelected.equals(frequencyList.get(2))) {
+            t.setFrequency(12);
+        } else if (frequencySelected.equals(frequencyList.get(3))) {
+            t.setFrequency(1);
+        }
+
+
+
+
+
+        if (t.getTransactionType().equals("+")) {
+            ((Income) t).update();
+        } else {
+            ((Payment) t).update();
+        }
+
+        myController.unloadScreen(Main.ViewTransactionsID);
+        myController.loadScreen(Main.ViewTransactionsID, Main.ViewTransactionsFile);
+        myController.setScreen(Main.ViewTransactionsID);
     }
 
     public void setScreenParent(ScreensController screenParent){

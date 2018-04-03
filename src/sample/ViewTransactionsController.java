@@ -86,7 +86,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         col2.setCellValueFactory(new PropertyValueFactory<>("amount"));
         col3.setCellValueFactory(new PropertyValueFactory<>("currencyAbbreviation"));
         col4.setCellValueFactory(new PropertyValueFactory<>("otherParty"));
-        col5.setCellValueFactory(new PropertyValueFactory<>("transactionType"));
+        col5.setCellValueFactory(new PropertyValueFactory<>("dateString"));
 
         Callback<TableColumn<Transaction, String>, TableCell<Transaction, String>> delCellFactory =
                 new Callback<TableColumn<Transaction, String>, TableCell<Transaction, String>>() {

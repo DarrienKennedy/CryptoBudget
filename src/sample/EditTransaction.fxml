@@ -33,18 +33,8 @@
             <Button layoutX="143.0" layoutY="350.0" mnemonicParsing="false" onAction="#update" text="Update" />
             <Label layoutX="245.0" layoutY="19.0" text="Edit Transaction" textFill="WHITE" />
 
-            <MenuButton layoutX="-4.0" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
-                <items>
-                    <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />
-                    <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="CryptoCurrencies" />
-                    <MenuItem mnemonicParsing="false" onAction="#goToAddTransaction" text="Add a Transaction" />
-                    <MenuItem mnemonicParsing="false" onAction="#goToEditGoalsPage" text="Edit Goals" />
-                    <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
-                    <MenuItem mnemonicParsing="false" onAction="#goToViewTransactions" text="View Transactions" />
-                    <MenuItem mnemonicParsing="false" onAction="#goToViewGoals" text="View Goals" />
-                    <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
-                </items>
-            </MenuButton>
+            <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0"
+                    onAction="#goToViewTransactions" text="Back" />
         </children>
     </AnchorPane>
 </AnchorPane>
