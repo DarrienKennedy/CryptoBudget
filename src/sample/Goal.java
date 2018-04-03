@@ -202,6 +202,11 @@ public class Goal {
 
     public void setProgressBar(double progress) { progressBar.setProgress(progress); }
 
+    @Override
+    public String toString(){
+        return String.format(goalId + ": " + goalName);
+    }
+
     /*
      * database methods
      */
@@ -266,6 +271,31 @@ public class Goal {
         catch(SQLException e){
             e.printStackTrace();
         }
+    }
+
+    public static Goal getGoal(int findGoalId){
+        try {
+            String getAll = String.format("SELECT * FROM GOALS WHERE GOALID = ? AND USERID = ?;");
+            PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(getAll);
+            prep.setInt(1, findGoalId);
+            prep.setInt(2, Main.currentUser.getUserId());
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("GOALID");
+                int userId = rs.getInt("USERID");
+                String name = rs.getString("GOALNAME");
+                double amount = rs.getDouble("GOALAMOUNT");
+                String date = rs.getString("GOALDATE");
+                String description = rs.getString("GOALDESCRIPTION");
+                boolean isDone = rs.getBoolean("ISDONE");
+                double currentAmount = rs.getDouble("CURRENTAMOUNT");
+                Goal result = new Goal(id, userId, name, amount, date, description, isDone, currentAmount);
+                return result;
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+        return null;
     }
 
     public static Goal[] getAllGoals() {
