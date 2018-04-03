@@ -17,11 +17,11 @@ public class Payment extends Transaction {
     }
 
     //constructor used for ViewTransactionsController
-    public Payment(int newCurrencyType, double newAmount, String newOtherParty, int newDate) {
+    public Payment(int newCurrencyType, double newAmount, String newOtherParty, long newDate) {
         super(newCurrencyType, newAmount, newOtherParty, newDate, "Payment");
     }
 
-    public Payment(int id, int userId, int currencyType, double amount, int date, int endDate,
+    public Payment(int id, int userId, int currencyType, double amount, long date, long endDate,
                    int frequency, String otherParty) {
         super(id, userId, currencyType, amount, date, endDate, frequency, otherParty);
     }
@@ -36,8 +36,8 @@ public class Payment extends Transaction {
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(savePayment);
             prep.setInt(1, userId);
             prep.setDouble(2, amount);
-            prep.setInt(3, date);
-            prep.setInt(4, endDate);
+            prep.setLong(3, date);
+            prep.setLong(4, endDate);
             prep.setInt(5, currencyType);
             prep.setInt(6, frequency);
             prep.setString(7, otherParty);
@@ -63,8 +63,8 @@ public class Payment extends Transaction {
                     "FREQUENCY = ?, OTHERPARTY = ? WHERE PAYMENTID = ? AND USERID = ?;";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(update);
             prep.setDouble(1, amount);
-            prep.setInt(2, date);
-            prep.setInt(3, endDate);
+            prep.setLong(2, date);
+            prep.setLong(3, endDate);
             prep.setInt(4, currencyType);
             prep.setInt(5, frequency);
             prep.setString(6, otherParty);
@@ -88,8 +88,8 @@ public class Payment extends Transaction {
                 int id = rs.getInt("PAYMENTID");
                 int userId = rs.getInt("USERID");
                 double amount = rs.getDouble("AMOUNT");
-                int date = rs.getInt("DATE");
-                int endDate = rs.getInt("ENDDATE");
+                long date = rs.getLong("DATE");
+                long endDate = rs.getLong("ENDDATE");
                 int currencyType = rs.getInt("CURRENCYTYPE");
                 int frequency = rs.getInt("FREQUENCY");
                 String otherParty = rs.getString("OTHERPARTY");
@@ -113,8 +113,8 @@ public class Payment extends Transaction {
                 int id = rs.getInt("PAYMENTID");
                 int userId = rs.getInt("USERID");
                 double amount = rs.getDouble("AMOUNT");
-                int date = rs.getInt("DATE");
-                int endDate = rs.getInt("ENDDATE");
+                long date = rs.getLong("DATE");
+                long endDate = rs.getLong("ENDDATE");
                 int currencyType = rs.getInt("CURRENCYTYPE");
                 int frequency = rs.getInt("FREQUENCY");
                 String otherParty = rs.getString("OTHERPARTY");
@@ -129,7 +129,7 @@ public class Payment extends Transaction {
 
     public void remove() {
         try {
-            Currency.updateCurrencyAmount(id, amount);
+            Currency.updateCurrencyAmount(currencyType, amount);
             String remove = "DELETE FROM PAYMENT WHERE PAYMENTID = ? AND USERID = ?;";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(remove);
             prep.setInt(1, id);

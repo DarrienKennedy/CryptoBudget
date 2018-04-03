@@ -32,6 +32,8 @@ public class Main extends Application {
     public static String ViewGoalsFile = "ViewGoals.fxml";
     public static String CreateAccountID = "CreateAccount";
     public static String CreateAccountFile = "CreateAccount.fxml";
+    public static String EditTransactionID = "EditTransaction";
+    public static String EditTransactionFile = "EditTransaction.fxml";
     public static String testID = "test";
     public static String testFile = "test.fxml";
     public static Timer timer = new Timer();
@@ -97,6 +99,7 @@ public static void updateTimer(int updatedTimer){
         mainContainer.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
         mainContainer.loadScreen(Main.CreateAccountID, Main.CreateAccountFile);
         mainContainer.loadScreen(Main.ViewGoalsID, Main.ViewTransactionsFile);
+        mainContainer.loadScreen(Main.EditTransactionID, Main.EditTransactionFile);
 
         sc = mainContainer;
         AnchorPane.setTopAnchor(sc, 0.0);

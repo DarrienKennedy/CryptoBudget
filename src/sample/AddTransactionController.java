@@ -1,19 +1,30 @@
 package sample;
 
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class AddTransactionController implements Initializable, ControlledScreen{
@@ -37,7 +48,7 @@ public class AddTransactionController implements Initializable, ControlledScreen
     @FXML
     private CheckBox incomeOption;
     @FXML
-    private JFXTextField dateField;
+    private JFXDatePicker datePicker;
     @FXML
     private JFXTextField otherPartyField;
     @FXML
@@ -48,6 +59,8 @@ public class AddTransactionController implements Initializable, ControlledScreen
     private AnchorPane ac;
     @FXML
     private AnchorPane ac2;
+    @FXML
+    private ImageView receiptImage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -155,8 +168,21 @@ public class AddTransactionController implements Initializable, ControlledScreen
         } else {
             currencyId = currencyId;
         }
-        // TODO implement date parsing from string
-        // String date = dateField.getText();
+        long epoch;
+        try {
+            LocalDate date = datePicker.getValue();
+            ZoneId zoneId = ZoneId.systemDefault();
+            epoch = date.atStartOfDay(zoneId).toEpochSecond() * 1000;
+        } catch (Exception e) {
+            epoch = -1;
+            missingRequired = true;
+            System.out.println("e: date bad");
+        }
+
+        // Convert date to millisecond test
+//        Date tst = new Date(epoch);
+//        Format f = new SimpleDateFormat("MM dd HH:mm:ss");
+//        System.out.printf("ms:%d d:%s\n", epoch, f.format(tst));
 
         String otherParty = otherPartyField.getText();
         boolean typePayment = payment.isSelected();
@@ -180,10 +206,9 @@ public class AddTransactionController implements Initializable, ControlledScreen
             }
             newPayment.setAmount(amount);
             newPayment.setCurrencyType(currencyId);
-            //newPayment.setDate(100); // TODO Fix date here
+            newPayment.setDate(epoch);
             newPayment.setOtherParty(otherParty);
             newPayment.setFrequency(frequency);
-            newPayment.setUserId(0);
             newPayment.setUserId(Main.currentUser.getUserId());
             if (!missingRequired) {
                 newPayment.create();
@@ -195,13 +220,11 @@ public class AddTransactionController implements Initializable, ControlledScreen
             if (newIncome == null) {
                 newIncome = new Income();
             }
-            // TODO make same changes as above.
             newIncome.setAmount(amount);
             newIncome.setCurrencyType(currencyId);
-            //newIncome.setDate(100);
+            newIncome.setDate(epoch);
             newIncome.setOtherParty(otherParty);
             newIncome.setFrequency(frequency);
-            newIncome.setUserId(0);
             newIncome.setUserId(Main.currentUser.getUserId());
             if (!missingRequired) {
                 newIncome.create();
@@ -217,9 +240,11 @@ public class AddTransactionController implements Initializable, ControlledScreen
     @FXML
     private void useOCR(ActionEvent event) {
         String imagePath = imagePathField.getText();
+        receiptImage.setImage(new Image(new File(imagePath).toURI().toString()));
         if (Main.currentUser.getOCR() == 1) {
             amountField.setText(OCR.getTotalReceiptPrice(imagePath));
         }
+        imagePathField.setText("");
     }
 
     private void goToScreen(String screenId) {
@@ -235,7 +260,6 @@ public class AddTransactionController implements Initializable, ControlledScreen
         currencyField.setText("");
         frequencyComboBox.setValue(frequencyList.get(0));
         payment.setSelected(true);
-        dateField.setText("");
         otherPartyField.setText("");
     }
 

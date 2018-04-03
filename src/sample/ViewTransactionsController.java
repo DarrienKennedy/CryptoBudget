@@ -6,12 +6,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +24,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
 
     ScreensController myController;
     ObservableList<String> categoryList = FXCollections.observableArrayList( "Amount Greater Than", "Amount Less Than", "Date After", "Date Before", "Currency","Other Party");
+    public static Transaction currentlyEditting;
 
     @FXML
     private TextField queryString;
@@ -41,6 +40,12 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     private TableColumn<?, ?> col3;
     @FXML
     private TableColumn<?, ?> col4;
+    @FXML
+    private TableColumn<?, ?> col5;
+    @FXML
+    private TableColumn<Transaction, String> edit;
+    @FXML
+    private TableColumn<Transaction, String> del;
     @FXML
     private RadioButton payment;
     @FXML
@@ -81,6 +86,74 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         col2.setCellValueFactory(new PropertyValueFactory<>("amount"));
         col3.setCellValueFactory(new PropertyValueFactory<>("currencyAbbreviation"));
         col4.setCellValueFactory(new PropertyValueFactory<>("otherParty"));
+        col5.setCellValueFactory(new PropertyValueFactory<>("transactionType"));
+
+        Callback<TableColumn<Transaction, String>, TableCell<Transaction, String>> delCellFactory =
+                new Callback<TableColumn<Transaction, String>, TableCell<Transaction, String>>() {
+                    @Override
+                    public TableCell call(final TableColumn<Transaction, String> param) {
+                        final TableCell<Transaction, String> cell = new TableCell<Transaction, String>() {
+                            final Button btn = new Button("Delete");
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        Transaction transaction = getTableView().getItems().get(getIndex());
+                                        if (transaction.getTransactionType().equals("+")) {
+                                            Income in = (Income) transaction;
+                                            in.remove();
+                                        } else {
+                                            Payment pm = (Payment) transaction;
+                                            pm.remove();
+                                        }
+                                        myController.unloadScreen(Main.ViewTransactionsID);
+                                        myController.loadScreen(Main.ViewTransactionsID, Main.ViewTransactionsFile);
+                                        myController.setScreen(Main.ViewTransactionsID);
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        del.setCellFactory(delCellFactory);
+
+        Callback<TableColumn<Transaction, String>, TableCell<Transaction, String>> editCellFactory =
+                new Callback<TableColumn<Transaction, String>, TableCell<Transaction, String>>() {
+                    @Override
+                    public TableCell call(final TableColumn<Transaction, String> param) {
+                        final TableCell<Transaction, String> cell = new TableCell<Transaction, String>() {
+                            final Button btn = new Button("Edit");
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        currentlyEditting = getTableView().getItems().get(getIndex());
+                                        myController.unloadScreen(Main.EditTransactionID);
+                                        myController.loadScreen(Main.EditTransactionID, Main.EditTransactionFile);
+                                        myController.setScreen(Main.EditTransactionID);
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        edit.setCellFactory(editCellFactory);
     }
 
     @FXML

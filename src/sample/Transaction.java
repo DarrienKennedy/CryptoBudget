@@ -1,5 +1,9 @@
 package sample;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Transaction {
     protected int id;
     protected int currencyType;
@@ -8,8 +12,8 @@ public class Transaction {
     protected int userId; // This will eventually be type User
     protected int frequency;
     protected String otherParty;
-    protected int date;
-    protected int endDate;
+    protected long date;
+    protected long endDate;
     protected boolean recurring;
     protected String transactionType;
 
@@ -37,7 +41,7 @@ public class Transaction {
     }
 
     //constructor used for ViewTransactionController
-    public Transaction(int newCurrencyType, double newAmount, String newOtherParty, int newDate, String newTransactionType){
+    public Transaction(int newCurrencyType, double newAmount, String newOtherParty, long newDate, String newTransactionType){
         this();
         this.setCurrencyType(newCurrencyType);
         this.setAmount(newAmount);
@@ -46,7 +50,7 @@ public class Transaction {
         this.setTransactionType(newTransactionType);
     }
 
-    public Transaction(int newId, int newUserId, int newCurrencyType, double newAmount, int newDate, int newEndDate,
+    public Transaction(int newId, int newUserId, int newCurrencyType, double newAmount, long newDate, long newEndDate,
                        int newFrequency, String newOtherParty) {
         this();
         this.id = newId;
@@ -111,7 +115,7 @@ public class Transaction {
      * Returns the date of when the Transaction occurred.
      * @return The value representing the date of the Transaction.
      */
-    public int getDate() {
+    public long getDate() {
         return date;
     }
 
@@ -119,7 +123,7 @@ public class Transaction {
      * Returns the end date of the Transaction. This only applies if the Transaction is recurring.
      * @return The value reprenting the end date of the recurring Transaction.
      */
-    public int getEndDate() {
+    public long getEndDate() {
         return endDate;
     }
 
@@ -127,6 +131,11 @@ public class Transaction {
 
     public String getCurrencyAbbreviation() {
         return currencyAbbreviation;
+    }
+
+    public String getDateString() {
+        Format f = new SimpleDateFormat("MM/dd");
+        return f.format(new Date(date));
     }
 
     /**
@@ -182,7 +191,7 @@ public class Transaction {
      * Assign a new value for the date of the Transaction.
      * @param dateToSet The new value for the date.
      */
-    public void setDate(int dateToSet) {
+    public void setDate(long dateToSet) {
         date = dateToSet;
     }
 
@@ -190,7 +199,7 @@ public class Transaction {
      * Assign a new value for the end date of a recurring Transaction.
      * @param endDateToSet Thew new value for the end date.
      */
-    public void setEndDate(int endDateToSet) {
+    public void setEndDate(long endDateToSet) {
         endDate = endDateToSet;
     }
 

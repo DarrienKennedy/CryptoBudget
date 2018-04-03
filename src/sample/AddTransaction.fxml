@@ -12,6 +12,8 @@
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.image.ImageView?>
+<?import com.jfoenix.controls.JFXDatePicker?>
 <AnchorPane fx:id="ac" maxHeight="Infinity" maxWidth="Infinity" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddTransactionController">
     <AnchorPane fx:id="ac2" maxHeight="Infinity" maxWidth="Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
         <children>
@@ -27,20 +29,8 @@
             <Label layoutX="73.0" layoutY="177.0" text="Frequency:" textFill="WHITE" />
             <JFXComboBox fx:id="frequencyComboBox" focusColor="BLACK" layoutX="143.0" layoutY="173.0" prefHeight="25.0" prefWidth="112.0" unFocusColor="WHITE" />
 
-            <!--<Label layoutX="39.0" layoutY="215.0" text="Transaction Type:" textFill="WHITE" />-->
-            <!--<CheckBox fx:id="paymentOption" layoutX="143.0" layoutY="215.0" mnemonicParsing="false" text="Payment" textFill="WHITE" />-->
-            <!--<CheckBox fx:id="incomeOption" layoutX="221.0" layoutY="215.0" mnemonicParsing="false" text="Income" textFill="WHITE" />-->
-            <!--<JFXRadioButton>-->
-                <!--<toggleGroup>-->
-                    <!--<ToggleGroup fx:id="group"/>-->
-                <!--</toggleGroup>-->
-            <!--</JFXRadioButton>-->
-            <!--<JFXRadioButton fx:id="radio_2" selected="false" layoutX="143.0" layoutY="215.0"-->
-                            <!--text="Radio 2" toggleGroup="$group" styleClass="custom-jfx-radio-button"/>-->
-            <!--<JFXRadioButton fx:id="radio_3" selected="false" layoutX="221.0" layoutY="215.0"-->
-                            <!--text="Radio 2" toggleGroup="$group" styleClass="custom-jfx-radio-button"/>-->
             <Label layoutX="88.0" layoutY="253.0" text="Date:" textFill="WHITE" />
-            <JFXTextField fx:id="dateField" focusColor="BLACK" layoutX="143.0" layoutY="236.0" unFocusColor="WHITE" />
+            <JFXDatePicker fx:id="datePicker" defaultColor="#14f5de" layoutX="143.0" layoutY="240.0" />
 
             <fx:define>
                 <ToggleGroup  fx:id="group" />
@@ -58,6 +48,9 @@
             <Button layoutX="143.0" layoutY="350.0" mnemonicParsing="false" onAction="#manualLog" text="Log" />
             <Label layoutX="245.0" layoutY="19.0" text="Log Transaction" textFill="WHITE" />
             <Button layoutX="300.0" layoutY="61.0" mnemonicParsing="false" onAction="#useOCR" text="Scan Image" />
+
+            <ImageView fx:id="receiptImage" layoutX="400.0" layoutY="50.0" fitHeight="400" fitWidth="300" />
+
          <MenuButton layoutX="-4.0" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
             <items>
                <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />
