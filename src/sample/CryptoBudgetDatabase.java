@@ -145,6 +145,7 @@ public class CryptoBudgetDatabase {
                     " GOALDESCRIPTION TEXT," +
                     " ISDONE          NUMERIC                         NOT NULL," +
                     " CURRENTAMOUNT   REAL                            NOT NULL," +
+                    " CURRENCYTYPE    INTEGER                         NOT NULL," +
                     " FOREIGN KEY (USERID)       REFERENCES ACCOUNTLEDGER(USERID));";
 
             stmt.executeUpdate(goals);

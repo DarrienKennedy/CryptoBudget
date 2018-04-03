@@ -30,6 +30,7 @@ import java.util.*;
 public class EditGoalsController implements Initializable, ControlledScreen{
 
     ScreensController myController;
+    public static Goal currentlyEditing;
     private Goal newGoal;
     private Goal[] allGoals;
     private PreparedStatement ps = null;
@@ -39,6 +40,18 @@ public class EditGoalsController implements Initializable, ControlledScreen{
     @FXML
     private Button addButton;
     @FXML
+    private TableView<Goal> goalsTable;
+    @FXML
+    private TableColumn<?, ?> dateCol;
+    @FXML
+    private TableColumn<?, ?> currencyCol;
+    @FXML
+    private TableColumn<?, ?> amountCol;
+    @FXML
+    private TableColumn<?, ?> nameCol;
+    @FXML
+    private TableColumn<?, ?> descriptionCol;
+    @FXML
     private JFXButton logGoalButton;
     @FXML
     private JFXTextField nameField;
@@ -47,13 +60,17 @@ public class EditGoalsController implements Initializable, ControlledScreen{
     @FXML
     private JFXTextField descriptionField;
     @FXML
-    private JFXTextField amountDisplay;
+    private JFXTextField currencyTypeField;
     @FXML
     private JFXDatePicker datePicker;
     @FXML
-    private ListView<Goal> listView;
+    private TableColumn<Goal, String> edit;
+    @FXML
+    private TableColumn<Goal, String> del;
     @FXML
     private AnchorPane ac;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,11 +79,6 @@ public class EditGoalsController implements Initializable, ControlledScreen{
             getAllGoals();
             setCells();
             //clearTextBoxes();
-
-            listView.setOnMouseClicked(e -> {
-                Goal g = listView.getSelectionModel().getSelectedItem();
-                amountDisplay.setText(Double.toString(g.getFinalGoal()));
-            });
         }
         AnchorPane.setTopAnchor(ac, 0.0);
         AnchorPane.setLeftAnchor(ac, 0.0);
@@ -93,11 +105,20 @@ public class EditGoalsController implements Initializable, ControlledScreen{
         if(newGoal == null){
             newGoal = new Goal();
         }
+        String currencyAbbr = currencyTypeField.getText().trim().toUpperCase();
+        int currencyId = Currency.abbrToId(currencyAbbr);
+        if (currencyId == -1) {
+            // Default to user's primary default currency
+            currencyId = Main.currentUser.getPrimaryCurrency();
+        } else {
+            currencyId = currencyId;
+        }
         newGoal.setUserId(currentUserId);
         newGoal.setGoalName(name);
         newGoal.setFinalGoal(amount);
         newGoal.setGoalDate(date);
         newGoal.setGoalDescription(description);
+        newGoal.setCurrencyType(currencyId);
         //newGoal.setDone(false);
         //newGoal.setCurrentAmount(0);
         newGoal.create();
@@ -114,25 +135,78 @@ public class EditGoalsController implements Initializable, ControlledScreen{
         for(Goal g : allGoals){
             data.add(g);
         }
+        goalsTable.setItems(data);
     }
 
     private void setCells(){
-        listView.setItems(data);
-        listView.setCellFactory(new Callback<ListView<Goal>, ListCell<Goal>>() {
-            @Override
-            public ListCell<Goal> call(ListView<Goal> param) {
-                ListCell<Goal> cell = new ListCell<Goal>(){
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("goalDate"));
+        currencyCol.setCellValueFactory(new PropertyValueFactory<>("currencyAbbreviation"));
+        amountCol.setCellValueFactory(new PropertyValueFactory<>("finalGoal"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("goalName"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("goalDescription"));
+
+        //delete buttons
+        Callback<TableColumn<Goal, String>, TableCell<Goal, String>> delCellFactory =
+                new Callback<TableColumn<Goal, String>, TableCell<Goal, String>>() {
                     @Override
-                    protected void updateItem(Goal g, boolean bln){
-                        super.updateItem(g, bln);
-                        if (g != null){
-                            setText(g.toString());
-                        }
+                    public TableCell call(final TableColumn<Goal, String> param) {
+                        final TableCell<Goal, String> cell = new TableCell<Goal, String>() {
+                            final Button btn = new Button("Delete");
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        Goal g = getTableView().getItems().get(getIndex());
+                                        g.remove();
+                                        myController.unloadScreen(Main.ViewGoalsID);
+                                        myController.loadScreen(Main.ViewGoalsID, Main.ViewGoalsFile);
+                                        myController.setScreen(Main.ViewGoalsID);
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
                     }
                 };
-                return cell;
-            }
-        });
+
+        del.setCellFactory(delCellFactory);
+
+        //edit buttons
+        Callback<TableColumn<Goal, String>, TableCell<Goal, String>> editCellFactory =
+                new Callback<TableColumn<Goal, String>, TableCell<Goal, String>>() {
+                    @Override
+                    public TableCell call(final TableColumn<Goal, String> param) {
+                        final TableCell<Goal, String> cell = new TableCell<Goal, String>() {
+                            final Button btn = new Button("Edit");
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        currentlyEditing = getTableView().getItems().get(getIndex());
+                                        myController.unloadScreen(Main.ViewGoalsID);
+                                        myController.loadScreen(Main.ViewGoalsID, Main.ViewGoalsFile);
+                                        myController.setScreen(Main.ViewGoalsID);
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        edit.setCellFactory(editCellFactory);
     }
     private void clearTextBoxes(){
         if(datePicker.getValue() != null){

@@ -63,7 +63,6 @@ public class ViewGoalsController implements Initializable, ControlledScreen {
         amountCol.setCellValueFactory(new PropertyValueFactory<>("finalGoal"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("goalName"));
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("goalDescription"));
-
     }
 
     public void setScreenParent(ScreensController screenParent){
