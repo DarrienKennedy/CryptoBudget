@@ -24,6 +24,7 @@ public class HomePageController implements Initializable, ControlledScreen{
 
     ScreensController myController;
     private ObservableList<Goal> data;
+    private Goal[] allGoals;
     private PreparedStatement ps;
     private ResultSet rs;
     private int index =0;
@@ -35,7 +36,7 @@ public class HomePageController implements Initializable, ControlledScreen{
     double progress;
     double amount;
     double usdAmount;
-    private Goal homepageGoal;
+    private Goal closestGoal;
     private double primAmount;
     ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
     @FXML
@@ -63,29 +64,29 @@ public class HomePageController implements Initializable, ControlledScreen{
             setName();
             setAccountBalance();
             setAmountLabels();
-            data = FXCollections.observableArrayList();
-            loadDataFromDatabase();
-            if(!data.isEmpty()){
-                homepageGoal = data.remove(goalIndex);
-            }
-            if(homepageGoal!=null) {
-                gn_label.setText("" + homepageGoal.getGoalName());
-                ed_label.setText("" + homepageGoal.getGoalDate());
-                ga_label.setText("" + homepageGoal.getFinalGoal());
-                as_label.setText("" + homepageGoal.getCurrentAmount());
-                if(homepageGoal.currentAmount!=0.0){
-                    g_progress.setProgress(homepageGoal.currentAmount / homepageGoal.getFinalGoal());
-                }
-                else{
-                    g_progress.setProgress(0.0);
-                }
-
-            }
+            getHighestProgressGoal();
         }
         AnchorPane.setTopAnchor(ac, 0.0);
         AnchorPane.setLeftAnchor(ac, 0.0);
         AnchorPane.setRightAnchor(ac, 0.0);
         AnchorPane.setBottomAnchor(ac, 0.0);
+    }
+
+    private void getHighestProgressGoal(){
+        allGoals = Goal.getAllGoals();
+        for(int i = 1; i <= allGoals.length-1; i++) {
+            if(allGoals[i].getGoalProgress() > allGoals[i-1].getGoalProgress()){
+                closestGoal = allGoals[i];
+            }
+        }
+
+        if(closestGoal != null) {
+            gn_label.setText("" + closestGoal.getGoalName());
+            ed_label.setText("" + closestGoal.getGoalDate());
+            ga_label.setText("" + closestGoal.getFinalGoal());
+            as_label.setText("" + closestGoal.getCurrentAmount());
+            g_progress.setProgress(closestGoal.getGoalProgress());
+        }
     }
 
     private void setName(){

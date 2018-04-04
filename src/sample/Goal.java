@@ -16,6 +16,7 @@ public class Goal {
     protected double currentAmount;
     protected int currencyType;
     protected String currencyAbbreviation;
+    protected double goalProgress;
     protected JFXProgressBar progressBar = new JFXProgressBar();
 
     /*
@@ -136,6 +137,8 @@ public class Goal {
 
     public JFXProgressBar getProgressBar() { return progressBar; }
 
+    public double getGoalProgress() { return currentAmount / finalGoal; }
+
     /*
      * @return value for whether or not goal is completed
      */
@@ -248,7 +251,6 @@ public class Goal {
         }
     }
 
-    //TODO: make sure goalId is set to the PK so the correct goal object is updated
     //using the primary key to update the amount for a goal
     public void updateProgress(double amt){
         try {
