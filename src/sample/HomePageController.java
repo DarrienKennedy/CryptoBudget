@@ -81,10 +81,10 @@ public class HomePageController implements Initializable, ControlledScreen{
         }
 
         if(closestGoal != null) {
-            gn_label.setText("" + closestGoal.getGoalName());
-            ed_label.setText("" + closestGoal.getGoalDate());
-            ga_label.setText("" + closestGoal.getFinalGoal());
-            as_label.setText("" + closestGoal.getCurrentAmount());
+            gn_label.setText(closestGoal.getGoalName());
+            ed_label.setText(closestGoal.getGoalDate());
+            ga_label.setText(Double.toString(closestGoal.getFinalGoal()));
+            as_label.setText(Double.toString(closestGoal.getCurrentAmount()));
             g_progress.setProgress(closestGoal.getGoalProgress());
         }
     }

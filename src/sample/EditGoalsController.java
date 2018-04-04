@@ -14,6 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,6 +29,7 @@ import java.util.*;
 public class EditGoalsController implements Initializable, ControlledScreen {
     ScreensController myController;
     private String date;
+    private Goal goal = AddGoalsController.currentlyEditing;
 
     @FXML
     JFXTextField amountField;
@@ -43,19 +45,12 @@ public class EditGoalsController implements Initializable, ControlledScreen {
     @Override
     public void initialize(URL location, ResourceBundle resources){
         if(Main.currentUser != null){
-            Goal goal = AddGoalsController.currentlyEditing;
+            //Goal goal = AddGoalsController.currentlyEditing;
 
             amountField.setText(String.format("%.2f", goal.getFinalGoal()));
             currencyField.setText(Currency.idToAbbr(goal.getCurrencyType()));
             currentAmountField.setText(Double.toString(goal.getCurrentAmount()));
-            try{
-                date = goal.getGoalDate();
-                Date actualDate = new SimpleDateFormat("YYYY-MM-dd").parse(date);
-                LocalDate displayDate = dateToLocalDate(actualDate);
-                datePicker.setValue(displayDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            datePicker.setValue(dateToLocalDate(goal.getGoalDate()));
         }
 
         AnchorPane.setTopAnchor(ac, 0.0);
@@ -67,10 +62,9 @@ public class EditGoalsController implements Initializable, ControlledScreen {
 
     @FXML
     public void update(){
-        Goal g = AddGoalsController.currentlyEditing;
         try {
-            g.setFinalGoal(Double.parseDouble(amountField.getText()));
-            g.setCurrentAmount(Double.parseDouble(currentAmountField.getText()));
+            goal.setFinalGoal(Double.parseDouble(amountField.getText()));
+            goal.setCurrentAmount(Double.parseDouble(currentAmountField.getText()));
         } catch (NumberFormatException e) {
             System.out.println("e: amount bad");
         }
@@ -78,13 +72,13 @@ public class EditGoalsController implements Initializable, ControlledScreen {
         String currencyAbbr = currencyField.getText().trim().toUpperCase();
         int currencyId = Currency.abbrToId(currencyAbbr);
         if (currencyId != -1) {
-            g.setCurrencyType(currencyId);
+            goal.setCurrencyType(currencyId);
         }
 
         String newDate = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        g.setGoalDate(newDate);
-        checkIfComplete(g);
-        g.update();
+        goal.setGoalDate(newDate);
+        checkIfComplete(goal);
+        goal.update();
 
         myController.unloadScreen(Main.AddGoalsID);
         myController.loadScreen(Main.AddGoalsID, Main.AddGoalsFile);
@@ -109,8 +103,10 @@ public class EditGoalsController implements Initializable, ControlledScreen {
         }
     }
 
-    private LocalDate dateToLocalDate(Date d){
-        return LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault()).toLocalDate();
+    private LocalDate dateToLocalDate(String dateString){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(dateString, formatter);
+        return localDate;
     }
 
 
