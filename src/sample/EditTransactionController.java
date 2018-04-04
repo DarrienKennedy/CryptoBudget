@@ -172,10 +172,10 @@ public class EditTransactionController implements Initializable, ControlledScree
     }
 
     @FXML
-    private void goToViewGoals(ActionEvent event){
-        myController.unloadScreen(Main.ViewGoalsID);
-        myController.loadScreen(Main.ViewGoalsID, Main.ViewGoalsFile);
-        myController.setScreen(Main.ViewGoalsID);
+    private void goToAddGoalsPage(ActionEvent event){
+        myController.unloadScreen(Main.AddGoalsID);
+        myController.loadScreen(Main.AddGoalsID, Main.AddGoalsFile);
+        myController.setScreen(Main.AddGoalsID);
     }
 
 }

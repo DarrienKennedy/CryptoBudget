@@ -26,10 +26,10 @@ public class Main extends Application {
     public static String ViewTransactionsFile = "ViewTransactions.fxml";
     public static String AddTransactionID = "AddTransaction";
     public static String AddTransactionFile = "AddTransaction.fxml";
+    public static String AddGoalsID = "AddGoals";
+    public static String AddGoalsFile = "AddGoals.fxml";
     public static String EditGoalsID = "EditGoals";
     public static String EditGoalsFile = "EditGoals.fxml";
-    public static String ViewGoalsID = "ViewGoals";
-    public static String ViewGoalsFile = "ViewGoals.fxml";
     public static String CreateAccountID = "CreateAccount";
     public static String CreateAccountFile = "CreateAccount.fxml";
     public static String EditTransactionID = "EditTransaction";
@@ -96,9 +96,9 @@ public static void updateTimer(int updatedTimer){
         mainContainer.loadScreen(Main.UpdateAccountID, Main.UpdateAccountFile);
         mainContainer.loadScreen(Main.ViewTransactionsID, Main.ViewTransactionsFile);
         mainContainer.loadScreen(Main.AddTransactionID, Main.AddTransactionFile);
-        mainContainer.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
+        mainContainer.loadScreen(Main.AddGoalsID, Main.AddGoalsFile);
         mainContainer.loadScreen(Main.CreateAccountID, Main.CreateAccountFile);
-        mainContainer.loadScreen(Main.ViewGoalsID, Main.ViewTransactionsFile);
+        mainContainer.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
         mainContainer.loadScreen(Main.EditTransactionID, Main.EditTransactionFile);
 
         sc = mainContainer;

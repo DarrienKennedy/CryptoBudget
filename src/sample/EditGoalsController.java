@@ -1,50 +1,31 @@
 package sample;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxListCell;
+import javafx.event.EventType;
+import javafx.fxml.Initializable;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Callback;
+import javafx.stage.Screen;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class EditGoalsController implements Initializable, ControlledScreen{
-
+public class EditGoalsController implements Initializable, ControlledScreen {
     ScreensController myController;
-    public static Goal currentlyEditing;
-    private Goal newGoal;
     private Goal[] allGoals;
-    private PreparedStatement ps = null;
-    private ResultSet rs = null;
-    private ObservableList<Goal> data;
+    private ObservableList<Goal> goalData;
 
-    @FXML
-    private Button addButton;
     @FXML
     private TableView<Goal> goalsTable;
     @FXML
     private TableColumn<?, ?> dateCol;
-    @FXML
-    private TableColumn<?, ?> currencyCol;
     @FXML
     private TableColumn<?, ?> amountCol;
     @FXML
@@ -52,173 +33,45 @@ public class EditGoalsController implements Initializable, ControlledScreen{
     @FXML
     private TableColumn<?, ?> descriptionCol;
     @FXML
-    private JFXButton logGoalButton;
-    @FXML
-    private JFXTextField nameField;
-    @FXML
-    private JFXTextField amountField;
-    @FXML
-    private JFXTextField descriptionField;
-    @FXML
-    private JFXTextField currencyTypeField;
-    @FXML
-    private JFXDatePicker datePicker;
-    @FXML
-    private TableColumn<Goal, String> edit;
-    @FXML
-    private TableColumn<Goal, String> del;
-    @FXML
     private AnchorPane ac;
 
-
-
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        if(Main.currentUser!=null){
-            data = FXCollections.observableArrayList();
-            getAllGoals();
+    public void initialize(URL location, ResourceBundle resources){
+        if(Main.currentUser != null){
+            allGoals = Goal.getAllGoals();
+            goalData = FXCollections.observableArrayList();;
             setCells();
-            //clearTextBoxes();
+            loadData();
         }
+
         AnchorPane.setTopAnchor(ac, 0.0);
         AnchorPane.setLeftAnchor(ac, 0.0);
         AnchorPane.setRightAnchor(ac, 0.0);
         AnchorPane.setBottomAnchor(ac, 0.0);
-    }
-
-    @FXML
-    public void handleAddButton(ActionEvent e) throws SQLException {
-        //TODO: real dates, and ability to select goals from table to update isdone and current amount
-        //data.clear();
-        //getAllGoals();
-        int currentUserId;
-        double amount = Double.valueOf(amountField.getText());
-        String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String name = nameField.getText();
-        String description = descriptionField.getText();
-        if(Main.currentUser != null){
-            currentUserId = Main.currentUser.getUserId();
-        } else {
-            currentUserId = 0001;
-        }
-
-        if(newGoal == null){
-            newGoal = new Goal();
-        }
-        String currencyAbbr = currencyTypeField.getText().trim().toUpperCase();
-        int currencyId = Currency.abbrToId(currencyAbbr);
-        if (currencyId == -1) {
-            // Default to user's primary default currency
-            currencyId = Main.currentUser.getPrimaryCurrency();
-        } else {
-            currencyId = currencyId;
-        }
-        newGoal.setUserId(currentUserId);
-        newGoal.setGoalName(name);
-        newGoal.setFinalGoal(amount);
-        newGoal.setGoalDate(date);
-        newGoal.setGoalDescription(description);
-        newGoal.setCurrencyType(currencyId);
-        //newGoal.setDone(false);
-        //newGoal.setCurrentAmount(0);
-        newGoal.create();
-        getAllGoals();
-        //data.add(newGoal);
-        clearTextBoxes();
-        //setCells();
 
     }
 
-    private void getAllGoals(){
-        allGoals = Goal.getAllGoals();
-        data.clear();
+    private void loadData(){
         for(Goal g : allGoals){
-            data.add(g);
+            goalData.add(g);
         }
-        goalsTable.setItems(data);
+        goalsTable.setItems(goalData);
     }
 
     private void setCells(){
         dateCol.setCellValueFactory(new PropertyValueFactory<>("goalDate"));
-        currencyCol.setCellValueFactory(new PropertyValueFactory<>("currencyAbbreviation"));
         amountCol.setCellValueFactory(new PropertyValueFactory<>("finalGoal"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("goalName"));
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("goalDescription"));
-
-        //delete buttons
-        Callback<TableColumn<Goal, String>, TableCell<Goal, String>> delCellFactory =
-                new Callback<TableColumn<Goal, String>, TableCell<Goal, String>>() {
-                    @Override
-                    public TableCell call(final TableColumn<Goal, String> param) {
-                        final TableCell<Goal, String> cell = new TableCell<Goal, String>() {
-                            final Button btn = new Button("Delete");
-                            @Override
-                            public void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                    setText(null);
-                                } else {
-                                    btn.setOnAction(event -> {
-                                        Goal g = getTableView().getItems().get(getIndex());
-                                        g.remove();
-                                        myController.unloadScreen(Main.ViewGoalsID);
-                                        myController.loadScreen(Main.ViewGoalsID, Main.ViewGoalsFile);
-                                        myController.setScreen(Main.ViewGoalsID);
-                                    });
-                                    setGraphic(btn);
-                                    setText(null);
-                                }
-                            }
-                        };
-                        return cell;
-                    }
-                };
-
-        del.setCellFactory(delCellFactory);
-
-        //edit buttons
-        Callback<TableColumn<Goal, String>, TableCell<Goal, String>> editCellFactory =
-                new Callback<TableColumn<Goal, String>, TableCell<Goal, String>>() {
-                    @Override
-                    public TableCell call(final TableColumn<Goal, String> param) {
-                        final TableCell<Goal, String> cell = new TableCell<Goal, String>() {
-                            final Button btn = new Button("Edit");
-                            @Override
-                            public void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                    setText(null);
-                                } else {
-                                    btn.setOnAction(event -> {
-                                        currentlyEditing = getTableView().getItems().get(getIndex());
-                                        myController.unloadScreen(Main.ViewGoalsID);
-                                        myController.loadScreen(Main.ViewGoalsID, Main.ViewGoalsFile);
-                                        myController.setScreen(Main.ViewGoalsID);
-                                    });
-                                    setGraphic(btn);
-                                    setText(null);
-                                }
-                            }
-                        };
-                        return cell;
-                    }
-                };
-
-        edit.setCellFactory(editCellFactory);
-    }
-    private void clearTextBoxes(){
-        if(datePicker.getValue() != null){
-            datePicker.setValue(null);
-        }
-        nameField.clear();
-        amountField.clear();
-        descriptionField.clear();
     }
 
     public void setScreenParent(ScreensController screenParent){
         myController = screenParent;
+    }
+
+    @FXML
+    private void setLabel( EventType<MouseEvent> mouseClicked){
+
     }
 
     @FXML
@@ -264,19 +117,10 @@ public class EditGoalsController implements Initializable, ControlledScreen{
     }
 
     @FXML
-    private void goToEditGoalsPage(ActionEvent event){
-        myController.unloadScreen(Main.EditGoalsID);
-        myController.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
-        myController.setScreen(Main.EditGoalsID);
+    private void goToAddGoalsPage(ActionEvent event){
+        myController.unloadScreen(Main.AddGoalsID);
+        myController.loadScreen(Main.AddGoalsID, Main.AddGoalsFile);
+        myController.setScreen(Main.AddGoalsID);
     }
-
-    @FXML
-    private void goToViewGoals(ActionEvent event){
-        myController.unloadScreen(Main.ViewGoalsID);
-        myController.loadScreen(Main.ViewGoalsID, Main.ViewGoalsFile);
-        myController.setScreen(Main.ViewGoalsID);
-    }
-
-
 
 }
