@@ -45,11 +45,9 @@ public class EditGoalsController implements Initializable, ControlledScreen {
     @Override
     public void initialize(URL location, ResourceBundle resources){
         if(Main.currentUser != null){
-            //Goal goal = AddGoalsController.currentlyEditing;
-
             amountField.setText(String.format("%.2f", goal.getFinalGoal()));
             currencyField.setText(Currency.idToAbbr(goal.getCurrencyType()));
-            currentAmountField.setText(Double.toString(goal.getCurrentAmount()));
+            currentAmountField.setText(String.format("%.2f", goal.getCurrentAmount()));
             datePicker.setValue(dateToLocalDate(goal.getGoalDate()));
         }
 
