@@ -314,7 +314,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         Payment[] payments = allPayments;
         for (Payment p : payments) {
             p.setTransactionType("-");
-            if (p.otherParty.matches("*"+otherParty+"*")) {
+            if (p.otherParty.matches(".*"+otherParty+".*")) {
                 payData.add(p);
             }
         }
