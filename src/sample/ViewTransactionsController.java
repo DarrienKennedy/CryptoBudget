@@ -1,7 +1,10 @@
 package sample;
 
 import com.jfoenix.controls.JFXComboBox;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,6 +27,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
 
     ScreensController myController;
     ObservableList<String> categoryList = FXCollections.observableArrayList( "Amount Greater Than", "Amount Less Than", "Date After", "Date Before", "Currency","Other Party");
+
     public static Transaction currentlyEditting;
 
     @FXML
@@ -75,6 +79,24 @@ public class ViewTransactionsController implements Initializable, ControlledScre
             categoryComboBox.setValue(categoryList.get(0));
             displayItems();
         }
+        categoryComboBox.valueProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                if(newValue.equals("Date After")){
+                    queryString.setPromptText("yyyy-mm-dd");
+                } else if(newValue.equals("Date Before")){
+                    queryString.setPromptText("yyyy-mm-dd");
+                } else if(newValue.equals("Amount Greater Than")){
+                    queryString.setPromptText("abbr value");
+                }else if(newValue.equals("Amount Less Than")){
+                    queryString.setPromptText("abbr value");
+                }else if(newValue.equals("Currency")){
+                    queryString.setPromptText("abbr");
+                }else{
+                    queryString.setPromptText("");
+                }
+            }
+        });
         AnchorPane.setTopAnchor(ac, 0.0);
         AnchorPane.setLeftAnchor(ac, 0.0);
         AnchorPane.setRightAnchor(ac, 0.0);
