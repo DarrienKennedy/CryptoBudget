@@ -141,7 +141,7 @@ public class Goal {
      */
     public boolean isDone(){
         //TODO: if isDone then deleteGoal()
-        if(currentAmount == finalGoal){
+        if(currentAmount >= finalGoal){
             isDone = true;
         }
         else{
@@ -288,6 +288,22 @@ public class Goal {
             ps.executeUpdate();
         }
         catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void update(){
+        try {
+            String sql = "UPDATE GOALS SET GOALAMOUNT = ?, GOALDATE = ?, CURRENTAMOUNT = ? " +
+                    "WHERE GOALID = ? AND USERID = ?;";
+            PreparedStatement ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
+            ps.setDouble(1, finalGoal);
+            ps.setString(2, goalDate);
+            ps.setDouble(3, currentAmount);
+            ps.setInt(4, goalId);
+            ps.setInt(5, Main.currentUser.getUserId());
+            ps.executeUpdate();
+        } catch (SQLException e){
             e.printStackTrace();
         }
     }

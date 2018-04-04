@@ -46,7 +46,9 @@ public class AddGoalsController implements Initializable, ControlledScreen{
     @FXML
     private TableColumn<?, ?> currencyCol;
     @FXML
-    private TableColumn<?, ?> amountCol;
+    private TableColumn<?, ?> finalCol;
+    @FXML
+    private TableColumn<?, ?> currentCol;
     @FXML
     private TableColumn<?, ?> nameCol;
     @FXML
@@ -141,7 +143,8 @@ public class AddGoalsController implements Initializable, ControlledScreen{
     private void setCells(){
         dateCol.setCellValueFactory(new PropertyValueFactory<>("goalDate"));
         currencyCol.setCellValueFactory(new PropertyValueFactory<>("currencyAbbreviation"));
-        amountCol.setCellValueFactory(new PropertyValueFactory<>("finalGoal"));
+        finalCol.setCellValueFactory(new PropertyValueFactory<>("finalGoal"));
+        currentCol.setCellValueFactory(new PropertyValueFactory<>("currentAmount"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("goalName"));
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("goalDescription"));
 

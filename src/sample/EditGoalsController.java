@@ -1,47 +1,61 @@
 package sample;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventType;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class EditGoalsController implements Initializable, ControlledScreen {
     ScreensController myController;
-    private Goal[] allGoals;
-    private ObservableList<Goal> goalData;
+    private String date;
 
     @FXML
-    private TableView<Goal> goalsTable;
+    JFXTextField amountField;
     @FXML
-    private TableColumn<?, ?> dateCol;
+    JFXTextField currencyField;
     @FXML
-    private TableColumn<?, ?> amountCol;
+    JFXDatePicker datePicker;
     @FXML
-    private TableColumn<?, ?> nameCol;
-    @FXML
-    private TableColumn<?, ?> descriptionCol;
+    JFXTextField currentAmountField;
     @FXML
     private AnchorPane ac;
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
         if(Main.currentUser != null){
-            allGoals = Goal.getAllGoals();
-            goalData = FXCollections.observableArrayList();;
-            setCells();
-            loadData();
+            Goal goal = AddGoalsController.currentlyEditing;
+
+            amountField.setText(String.format("%.2f", goal.getFinalGoal()));
+            currencyField.setText(Currency.idToAbbr(goal.getCurrencyType()));
+            currentAmountField.setText(Double.toString(goal.getCurrentAmount()));
+            try{
+                date = goal.getGoalDate();
+                Date actualDate = new SimpleDateFormat("YYYY-MM-dd").parse(date);
+                LocalDate displayDate = dateToLocalDate(actualDate);
+                datePicker.setValue(displayDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         AnchorPane.setTopAnchor(ac, 0.0);
@@ -51,19 +65,54 @@ public class EditGoalsController implements Initializable, ControlledScreen {
 
     }
 
-    private void loadData(){
-        for(Goal g : allGoals){
-            goalData.add(g);
+    @FXML
+    public void update(){
+        Goal g = AddGoalsController.currentlyEditing;
+        try {
+            g.setFinalGoal(Double.parseDouble(amountField.getText()));
+            g.setCurrentAmount(Double.parseDouble(currentAmountField.getText()));
+        } catch (NumberFormatException e) {
+            System.out.println("e: amount bad");
         }
-        goalsTable.setItems(goalData);
+
+        String currencyAbbr = currencyField.getText().trim().toUpperCase();
+        int currencyId = Currency.abbrToId(currencyAbbr);
+        if (currencyId != -1) {
+            g.setCurrencyType(currencyId);
+        }
+
+        String newDate = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        g.setGoalDate(newDate);
+        checkIfComplete(g);
+        g.update();
+
+        myController.unloadScreen(Main.AddGoalsID);
+        myController.loadScreen(Main.AddGoalsID, Main.AddGoalsFile);
+        myController.setScreen(Main.AddGoalsID);
+
     }
 
-    private void setCells(){
-        dateCol.setCellValueFactory(new PropertyValueFactory<>("goalDate"));
-        amountCol.setCellValueFactory(new PropertyValueFactory<>("finalGoal"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("goalName"));
-        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("goalDescription"));
+    private void checkIfComplete(Goal g){
+        if(g.isDone()){
+            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+            a.setTitle("Complete!");
+            a.setHeaderText("The current goal has been reached.");
+            a.setContentText("Would you like to delete this goal?");
+
+            Optional<ButtonType> result = a.showAndWait();
+            if(result.get() == ButtonType.OK){
+                g.remove();
+            }
+            else{
+                a.close();
+            }
+        }
     }
+
+    private LocalDate dateToLocalDate(Date d){
+        return LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault()).toLocalDate();
+    }
+
 
     public void setScreenParent(ScreensController screenParent){
         myController = screenParent;
