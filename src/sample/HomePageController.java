@@ -101,36 +101,6 @@ public class HomePageController implements Initializable, ControlledScreen{
         }
      }
 
-     private void loadDataFromDatabase(){
-        String sql = "SELECT * FROM GOALS WHERE USERID = ?;";
-        try {
-            ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
-            ps.setInt(1, Main.currentUser.getUserId());
-            rs = ps.executeQuery();
-            while(rs.next()){
-                //new Goal(name, amount, date, description, progress)
-                String name = rs.getString(3);
-                double finalAmount = rs.getDouble(4);
-                String date = rs.getString(5);
-                String description = rs.getString(6);
-                progress = rs.getDouble(8);
-                progress = progress/finalAmount;
-                if(maxProgress < progress && index < 0){
-                    maxProgress = progress;
-                    goalIndex = index;
-                }
-                else {
-                    maxProgress = progress;
-                    goalIndex = index;
-                }
-                data.add(new Goal(name, finalAmount, date, description, progress));
-                }
-            index++;
-            }catch (SQLException e) {
-                e.printStackTrace();
-            }
-     }
-
      private void setAccountBalance(){
         if(Currency.getUserCurrencies()!=null) {
             int primId = Main.currentUser.getPrimaryCurrency();
