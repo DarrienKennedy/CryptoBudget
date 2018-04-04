@@ -24,6 +24,7 @@ public class HomePageController implements Initializable, ControlledScreen{
 
     ScreensController myController;
     private ObservableList<Goal> data;
+    private Goal[] allGoals;
     private PreparedStatement ps;
     private ResultSet rs;
     private int index =0;
@@ -35,7 +36,7 @@ public class HomePageController implements Initializable, ControlledScreen{
     double progress;
     double amount;
     double usdAmount;
-    private Goal homepageGoal;
+    private Goal closestGoal;
     private double primAmount;
     ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
     @FXML
@@ -63,29 +64,29 @@ public class HomePageController implements Initializable, ControlledScreen{
             setName();
             setAccountBalance();
             setAmountLabels();
-            data = FXCollections.observableArrayList();
-            loadDataFromDatabase();
-            if(!data.isEmpty()){
-                homepageGoal = data.remove(goalIndex);
-            }
-            if(homepageGoal!=null) {
-                gn_label.setText("" + homepageGoal.getGoalName());
-                ed_label.setText("" + homepageGoal.getGoalDate());
-                ga_label.setText("" + homepageGoal.getFinalGoal());
-                as_label.setText("" + homepageGoal.getCurrentAmount());
-                if(homepageGoal.currentAmount!=0.0){
-                    g_progress.setProgress(homepageGoal.currentAmount / homepageGoal.getFinalGoal());
-                }
-                else{
-                    g_progress.setProgress(0.0);
-                }
-
-            }
+            getHighestProgressGoal();
         }
         AnchorPane.setTopAnchor(ac, 0.0);
         AnchorPane.setLeftAnchor(ac, 0.0);
         AnchorPane.setRightAnchor(ac, 0.0);
         AnchorPane.setBottomAnchor(ac, 0.0);
+    }
+
+    private void getHighestProgressGoal(){
+        allGoals = Goal.getAllGoals();
+        for(int i = 1; i <= allGoals.length-1; i++) {
+            if(allGoals[i].getGoalProgress() > allGoals[i-1].getGoalProgress()){
+                closestGoal = allGoals[i];
+            }
+        }
+
+        if(closestGoal != null) {
+            gn_label.setText(closestGoal.getGoalName());
+            ed_label.setText(closestGoal.getGoalDate());
+            ga_label.setText(Double.toString(closestGoal.getFinalGoal()));
+            as_label.setText(Double.toString(closestGoal.getCurrentAmount()));
+            g_progress.setProgress(closestGoal.getGoalProgress());
+        }
     }
 
     private void setName(){
@@ -98,36 +99,6 @@ public class HomePageController implements Initializable, ControlledScreen{
         } else {
             name.setText(Main.currentUser.getUserName());
         }
-     }
-
-     private void loadDataFromDatabase(){
-        String sql = "SELECT * FROM GOALS WHERE USERID = ?;";
-        try {
-            ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
-            ps.setInt(1, Main.currentUser.getUserId());
-            rs = ps.executeQuery();
-            while(rs.next()){
-                //new Goal(name, amount, date, description, progress)
-                String name = rs.getString(3);
-                double finalAmount = rs.getDouble(4);
-                String date = rs.getString(5);
-                String description = rs.getString(6);
-                progress = rs.getDouble(8);
-                progress = progress/finalAmount;
-                if(maxProgress < progress && index < 0){
-                    maxProgress = progress;
-                    goalIndex = index;
-                }
-                else {
-                    maxProgress = progress;
-                    goalIndex = index;
-                }
-                data.add(new Goal(name, finalAmount, date, description, progress));
-                }
-            index++;
-            }catch (SQLException e) {
-                e.printStackTrace();
-            }
      }
 
      private void setAccountBalance(){
@@ -235,17 +206,10 @@ public class HomePageController implements Initializable, ControlledScreen{
     }
 
     @FXML
-    private void goToEditGoalsPage(ActionEvent event){
-        myController.unloadScreen(Main.EditGoalsID);
-        myController.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
-        myController.setScreen(Main.EditGoalsID);
-    }
-
-    @FXML
-    private void goToViewGoals(ActionEvent event){
-        myController.unloadScreen(Main.ViewGoalsID);
-        myController.loadScreen(Main.ViewGoalsID, Main.ViewGoalsFile);
-        myController.setScreen(Main.ViewGoalsID);
+    private void goToAddGoals(ActionEvent event){
+        myController.unloadScreen(Main.AddGoalsID);
+        myController.loadScreen(Main.AddGoalsID, Main.AddGoalsFile);
+        myController.setScreen(Main.AddGoalsID);
     }
 
 

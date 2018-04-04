@@ -5,113 +5,115 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.event.EventType;
+import javafx.fxml.Initializable;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Screen;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class EditGoalsController implements Initializable, ControlledScreen{
-
+public class EditGoalsController implements Initializable, ControlledScreen {
     ScreensController myController;
-    private Goal newGoal;
-    private ArrayList<Goal> goalList = new ArrayList();
-    private PreparedStatement ps = null;
-    private ResultSet rs = null;
-    private ObservableList<Goal> data;
+    private String date;
+    private Goal goal = AddGoalsController.currentlyEditing;
 
     @FXML
-    private Button addButton;
+    JFXTextField amountField;
     @FXML
-    private JFXButton logGoalButton;
+    JFXTextField currencyField;
     @FXML
-    private JFXTextField nameField;
+    JFXDatePicker datePicker;
     @FXML
-    private JFXTextField amountField;
-    @FXML
-    private JFXTextField descriptionField;
-    @FXML
-    private JFXDatePicker datePicker;
-    @FXML
-    private TextField textDate;
-    @FXML
-    private TextField textAmount;
-    @FXML
-    private TextField textName;
-    @FXML
-    private TextField textDescription;
+    JFXTextField currentAmountField;
     @FXML
     private AnchorPane ac;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        if(Main.currentUser!=null){
-            data = FXCollections.observableArrayList();
-            //clearTextBoxes();
+    public void initialize(URL location, ResourceBundle resources){
+        if(Main.currentUser != null){
+            amountField.setText(String.format("%.2f", goal.getFinalGoal()));
+            currencyField.setText(Currency.idToAbbr(goal.getCurrencyType()));
+            currentAmountField.setText(String.format("%.2f", goal.getCurrentAmount()));
+            datePicker.setValue(dateToLocalDate(goal.getGoalDate()));
         }
+
         AnchorPane.setTopAnchor(ac, 0.0);
         AnchorPane.setLeftAnchor(ac, 0.0);
         AnchorPane.setRightAnchor(ac, 0.0);
         AnchorPane.setBottomAnchor(ac, 0.0);
+
     }
 
     @FXML
-    public void handleAddButton(ActionEvent e) throws SQLException {
-        //TODO: real dates, and ability to select goals from table to update isdone and current amount
-        data.clear();
-        int currentUserId;
-        double amount = Double.valueOf(amountField.getText());
-        String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String name = nameField.getText();
-        String description = descriptionField.getText();
-        if(Main.currentUser != null){
-            currentUserId = Main.currentUser.getUserId();
-        } else {
-            currentUserId = 0001;
+    public void update(){
+        try {
+            goal.setFinalGoal(Double.parseDouble(amountField.getText()));
+            goal.setCurrentAmount(Double.parseDouble(currentAmountField.getText()));
+        } catch (NumberFormatException e) {
+            System.out.println("e: amount bad");
         }
 
-        //goalList.add(new Goal(name, amount, date, description));
-        if(newGoal == null){
-            newGoal = new Goal();
+        String currencyAbbr = currencyField.getText().trim().toUpperCase();
+        int currencyId = Currency.abbrToId(currencyAbbr);
+        if (currencyId != -1) {
+            goal.setCurrencyType(currencyId);
         }
-        newGoal.setUserId(currentUserId);
-        newGoal.setGoalName(name);
-        newGoal.setFinalGoal(amount);
-        newGoal.setGoalDate(date);
-        newGoal.setGoalDescription(description);
-        //newGoal.setDone(false);
-        //newGoal.setCurrentAmount(0);
-        newGoal.create();
-        clearTextBoxes();
+
+        String newDate = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        goal.setGoalDate(newDate);
+        checkIfComplete(goal);
+        goal.update();
+
+        myController.unloadScreen(Main.AddGoalsID);
+        myController.loadScreen(Main.AddGoalsID, Main.AddGoalsFile);
+        myController.setScreen(Main.AddGoalsID);
 
     }
 
-    private void clearTextBoxes(){
-        if(datePicker.getValue() != null){
-            datePicker.setValue(null);
+    private void checkIfComplete(Goal g){
+        if(g.isDone()){
+            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+            a.setTitle("Complete!");
+            a.setHeaderText("The current goal has been reached.");
+            a.setContentText("Would you like to delete this goal?");
+
+            Optional<ButtonType> result = a.showAndWait();
+            if(result.get() == ButtonType.OK){
+                g.remove();
+            }
+            else{
+                a.close();
+            }
         }
-        nameField.clear();
-        amountField.clear();
-        descriptionField.clear();
     }
+
+    private LocalDate dateToLocalDate(String dateString){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(dateString, formatter);
+        return localDate;
+    }
+
 
     public void setScreenParent(ScreensController screenParent){
         myController = screenParent;
     }
 
     @FXML
-    private void setLabel( EventType<javafx.scene.input.MouseEvent> mouseClicked){
+    private void setLabel( EventType<MouseEvent> mouseClicked){
 
     }
 
@@ -158,19 +160,10 @@ public class EditGoalsController implements Initializable, ControlledScreen{
     }
 
     @FXML
-    private void goToEditGoalsPage(ActionEvent event){
-        myController.unloadScreen(Main.EditGoalsID);
-        myController.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
-        myController.setScreen(Main.EditGoalsID);
+    private void goToAddGoalsPage(ActionEvent event){
+        myController.unloadScreen(Main.AddGoalsID);
+        myController.loadScreen(Main.AddGoalsID, Main.AddGoalsFile);
+        myController.setScreen(Main.AddGoalsID);
     }
-
-    @FXML
-    private void goToViewGoals(ActionEvent event){
-        myController.unloadScreen(Main.ViewGoalsID);
-        myController.loadScreen(Main.ViewGoalsID, Main.ViewGoalsFile);
-        myController.setScreen(Main.ViewGoalsID);
-    }
-
-
 
 }

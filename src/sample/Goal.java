@@ -6,15 +6,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 public class Goal {
-    //TODO: return goal closest to completion
     protected int goalId;
-    protected int userId;   //type = user...
+    protected int userId;
     protected String goalName;
     protected double finalGoal;
     protected String goalDate;
     protected String goalDescription;
     protected boolean isDone;
     protected double currentAmount;
+    protected int currencyType;
+    protected String currencyAbbreviation;
+    protected double goalProgress;
     protected JFXProgressBar progressBar = new JFXProgressBar();
 
     /*
@@ -30,6 +32,7 @@ public class Goal {
         this.setDone(false);
         this.setCurrentAmount(0.00);
         this.setProgressBar(0);
+        this.setCurrencyType(1);
     }
 
     /*
@@ -60,7 +63,8 @@ public class Goal {
     }
 
     //result.add(new Goal(id, userId, name, amount, date, description, isDone, currentAmount))
-    public Goal(int goalId, int userId, String name, double amount, String date, String description, boolean isDone, double currentAmount){
+    public Goal(int goalId, int userId, String name, double amount, String date,
+                String description, boolean isDone, double currentAmount, int currencyType){
         new Goal();
         this.goalId = goalId;
         this.setUserId(userId);
@@ -70,6 +74,7 @@ public class Goal {
         this.setGoalDescription(description);
         this.setDone(isDone);
         this.setCurrentAmount(currentAmount);
+        this.setCurrencyType(currencyType);
     }
 
     /*
@@ -115,20 +120,31 @@ public class Goal {
     }
 
     /*
+     * @return the currency type for the goal
+     */
+    public int getCurrencyType() { return currencyType; }
+
+    /*
      * @return the value of the current amount of the goal amount
      */
     public double getCurrentAmount(){
         return currentAmount;
     }
 
+    public String getCurrencyAbbreviation() {
+        return currencyAbbreviation;
+    }
+
     public JFXProgressBar getProgressBar() { return progressBar; }
+
+    public double getGoalProgress() { return currentAmount / finalGoal; }
 
     /*
      * @return value for whether or not goal is completed
      */
     public boolean isDone(){
         //TODO: if isDone then deleteGoal()
-        if(currentAmount == finalGoal){
+        if(currentAmount >= finalGoal){
             isDone = true;
         }
         else{
@@ -202,13 +218,23 @@ public class Goal {
 
     public void setProgressBar(double progress) { progressBar.setProgress(progress); }
 
+    public void setCurrencyType(int currencyType) {
+        this.currencyType = currencyType;
+        currencyAbbreviation = Currency.idToAbbr(currencyType);
+    }
+
+    @Override
+    public String toString(){
+        return String.format(goalId + ": " + goalName);
+    }
+
     /*
      * database methods
      */
     public void create(){
         try{
             String sql = "INSERT INTO GOALS (USERID, GOALNAME, GOALAMOUNT, GOALDATE, GOALDESCRIPTION, " +
-                    "ISDONE, CURRENTAMOUNT)" + "VALUES (?, ?, ?, DATE(?), ?, ?, ?)";
+                    "ISDONE, CURRENTAMOUNT, CURRENCYTYPE)" + "VALUES (?, ?, ?, DATE(?), ?, ?, ?, ?)";
             PreparedStatement ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
             ps.setInt(1, userId);
             ps.setString(2, goalName);
@@ -217,6 +243,7 @@ public class Goal {
             ps.setString(5, goalDescription);
             ps.setBoolean(6, isDone);
             ps.setDouble(7, currentAmount);
+            ps.setInt(8, currencyType);
             ps.executeUpdate();
         }
         catch (SQLException e){
@@ -224,7 +251,6 @@ public class Goal {
         }
     }
 
-    //TODO: make sure goalId is set to the PK so the correct goal object is updated
     //using the primary key to update the amount for a goal
     public void updateProgress(double amt){
         try {
@@ -256,7 +282,7 @@ public class Goal {
     }
 
     //deletes a goal from the database
-    public void deleteGoal(int deleteId){
+    public void deleteGoalById(int deleteId){
         try{
             String sql = "DELETE FROM GOALS WHERE GOALID = ?";
             PreparedStatement ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
@@ -266,6 +292,61 @@ public class Goal {
         catch(SQLException e){
             e.printStackTrace();
         }
+    }
+
+    public void update(){
+        try {
+            String sql = "UPDATE GOALS SET GOALAMOUNT = ?, GOALDATE = ?, CURRENTAMOUNT = ? " +
+                    "WHERE GOALID = ? AND USERID = ?;";
+            PreparedStatement ps = CryptoBudgetDatabase.connection.prepareStatement(sql);
+            ps.setDouble(1, finalGoal);
+            ps.setString(2, goalDate);
+            ps.setDouble(3, currentAmount);
+            ps.setInt(4, goalId);
+            ps.setInt(5, Main.currentUser.getUserId());
+            ps.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void remove(){
+        try {
+            //Currency.updateCurrencyAmount(currencyType, amount);
+            String remove = "DELETE FROM GOALS WHERE GOALID = ? AND USERID = ?;";
+            PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(remove);
+            prep.setInt(1, goalId);
+            prep.setInt(2, Main.currentUser.getUserId());
+            prep.executeUpdate();
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+    }
+
+    public static Goal getGoalById(int findGoalId){
+        try {
+            String getAll = String.format("SELECT * FROM GOALS WHERE GOALID = ? AND USERID = ?;");
+            PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(getAll);
+            prep.setInt(1, findGoalId);
+            prep.setInt(2, Main.currentUser.getUserId());
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("GOALID");
+                int userId = rs.getInt("USERID");
+                String name = rs.getString("GOALNAME");
+                double amount = rs.getDouble("GOALAMOUNT");
+                String date = rs.getString("GOALDATE");
+                String description = rs.getString("GOALDESCRIPTION");
+                boolean isDone = rs.getBoolean("ISDONE");
+                double currentAmount = rs.getDouble("CURRENTAMOUNT");
+                int currencyType = rs.getInt("CURRENCYTYPE");
+                Goal result = new Goal(id, userId, name, amount, date, description, isDone, currentAmount, currencyType);
+                return result;
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+        return null;
     }
 
     public static Goal[] getAllGoals() {
@@ -284,7 +365,8 @@ public class Goal {
                 String description = rs.getString("GOALDESCRIPTION");
                 boolean isDone = rs.getBoolean("ISDONE");
                 double currentAmount = rs.getDouble("CURRENTAMOUNT");
-                result.add(new Goal(id, userId, name, amount, date, description, isDone, currentAmount));
+                int currencyType = rs.getInt("CURRENCYTYPE");
+                result.add(new Goal(id, userId, name, amount, date, description, isDone, currentAmount, currencyType));
             }
             return result.toArray(new Goal[0]);
         } catch (SQLException e) {
