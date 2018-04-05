@@ -416,7 +416,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
         Income[] income = allIncome;
         for (Income i : income) {
             i.setTransactionType("+");
-            if (i.otherParty.matches("*"+otherParty+"*")) {
+            if (i.otherParty.matches(".*"+otherParty+".*")) {
                 payData.add(i);
             }
         }
