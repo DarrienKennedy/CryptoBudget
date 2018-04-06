@@ -20,7 +20,6 @@ import java.util.ResourceBundle;
 
 public class EditTransactionController implements Initializable, ControlledScreen {
     ScreensController myController;
-    ObservableList<String> frequencyList = FXCollections.observableArrayList("One Time", "Weekly","Monthly", "Yearly");
 
     @FXML
     private AnchorPane ac;
@@ -29,32 +28,19 @@ public class EditTransactionController implements Initializable, ControlledScree
     @FXML
     private JFXTextField currencyField;
     @FXML
-    private JFXComboBox frequencyComboBox;
-    @FXML
     private JFXTextField otherPartyField;
+    @FXML
+    private AnchorPane ac2;
     @FXML
     private DatePicker datePicker;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        frequencyComboBox.setItems(frequencyList);
         if(Main.currentUser != null) {
             Transaction transaction = ViewTransactionsController.currentlyEditting;
             amountField.setText(String.format("%.2f", transaction.getAmount()));
             currencyField.setText(Currency.idToAbbr(transaction.getCurrencyType()));
-
-            int freq = transaction.getFrequency();
-            if (freq == 0) {
-                frequencyComboBox.setValue(frequencyList.get(0));
-            } else if (freq == 52) {
-                frequencyComboBox.setValue(frequencyList.get(1));
-            } else if (freq == 12) {
-                frequencyComboBox.setValue(frequencyList.get(2));
-            } else if (freq == 1) {
-                frequencyComboBox.setValue(frequencyList.get(3));
-            }
-
             otherPartyField.setText(transaction.getOtherParty());
             datePicker.setValue(LocalDate.ofEpochDay(transaction.getDate() / 86400000)); // millisecond to day
         }
@@ -62,6 +48,11 @@ public class EditTransactionController implements Initializable, ControlledScree
         AnchorPane.setLeftAnchor(ac, 0.0);
         AnchorPane.setRightAnchor(ac, 0.0);
         AnchorPane.setBottomAnchor(ac, 0.0);
+
+        AnchorPane.setTopAnchor(ac2, 0.0);
+        AnchorPane.setLeftAnchor(ac2, 0.0);
+        AnchorPane.setRightAnchor(ac2, 0.0);
+        AnchorPane.setBottomAnchor(ac2, 0.0);
     }
 
     @FXML
@@ -91,21 +82,6 @@ public class EditTransactionController implements Initializable, ControlledScree
         }
 
         t.setOtherParty(otherPartyField.getText());
-
-        String frequencySelected = frequencyComboBox.getValue().toString();
-        if (frequencySelected.equals(frequencyList.get(0))) {
-            t.setFrequency(0);
-        } else if (frequencySelected.equals(frequencyList.get(1))) {
-            t.setFrequency(52);
-        } else if (frequencySelected.equals(frequencyList.get(2))) {
-            t.setFrequency(12);
-        } else if (frequencySelected.equals(frequencyList.get(3))) {
-            t.setFrequency(1);
-        }
-
-
-
-
 
         if (t.getTransactionType().equals("+")) {
             ((Income) t).update();

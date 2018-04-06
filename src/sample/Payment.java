@@ -21,9 +21,8 @@ public class Payment extends Transaction {
         super(newCurrencyType, newAmount, newOtherParty, newDate, "Payment");
     }
 
-    public Payment(int id, int userId, int currencyType, double amount, long date, long endDate,
-                   int frequency, String otherParty) {
-        super(id, userId, currencyType, amount, date, endDate, frequency, otherParty);
+    public Payment(int id, int userId, int currencyType, double amount, long date, String otherParty) {
+        super(id, userId, currencyType, amount, date, otherParty);
     }
 
     /*
@@ -31,16 +30,14 @@ public class Payment extends Transaction {
      */
     public void create() {
         try {
-            String savePayment = "INSERT INTO PAYMENT (USERID, AMOUNT, DATE, ENDDATE, CURRENCYTYPE, FREQUENCY, " +
-                    "OTHERPARTY) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String savePayment = "INSERT INTO PAYMENT (USERID, AMOUNT, DATE, CURRENCYTYPE, " +
+                    "OTHERPARTY) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(savePayment);
             prep.setInt(1, userId);
             prep.setDouble(2, amount);
             prep.setLong(3, date);
-            prep.setLong(4, endDate);
-            prep.setInt(5, currencyType);
-            prep.setInt(6, frequency);
-            prep.setString(7, otherParty);
+            prep.setInt(4, currencyType);
+            prep.setString(5, otherParty);
             prep.executeUpdate();
             Currency.updateCurrencyAmount(currencyType, -amount);
         } catch (SQLException e) {
@@ -59,17 +56,15 @@ public class Payment extends Transaction {
             rs.next();
             double prevAmount = rs.getDouble("AMOUNT");
 
-            String update = "UPDATE PAYMENT SET AMOUNT = ?, DATE = ?, ENDDATE = ?, CURRENCYTYPE = ?, " +
-                    "FREQUENCY = ?, OTHERPARTY = ? WHERE PAYMENTID = ? AND USERID = ?;";
+            String update = "UPDATE PAYMENT SET AMOUNT = ?, DATE = ?, CURRENCYTYPE = ?, OTHERPARTY = ? " +
+                    "WHERE PAYMENTID = ? AND USERID = ?;";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(update);
             prep.setDouble(1, amount);
             prep.setLong(2, date);
-            prep.setLong(3, endDate);
-            prep.setInt(4, currencyType);
-            prep.setInt(5, frequency);
-            prep.setString(6, otherParty);
-            prep.setInt(7, id);
-            prep.setInt(8, Main.currentUser.getUserId());
+            prep.setInt(3, currencyType);
+            prep.setString(4, otherParty);
+            prep.setInt(5, id);
+            prep.setInt(6, Main.currentUser.getUserId());
             prep.executeUpdate();
             Currency.updateCurrencyAmount(currencyType, -(amount - prevAmount));
         } catch (SQLException e) {
@@ -89,11 +84,9 @@ public class Payment extends Transaction {
                 int userId = rs.getInt("USERID");
                 double amount = rs.getDouble("AMOUNT");
                 long date = rs.getLong("DATE");
-                long endDate = rs.getLong("ENDDATE");
                 int currencyType = rs.getInt("CURRENCYTYPE");
-                int frequency = rs.getInt("FREQUENCY");
                 String otherParty = rs.getString("OTHERPARTY");
-                result.add(new Payment(id, userId, currencyType, amount, date, endDate, frequency, otherParty));
+                result.add(new Payment(id, userId, currencyType, amount, date, otherParty));
             }
             return result.toArray(new Payment[0]);
         } catch (SQLException e) {
@@ -114,11 +107,9 @@ public class Payment extends Transaction {
                 int userId = rs.getInt("USERID");
                 double amount = rs.getDouble("AMOUNT");
                 long date = rs.getLong("DATE");
-                long endDate = rs.getLong("ENDDATE");
                 int currencyType = rs.getInt("CURRENCYTYPE");
-                int frequency = rs.getInt("FREQUENCY");
                 String otherParty = rs.getString("OTHERPARTY");
-                Payment result = new Payment(id, userId, currencyType, amount, date, endDate, frequency, otherParty);
+                Payment result = new Payment(id, userId, currencyType, amount, date, otherParty);
                 return result;
             }
         } catch (SQLException e) {
@@ -140,5 +131,4 @@ public class Payment extends Transaction {
         }
     }
 
-    // TODO add search functionality for Payment
 }
