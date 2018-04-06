@@ -19,22 +19,21 @@
                 <TableColumn fx:id="currencyPercentChange" prefWidth="100.0" text="Change" />
             </columns>
         </TableView>
-        <Label layoutX="263.0" layoutY="2.0" text="View Currency" textFill="WHITE" />
+        <Label layoutX="263.0" layoutY="2.0" text="Currencies" textFill="WHITE" />
         <JFXButton layoutX="63.0" layoutY="16.0" onAction="#updateCoins" mnemonicParsing="false" text="Update" style="-fx-background-color: #B5FFE1;"/>
         <JFXButton layoutX="133.0" layoutY="16.0" onAction="#loadDataFromDatabase" mnemonicParsing="false" text="Search All" style="-fx-background-color: #B5FFE1;"/>
         <JFXButton layoutX="223.0" layoutY="16.0" onAction="#searchOwned" mnemonicParsing="false" text="Search Owned" style="-fx-background-color: #B5FFE1;"/>
         <JFXTextField fx:id="coinname" focusColor="BLACK" layoutX="350.0" layoutY="16.0" prefHeight="12.0" prefWidth="80.0" promptText="Coin Name" unFocusColor="WHITE" />
         <JFXButton layoutX="443.0" layoutY="16.0" onAction="#searchCurrency" mnemonicParsing="false" text="Search Currency" style="-fx-background-color: #B5FFE1;"/>
-      <MenuButton layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
-         <items>
-            <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />
-            <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="CryptoCurrencies" />
-            <MenuItem mnemonicParsing="false" onAction="#goToAddTransaction" text="Add a Transaction" />
-            <MenuItem mnemonicParsing="false" onAction="#goToAddGoalsPage" text="Add Goals" />
-            <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
-            <MenuItem mnemonicParsing="false" onAction="#goToViewTransactions" text="View Transactions" />
-            <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
-         </items>
-      </MenuButton>
+        <MenuButton layoutX="3.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />
+                <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="Currencies" />
+                <MenuItem mnemonicParsing="false" onAction="#goToViewTransactions" text="Transactions" />
+                <MenuItem mnemonicParsing="false" onAction="#goToAddGoalsPage" text="Goals" />
+                <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Settings" />
+                <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
+            </items>
+        </MenuButton>
     </children>
 </AnchorPane>
