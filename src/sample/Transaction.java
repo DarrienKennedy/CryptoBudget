@@ -9,12 +9,9 @@ public class Transaction {
     protected int currencyType;
     protected String currencyAbbreviation;
     protected double amount;
-    protected int userId; // This will eventually be type User
-    protected int frequency;
+    protected int userId;
     protected String otherParty;
     protected long date;
-    protected long endDate;
-    protected boolean recurring;
     protected String transactionType;
 
     /**
@@ -24,7 +21,6 @@ public class Transaction {
         this.setCurrencyType(1);
         this.setAmount(0);
         this.setUserId(0);
-        this.setFrequency(0);
         this.setDate(0);
         this.setTransactionType("Transaction");
     }
@@ -50,16 +46,13 @@ public class Transaction {
         this.setTransactionType(newTransactionType);
     }
 
-    public Transaction(int newId, int newUserId, int newCurrencyType, double newAmount, long newDate, long newEndDate,
-                       int newFrequency, String newOtherParty) {
+    public Transaction(int newId, int newUserId, int newCurrencyType, double newAmount, long newDate, String newOtherParty) {
         this();
         this.id = newId;
         this.setUserId(newUserId);
         this.setCurrencyType(newCurrencyType);
         this.setAmount(newAmount);
         this.setDate(newDate);
-        this.setEndDate(newEndDate);
-        this.setFrequency(newFrequency);
         this.setOtherParty(newOtherParty);
     }
 
@@ -96,14 +89,6 @@ public class Transaction {
     }
 
     /**
-     * Returns how frequently the Transaction is made.
-     * @return The value representing how frequency of the Transaction.
-     */
-    public int getFrequency() {
-        return frequency;
-    }
-
-    /**
      * Returns the other party associated with the Transaction
      * @return A String representing the other party in the Transaction.
      */
@@ -119,14 +104,6 @@ public class Transaction {
         return date;
     }
 
-    /**
-     * Returns the end date of the Transaction. This only applies if the Transaction is recurring.
-     * @return The value reprenting the end date of the recurring Transaction.
-     */
-    public long getEndDate() {
-        return endDate;
-    }
-
     public String getTransactionType() { return transactionType; }
 
     public String getCurrencyAbbreviation() {
@@ -134,7 +111,7 @@ public class Transaction {
     }
 
     public String getDateString() {
-        Format f = new SimpleDateFormat("MM/dd");
+        Format f = new SimpleDateFormat("MM/dd/yy");
         return f.format(new Date(date));
     }
 
@@ -143,7 +120,6 @@ public class Transaction {
      * @param currencyTypeToSet The new value for the currency type.
      */
     public void setCurrencyType(int currencyTypeToSet) {
-        // TODO Verify that it is a valid currency from the currency table?
         currencyType = currencyTypeToSet;
         currencyAbbreviation = Currency.idToAbbr(currencyTypeToSet);
     }
@@ -169,17 +145,6 @@ public class Transaction {
     }
 
     /**
-     * Assign a new frequency for the Transaction.
-     * @param frequencyToSet The new value for the frequency.
-     */
-    public void setFrequency(int frequencyToSet) {
-        if (frequencyToSet >= 0) {
-            frequency = frequencyToSet;
-            recurring = (frequency != 0);
-        }
-    }
-
-    /**
      * Assign a new other party involved within the Transaction.
      * @param otherPartyToSet The new value for the otehr party.
      */
@@ -195,14 +160,6 @@ public class Transaction {
         date = dateToSet;
     }
 
-    /**
-     * Assign a new value for the end date of a recurring Transaction.
-     * @param endDateToSet Thew new value for the end date.
-     */
-    public void setEndDate(long endDateToSet) {
-        endDate = endDateToSet;
-    }
-
     public void setTransactionType(String type) { transactionType = type; }
 
     /**
@@ -210,6 +167,6 @@ public class Transaction {
      * @return A String containing fields of the Transaction.
      */
     public String toString() {
-        return String.format("%d. %.2f %s, recurring: %b", this.id, this.amount, this.currencyType, this.recurring);
+        return String.format("%d. %.2f %s", this.id, this.amount, this.currencyType);
     }
 }

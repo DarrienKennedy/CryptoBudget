@@ -109,9 +109,7 @@ public class CryptoBudgetDatabase {
                     " USERID               INTEGER                         NOT NULL," +
                     " AMOUNT               REAL                            NOT NULL," +
                     " DATE                 INT," +
-                    " ENDDATE              INT," +
                     " CURRENCYTYPE         INTEGER                         NOT NULL," +
-                    " FREQUENCY            INT                             NOT NULL," +
                     " OTHERPARTY           TEXT," +
                     " FOREIGN KEY (USERID)         REFERENCES ACCOUNTLEDGER(USERID)," +
                     " FOREIGN KEY (CURRENCYTYPE)   REFERENCES CURRENCYVALUE(CURRENCYID));";
@@ -125,9 +123,7 @@ public class CryptoBudgetDatabase {
                     " USERID               INTEGER                         NOT NULL," +
                     " AMOUNT               REAL                            NOT NULL," +
                     " DATE                 INT," +
-                    " ENDDATE              INT," +
                     " CURRENCYTYPE         INTEGER                         NOT NULL," +
-                    " FREQUENCY            INT                             NOT NULL," +
                     " OTHERPARTY           TEXT," +
                     " FOREIGN KEY (USERID)         REFERENCES ACCOUNTLEDGER(USERID)," +
                     " FOREIGN KEY (CURRENCYTYPE)   REFERENCES CURRENCYVALUE(CURRENCYID));";

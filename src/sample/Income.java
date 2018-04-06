@@ -21,9 +21,8 @@ public class Income extends Transaction {
         super(newCurrencyType, newAmount, newOtherParty, newDate, "Income");
     }
 
-    public Income(int id, int userId, int currencyType, double amount, long date, long endDate,
-                  int frequency, String otherParty) {
-        super(id, userId, currencyType, amount, date, endDate, frequency, otherParty);
+    public Income(int id, int userId, int currencyType, double amount, long date, String otherParty) {
+        super(id, userId, currencyType, amount, date, otherParty);
     }
 
     /*
@@ -31,16 +30,14 @@ public class Income extends Transaction {
      */
     public void create() {
         try {
-            String create = "INSERT INTO INCOME (USERID, AMOUNT, DATE, ENDDATE, CURRENCYTYPE, FREQUENCY, " +
-                    "OTHERPARTY) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String create = "INSERT INTO INCOME (USERID, AMOUNT, DATE, CURRENCYTYPE, " +
+                    "OTHERPARTY) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(create);
             prep.setInt(1, userId);
             prep.setDouble(2, amount);
             prep.setLong(3, date);
-            prep.setLong(4, endDate);
-            prep.setInt(5, currencyType);
-            prep.setInt(6, frequency);
-            prep.setString(7, otherParty);
+            prep.setInt(4, currencyType);
+            prep.setString(5, otherParty);
             prep.executeUpdate();
             Currency.updateCurrencyAmount(currencyType, amount);
         } catch (SQLException e) {
@@ -59,17 +56,15 @@ public class Income extends Transaction {
             rs.next();
             double prevAmount = rs.getDouble("AMOUNT");
 
-            String update = "UPDATE INCOME SET AMOUNT = ?, DATE = ?, ENDDATE = ?, CURRENCYTYPE = ?, " +
-                    "FREQUENCY = ?, OTHERPARTY = ? WHERE INCOMEID = ? AND USERID = ?;";
+            String update = "UPDATE INCOME SET AMOUNT = ?, DATE = ?, CURRENCYTYPE = ?, OTHERPARTY = ? " +
+                    "WHERE INCOMEID = ? AND USERID = ?;";
             PreparedStatement prep = CryptoBudgetDatabase.connection.prepareStatement(update);
             prep.setDouble(1, amount);
             prep.setLong(2, date);
-            prep.setLong(3, endDate);
-            prep.setInt(4, currencyType);
-            prep.setInt(5, frequency);
-            prep.setString(6, otherParty);
-            prep.setInt(7, id);
-            prep.setInt(8, Main.currentUser.getUserId());
+            prep.setInt(3, currencyType);
+            prep.setString(4, otherParty);
+            prep.setInt(5, id);
+            prep.setInt(6, Main.currentUser.getUserId());
             prep.executeUpdate();
             Currency.updateCurrencyAmount(currencyType, amount - prevAmount);
         } catch (SQLException e) {
@@ -89,11 +84,9 @@ public class Income extends Transaction {
                 int userId = rs.getInt("USERID");
                 double amount = rs.getDouble("AMOUNT");
                 long date = rs.getLong("DATE");
-                long endDate = rs.getLong("ENDDATE");
                 int currencyType = rs.getInt("CURRENCYTYPE");
-                int frequency = rs.getInt("FREQUENCY");
                 String otherParty = rs.getString("OTHERPARTY");
-                result.add(new Income(id, userId, currencyType, amount, date, endDate, frequency, otherParty));
+                result.add(new Income(id, userId, currencyType, amount, date, otherParty));
             }
             return result.toArray(new Income[0]);
         } catch (SQLException e) {
@@ -114,11 +107,9 @@ public class Income extends Transaction {
                 int userId = rs.getInt("USERID");
                 double amount = rs.getDouble("AMOUNT");
                 long date = rs.getLong("DATE");
-                long endDate = rs.getLong("ENDDATE");
                 int currencyType = rs.getInt("CURRENCYTYPE");
-                int frequency = rs.getInt("FREQUENCY");
                 String otherParty = rs.getString("OTHERPARTY");
-                Income result = new Income(id, userId, currencyType, amount, date, endDate, frequency, otherParty);
+                Income result = new Income(id, userId, currencyType, amount, date, otherParty);
                 return result;
             }
         } catch (SQLException e) {
@@ -141,5 +132,4 @@ public class Income extends Transaction {
         }
     }
 
-    // TODO add search functionality for Income
 }

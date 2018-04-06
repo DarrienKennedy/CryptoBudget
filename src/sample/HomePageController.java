@@ -206,7 +206,7 @@ public class HomePageController implements Initializable, ControlledScreen{
     }
 
     @FXML
-    private void goToAddGoals(ActionEvent event){
+    private void goToAddGoalsPage(ActionEvent event){
         myController.unloadScreen(Main.AddGoalsID);
         myController.loadScreen(Main.AddGoalsID, Main.AddGoalsFile);
         myController.setScreen(Main.AddGoalsID);

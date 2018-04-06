@@ -17,14 +17,13 @@
 <AnchorPane fx:id="ac" maxHeight="Infinity" maxWidth="Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewTransactionsController">
     <children>
         <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="Back" />
-        <MenuButton layoutX="14.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" style="-fx-background-color: #B5FFE1;">
+        <MenuButton layoutX="3.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
             <items>
                 <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />
-                <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="CryptoCurrencies" />
-                <MenuItem mnemonicParsing="false" onAction="#goToAddTransaction" text="Add a Transaction" />
-                <MenuItem mnemonicParsing="false" onAction="#goToAddGoalsPage" text="Add Goals" />
-                <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
-                <MenuItem mnemonicParsing="false" text="View Transactions" />
+                <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="Currencies" />
+                <MenuItem mnemonicParsing="false" onAction="#goToViewTransactions" text="Transactions" />
+                <MenuItem mnemonicParsing="false" onAction="#goToAddGoalsPage" text="Goals" />
+                <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Settings" />
                 <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
             </items>
         </MenuButton>
@@ -50,7 +49,7 @@
         <JFXTextField fx:id="queryString" focusColor="BLACK" layoutX="264.0" layoutY="34.0" unFocusColor="WHITE" />
         <JFXButton layoutX="424.0" layoutY="34.0" mnemonicParsing="false" text="Search" onAction="#search" style="-fx-background-color: #B5FFE1;"/>
         <JFXComboBox fx:id="categoryComboBox" focusColor="BLACK" layoutX="154.0" layoutY="34.0" prefHeight="25.0" prefWidth="92.0" unFocusColor="WHITE" />
-        <Label layoutX="253.0" layoutY="6.0" text="View Transactions" textFill="WHITE" />
-        <Button layoutX="500.0" layoutY="10.0" text="Reload" onAction="#displayItems" />
+        <Label layoutX="253.0" layoutY="6.0" text="Transactions" textFill="WHITE" />
+        <Button layoutX="500.0" layoutY="10.0" text="Add" onAction="#goToAddTransaction" />
     </children>
 </AnchorPane>

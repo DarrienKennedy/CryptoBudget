@@ -30,7 +30,6 @@ import java.util.ResourceBundle;
 public class AddTransactionController implements Initializable, ControlledScreen{
 
     ScreensController myController;
-    ObservableList<String> frequencyList = FXCollections.observableArrayList("One Time", "Weekly","Monthly", "Yearly");
 
     private Payment newPayment;
     private Income newIncome;
@@ -41,8 +40,6 @@ public class AddTransactionController implements Initializable, ControlledScreen
     private JFXTextField amountField;
     @FXML
     private JFXTextField currencyField;
-    @FXML
-    private JFXComboBox frequencyComboBox;
     @FXML
     private CheckBox paymentOption;
     @FXML
@@ -64,8 +61,6 @@ public class AddTransactionController implements Initializable, ControlledScreen
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        frequencyComboBox.setItems(frequencyList);
-        frequencyComboBox.setValue("One Time");
         AnchorPane.setTopAnchor(ac, 0.0);
         AnchorPane.setLeftAnchor(ac, 0.0);
         AnchorPane.setRightAnchor(ac, 0.0);
@@ -75,16 +70,8 @@ public class AddTransactionController implements Initializable, ControlledScreen
         AnchorPane.setLeftAnchor(ac2, 0.0);
         AnchorPane.setRightAnchor(ac2, 0.0);
         AnchorPane.setBottomAnchor(ac2, 0.0);
-//        ToggleGroup group = new ToggleGroup();
-//
-//        RadioButton rb1 = new RadioButton("Payment");
-//        rb1.setUserData("Payment");
-//        rb1.setToggleGroup(group);
-//        rb1.setSelected(true);
-//
-//        RadioButton rb2 = new RadioButton("Income");
-//        rb2.setUserData("Income");
-//        rb2.setToggleGroup(group);
+
+        datePicker.setValue(LocalDate.ofEpochDay(System.currentTimeMillis() / 86400000)); // millisecond to day
     }
 
 
@@ -172,26 +159,9 @@ public class AddTransactionController implements Initializable, ControlledScreen
             System.out.println("e: date bad");
         }
 
-        // Convert date to millisecond test
-//        Date tst = new Date(epoch);
-//        Format f = new SimpleDateFormat("MM dd HH:mm:ss");
-//        System.out.printf("ms:%d d:%s\n", epoch, f.format(tst));
-
         String otherParty = otherPartyField.getText();
         boolean typePayment = payment.isSelected();
         boolean typeIncome = income.isSelected();
-
-        int frequency = 0;
-        String frequencySelected = frequencyComboBox.getValue().toString();
-        if (frequencySelected.equals(frequencyList.get(0))) {
-            frequency = 0;
-        } else if (frequencySelected.equals(frequencyList.get(1))) {
-            frequency = 52;
-        } else if (frequencySelected.equals(frequencyList.get(2))) {
-            frequency = 12;
-        } else if (frequencySelected.equals(frequencyList.get(3))) {
-            frequency = 1;
-        }
 
         if (typePayment) {
             if (newPayment == null) {
@@ -201,7 +171,6 @@ public class AddTransactionController implements Initializable, ControlledScreen
             newPayment.setCurrencyType(currencyId);
             newPayment.setDate(epoch);
             newPayment.setOtherParty(otherParty);
-            newPayment.setFrequency(frequency);
             newPayment.setUserId(Main.currentUser.getUserId());
             if (!missingRequired) {
                 newPayment.create();
@@ -217,7 +186,6 @@ public class AddTransactionController implements Initializable, ControlledScreen
             newIncome.setCurrencyType(currencyId);
             newIncome.setDate(epoch);
             newIncome.setOtherParty(otherParty);
-            newIncome.setFrequency(frequency);
             newIncome.setUserId(Main.currentUser.getUserId());
             if (!missingRequired) {
                 newIncome.create();
@@ -251,7 +219,6 @@ public class AddTransactionController implements Initializable, ControlledScreen
         imagePathField.setText("");
         amountField.setText("");
         currencyField.setText("");
-        frequencyComboBox.setValue(frequencyList.get(0));
         payment.setSelected(true);
         otherPartyField.setText("");
     }

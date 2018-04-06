@@ -12,15 +12,14 @@
 
 <AnchorPane fx:id="ac" maxHeight="Infinity" maxWidth="Infinity" pickOnBounds="false" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddGoalsController">
     <children>
-        <Label layoutX="274.0" layoutY="6.0" text="Add Goals" textFill="WHITE" />
+        <Label layoutX="274.0" layoutY="6.0" text="Goals" textFill="WHITE" />
       <MenuButton layoutX="3.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
          <items>
             <MenuItem mnemonicParsing="false" onAction="#goToHomePage" text="Home" />
-            <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="CryptoCurrencies" />
-            <MenuItem mnemonicParsing="false" onAction="#goToAddTransaction" text="Add a Transaction" />
-            <MenuItem mnemonicParsing="false" onAction="#goToAddGoalsPage" text="Add Goals" />
-            <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Update Account" />
-            <MenuItem mnemonicParsing="false" onAction="#goToViewTransactions" text="View Transactions" />
+            <MenuItem mnemonicParsing="false" onAction="#goToCrypto" text="Currencies" />
+            <MenuItem mnemonicParsing="false" onAction="#goToViewTransactions" text="Transactions" />
+            <MenuItem mnemonicParsing="false" onAction="#goToAddGoalsPage" text="Goals" />
+            <MenuItem mnemonicParsing="false" onAction="#goToUpdateAccount" text="Settings" />
             <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
          </items>
       </MenuButton>
