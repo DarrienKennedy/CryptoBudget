@@ -1,10 +1,12 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -42,6 +44,8 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
     private TableColumn<?, ?> currencyAbbr;
     @FXML
     private TableColumn<?, ?> currencyPercentChange;
+    @FXML
+    private Button update;
     @FXML
     private AnchorPane ac;
 
@@ -92,6 +96,24 @@ public class CryptoCurrenciesController implements Initializable, ControlledScre
         ArrayList<String> searchCoins = new ArrayList<>();
         CoinCrawler crawler = new CoinCrawler(searchCoins, true, CryptoBudgetDatabase.connection);
         crawler.updateCoins();
+
+        update.setDisable(true);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run(){
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                update.setText("Update");
+                                update.setDisable(false);
+                            }
+                        });
+                    }
+                },
+                60000
+        );
     }
 
     public void searchOwned(){

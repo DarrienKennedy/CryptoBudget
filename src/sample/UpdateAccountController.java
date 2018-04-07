@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -125,6 +126,22 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
                 newPassword2.setText("");
                 passwordButton.setText("Changed Password");
                 passwordButton.setDisable(true);
+
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run(){
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        passwordButton.setText("Change Password");
+                                        passwordButton.setDisable(false);
+                                    }
+                                });
+                            }
+                        },
+                        5000
+                );
             }
         }
     }
@@ -138,6 +155,22 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
             Main.currentUser.update();
             currencyButton.setText("Updated Primary Currency");
             currencyButton.setDisable(true);
+
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run(){
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    currencyButton.setText("Update Primary Currency");
+                                    currencyButton.setDisable(false);
+                                }
+                            });
+                        }
+                    },
+                    5000
+            );
         }
     }
 
@@ -161,6 +194,22 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
         if(refreshRateMS>0){
             Main.updateTimer(refreshRateMS);
         }
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run(){
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                refreshRateButton.setText("Update Refresh Rate");
+                                refreshRateButton.setDisable(false);
+                            }
+                        });
+                    }
+                },
+                5000
+        );
     }
 
     @FXML

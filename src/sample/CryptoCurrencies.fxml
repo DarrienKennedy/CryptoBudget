@@ -20,7 +20,7 @@
             </columns>
         </TableView>
         <Label layoutX="263.0" layoutY="2.0" text="Currencies" textFill="WHITE" />
-        <JFXButton layoutX="63.0" layoutY="16.0" onAction="#updateCoins" mnemonicParsing="false" text="Update" style="-fx-background-color: #B5FFE1;"/>
+        <JFXButton fx:id="update" layoutX="63.0" layoutY="16.0" onAction="#updateCoins" mnemonicParsing="false" text="Update" style="-fx-background-color: #B5FFE1;"/>
         <JFXButton layoutX="133.0" layoutY="16.0" onAction="#loadDataFromDatabase" mnemonicParsing="false" text="Search All" style="-fx-background-color: #B5FFE1;"/>
         <JFXButton layoutX="223.0" layoutY="16.0" onAction="#searchOwned" mnemonicParsing="false" text="Search Owned" style="-fx-background-color: #B5FFE1;"/>
         <JFXTextField fx:id="coinname" focusColor="BLACK" layoutX="350.0" layoutY="16.0" prefHeight="12.0" prefWidth="80.0" promptText="Coin Name" unFocusColor="WHITE" />
