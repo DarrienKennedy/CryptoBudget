@@ -14,8 +14,6 @@
 <?import com.jfoenix.controls.JFXPasswordField?>
 <AnchorPane fx:id="ac" maxHeight="Infinity" maxWidth="Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.UpdateAccountController">
     <children>
-        <Button layoutX="500.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateValues" text="Update Values" />
-
         <JFXPasswordField fx:id="oldPassword" focusColor="BLACK" layoutX="198.0" layoutY="89.0" unFocusColor="WHITE" />
         <JFXPasswordField fx:id="newPassword1" focusColor="BLACK" layoutX="198.0" layoutY="129.0" unFocusColor="WHITE" />
         <JFXPasswordField fx:id="newPassword2" focusColor="BLACK" layoutX="198.0" layoutY="161.0" unFocusColor="WHITE" />

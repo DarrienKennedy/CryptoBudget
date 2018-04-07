@@ -140,7 +140,7 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
                                 });
                             }
                         },
-                        5000
+                        2000
                 );
             }
         }
@@ -169,7 +169,7 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
                             });
                         }
                     },
-                    5000
+                    2000
             );
         }
     }
@@ -208,13 +208,8 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
                         });
                     }
                 },
-                5000
+                2000
         );
-    }
-
-    @FXML
-    private void updateValues(ActionEvent event) {
-        resetFields();
     }
 
     @FXML
