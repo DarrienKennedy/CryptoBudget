@@ -49,14 +49,13 @@
                 <TableColumn prefWidth="75.0" />
             </columns>
         </TableView>
-        <PieChart layoutY="46.0" prefHeight="146.0" prefWidth="192.0" />
-        <JFXTextField fx:id="queryString" focusColor="BLACK" layoutX="349.0" layoutY="121.0" unFocusColor="WHITE" />
-        <JFXButton layoutX="512.0" layoutY="134.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="84.0" style="-fx-background-color: #B5FFE1;" text="Search" />
-        <JFXComboBox fx:id="categoryComboBox" focusColor="BLACK" layoutX="216.0" layoutY="121.0" prefHeight="25.0" prefWidth="116.0" unFocusColor="WHITE" />
+        <JFXTextField fx:id="queryString" focusColor="BLACK" layoutX="400.0" layoutY="121.0" unFocusColor="WHITE" />
+        <JFXButton layoutX="550.0" layoutY="125.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="84.0" style="-fx-background-color: #B5FFE1;" text="Search" />
+        <JFXComboBox fx:id="categoryComboBox" focusColor="BLACK" layoutX="216.0" layoutY="121.0" prefHeight="25.0" prefWidth="170.0" unFocusColor="WHITE" />
         <Label layoutX="451.0" layoutY="19.0" text="Transactions" textFill="WHITE">
          <font>
             <Font size="22.0" />
          </font></Label>
-        <Button layoutX="512.0" layoutY="90.0" onAction="#goToAddTransaction" prefHeight="25.0" prefWidth="84.0" text="Add" />
+        <JFXButton layoutX="700.0" layoutY="125.0" onAction="#goToAddTransaction" prefHeight="25.0" prefWidth="84.0" text="Add" style="-fx-background-color: #B5FFE1;" />
     </children>
 </AnchorPane>
