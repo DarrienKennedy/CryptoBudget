@@ -36,7 +36,7 @@ public class HomePageController implements Initializable, ControlledScreen{
     double progress;
     double amount;
     double usdAmount;
-    private Goal closestGoal;
+    private Goal displayGoal;
     private double primAmount;
     ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
     @FXML
@@ -74,18 +74,19 @@ public class HomePageController implements Initializable, ControlledScreen{
 
     private void getHighestProgressGoal(){
         allGoals = Goal.getAllGoals();
+        displayGoal = allGoals[0];
         for(int i = 1; i <= allGoals.length-1; i++) {
-            if(allGoals[i].getGoalProgress() > allGoals[i-1].getGoalProgress()){
-                closestGoal = allGoals[i];
+            if(displayGoal.getGoalProgress() <= allGoals[i-1].getGoalProgress()){
+                displayGoal = allGoals[i-1];
             }
         }
 
-        if(closestGoal != null) {
-            gn_label.setText(closestGoal.getGoalName());
-            ed_label.setText(closestGoal.getGoalDate());
-            ga_label.setText(Double.toString(closestGoal.getFinalGoal()));
-            as_label.setText(Double.toString(closestGoal.getCurrentAmount()));
-            g_progress.setProgress(closestGoal.getGoalProgress());
+        if(displayGoal != null) {
+            gn_label.setText(displayGoal.getGoalName());
+            ed_label.setText(displayGoal.getGoalDate());
+            ga_label.setText(Double.toString(displayGoal.getFinalGoal()));
+            as_label.setText(Double.toString(displayGoal.getCurrentAmount()));
+            g_progress.setProgress(displayGoal.getGoalProgress());
         }
     }
 

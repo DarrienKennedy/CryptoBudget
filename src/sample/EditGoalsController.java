@@ -29,7 +29,7 @@ import java.util.*;
 public class EditGoalsController implements Initializable, ControlledScreen {
     ScreensController myController;
     private String date;
-    private Goal goal = AddGoalsController.currentlyEditing;
+    //private Goal goal = AddGoalsController.currentlyEditing;
 
     @FXML
     JFXTextField amountField;
@@ -45,6 +45,7 @@ public class EditGoalsController implements Initializable, ControlledScreen {
     @Override
     public void initialize(URL location, ResourceBundle resources){
         if(Main.currentUser != null){
+            Goal goal = AddGoalsController.currentlyEditing;
             amountField.setText(String.format("%.2f", goal.getFinalGoal()));
             currencyField.setText(Currency.idToAbbr(goal.getCurrencyType()));
             currentAmountField.setText(String.format("%.2f", goal.getCurrentAmount()));
@@ -60,6 +61,7 @@ public class EditGoalsController implements Initializable, ControlledScreen {
 
     @FXML
     public void update(){
+        Goal goal = AddGoalsController.currentlyEditing;
         try {
             goal.setFinalGoal(Double.parseDouble(amountField.getText()));
             goal.setCurrentAmount(Double.parseDouble(currentAmountField.getText()));
@@ -69,9 +71,8 @@ public class EditGoalsController implements Initializable, ControlledScreen {
 
         String currencyAbbr = currencyField.getText().trim().toUpperCase();
         int currencyId = Currency.abbrToId(currencyAbbr);
-        if (currencyId != -1) {
-            goal.setCurrencyType(currencyId);
-        }
+        goal.setCurrencyType(currencyId);
+        System.out.println(currencyId);
 
         String newDate = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         goal.setGoalDate(newDate);

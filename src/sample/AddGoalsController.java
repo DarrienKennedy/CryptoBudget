@@ -218,6 +218,7 @@ public class AddGoalsController implements Initializable, ControlledScreen{
         nameField.clear();
         amountField.clear();
         descriptionField.clear();
+        currencyTypeField.clear();
     }
 
     public void setScreenParent(ScreensController screenParent){
