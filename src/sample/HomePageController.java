@@ -74,19 +74,21 @@ public class HomePageController implements Initializable, ControlledScreen{
 
     private void getHighestProgressGoal(){
         allGoals = Goal.getAllGoals();
-        displayGoal = allGoals[0];
-        for(int i = 1; i <= allGoals.length-1; i++) {
-            if(displayGoal.getGoalProgress() <= allGoals[i-1].getGoalProgress()){
-                displayGoal = allGoals[i-1];
+        if (allGoals != null && allGoals.length > 0) {
+            displayGoal = allGoals[0];
+            for (int i = 1; i <= allGoals.length - 1; i++) {
+                if (displayGoal.getGoalProgress() <= allGoals[i - 1].getGoalProgress()) {
+                    displayGoal = allGoals[i - 1];
+                }
             }
-        }
 
-        if(displayGoal != null) {
-            gn_label.setText(displayGoal.getGoalName());
-            ed_label.setText(displayGoal.getGoalDate());
-            ga_label.setText(Double.toString(displayGoal.getFinalGoal()));
-            as_label.setText(Double.toString(displayGoal.getCurrentAmount()));
-            g_progress.setProgress(displayGoal.getGoalProgress());
+            if (displayGoal != null) {
+                gn_label.setText(displayGoal.getGoalName());
+                ed_label.setText(displayGoal.getGoalDate());
+                ga_label.setText(Double.toString(displayGoal.getFinalGoal()));
+                as_label.setText(Double.toString(displayGoal.getCurrentAmount()));
+                g_progress.setProgress(displayGoal.getGoalProgress());
+            }
         }
     }
 
