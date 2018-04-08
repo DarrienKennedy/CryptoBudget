@@ -72,7 +72,6 @@ public class EditGoalsController implements Initializable, ControlledScreen {
         String currencyAbbr = currencyField.getText().trim().toUpperCase();
         int currencyId = Currency.abbrToId(currencyAbbr);
         goal.setCurrencyType(currencyId);
-        System.out.println(currencyId);
 
         String newDate = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         goal.setGoalDate(newDate);
