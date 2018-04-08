@@ -54,6 +54,14 @@ public class HomePageController implements Initializable, ControlledScreen{
     @FXML
     Label as_label;
     @FXML
+    Label gn_head;
+    @FXML
+    Label ed_head;
+    @FXML
+    Label ga_head;
+    @FXML
+    Label as_head;
+    @FXML
     ProgressBar g_progress;
     @FXML
     PieChart cur_piechart;
@@ -65,6 +73,18 @@ public class HomePageController implements Initializable, ControlledScreen{
             setAccountBalance();
             setAmountLabels();
             getHighestProgressGoal();
+
+            if (displayGoal == null) {
+                as_head.setVisible(false);
+                ga_head.setVisible(false);
+                ed_head.setVisible(false);
+                gn_head.setVisible(false);
+                g_progress.setVisible(false);
+                ga_label.setVisible(false);
+                ed_label.setVisible(false);
+                gn_label.setVisible(false);
+                as_label.setVisible(false);
+            }
         }
         AnchorPane.setTopAnchor(ac, 0.0);
         AnchorPane.setLeftAnchor(ac, 0.0);
@@ -85,8 +105,8 @@ public class HomePageController implements Initializable, ControlledScreen{
             if (displayGoal != null) {
                 gn_label.setText(displayGoal.getGoalName());
                 ed_label.setText(displayGoal.getGoalDate());
-                ga_label.setText(Double.toString(displayGoal.getFinalGoal()));
-                as_label.setText(Double.toString(displayGoal.getCurrentAmount()));
+                ga_label.setText(String.format("%.2f", displayGoal.getFinalGoal()));
+                as_label.setText(String.format("%.2f", displayGoal.getCurrentAmount()));
                 g_progress.setProgress(displayGoal.getGoalProgress());
             }
         }
