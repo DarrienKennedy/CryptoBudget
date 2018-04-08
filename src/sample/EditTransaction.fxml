@@ -14,21 +14,14 @@
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.EditTransactionController" >
     <AnchorPane fx:id="ac2" maxHeight="Infinity" maxWidth="Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
         <children>
-
-            <Label layoutX="73.0" layoutY="111.0" text="Amount:" textFill="WHITE" />
-            <JFXTextField fx:id="amountField" focusColor="BLACK" layoutX="143.0" layoutY="94.0" unFocusColor="WHITE" />
-
-            <Label layoutX="73.0" layoutY="147.0" text="Currency:" textFill="WHITE" />
-            <JFXTextField fx:id="currencyField" focusColor="BLACK" layoutX="143.0" layoutY="130.0" unFocusColor="WHITE" />
-
-            <Label layoutX="88.0" layoutY="253.0" text="Date:" textFill="WHITE" />
-            <JFXDatePicker fx:id="datePicker" defaultColor="#14f5de" layoutX="143.0" layoutY="240.0" />
-
-            <Label layoutX="60.0" layoutY="277.0" prefHeight="17.0" prefWidth="70.0" text="Other Party:" textFill="WHITE" />
-            <JFXTextField fx:id="otherPartyField" focusColor="BLACK" layoutX="143.0" layoutY="273.0" unFocusColor="WHITE" />
-
-            <Button layoutX="143.0" layoutY="350.0" mnemonicParsing="false" onAction="#update" text="Update" />
             <Label layoutX="245.0" layoutY="19.0" text="Edit Transaction" textFill="WHITE" />
+
+            <JFXTextField fx:id="amountField" labelFloat="true" focusColor="BLACK" layoutX="143.0" layoutY="100.0" unFocusColor="WHITE" promptText="Amount" />
+            <JFXTextField fx:id="currencyField" labelFloat="true" focusColor="BLACK" layoutX="143.0" layoutY="150.0" unFocusColor="WHITE" promptText="Currency" />
+            <JFXDatePicker fx:id="datePicker" defaultColor="#14f5de" layoutX="143.0" layoutY="200.0" promptText="Date" />
+            <JFXTextField fx:id="otherPartyField" labelFloat="true" focusColor="BLACK" layoutX="143.0" layoutY="250.0" unFocusColor="WHITE" promptText="Other Party" />
+            
+            <Button layoutX="143.0" layoutY="350.0" mnemonicParsing="false" onAction="#update" text="Update" />
 
             <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0"
                     onAction="#goToViewTransactions" text="Back" />

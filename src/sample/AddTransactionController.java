@@ -147,7 +147,7 @@ public class AddTransactionController implements Initializable, ControlledScreen
     @FXML
     private void manualLog(ActionEvent event) {
         errorLabel.setVisible(false);
-        boolean missingRequired = false, missingAmount = false, missingDate = false;
+        boolean missingAmount = false, missingDate = false;
         double amount = -1;
         try {
             amount = Double.parseDouble(amountField.getText());

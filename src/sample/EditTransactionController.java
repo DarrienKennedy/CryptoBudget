@@ -33,8 +33,7 @@ public class EditTransactionController implements Initializable, ControlledScree
     private AnchorPane ac2;
     @FXML
     private DatePicker datePicker;
-
-
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if(Main.currentUser != null) {
@@ -53,6 +52,11 @@ public class EditTransactionController implements Initializable, ControlledScree
         AnchorPane.setLeftAnchor(ac2, 0.0);
         AnchorPane.setRightAnchor(ac2, 0.0);
         AnchorPane.setBottomAnchor(ac2, 0.0);
+
+        datePicker.setStyle("-fx-text-inner-color: white");
+        currencyField.setStyle("-fx-text-inner-color: white");
+        amountField.setStyle("-fx-text-inner-color: white");
+        otherPartyField.setStyle("-fx-text-inner-color: white");
     }
 
     @FXML
@@ -61,8 +65,7 @@ public class EditTransactionController implements Initializable, ControlledScree
         try {
             t.setAmount(Double.parseDouble(amountField.getText()));
         } catch (NumberFormatException invalidAmountE) {
-            // TODO change the color of the amount field or something
-            System.out.println("e: amount bad");
+            // Do nothing
         }
 
         String currencyAbbr = currencyField.getText().trim().toUpperCase();
@@ -78,7 +81,7 @@ public class EditTransactionController implements Initializable, ControlledScree
             epoch = date.atStartOfDay(zoneId).toEpochSecond() * 1000;
             t.setDate(epoch);
         } catch (Exception e) {
-            System.out.println("e: date bad");
+            // Do nothing
         }
 
         t.setOtherParty(otherPartyField.getText());
