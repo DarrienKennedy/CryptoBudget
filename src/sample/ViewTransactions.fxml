@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.chart.PieChart?>
@@ -7,14 +8,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
-
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import com.jfoenix.controls.JFXButton?>
-<AnchorPane fx:id="ac" maxHeight="Infinity" maxWidth="Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewTransactionsController">
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="ac" maxHeight="Infinity" maxWidth="Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #4E878C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewTransactionsController">
     <children>
         <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="Back" />
         <MenuButton layoutX="3.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #B5FFE1;">
@@ -30,10 +31,13 @@
         <fx:define>
             <ToggleGroup fx:id="group" />
         </fx:define>
-        <RadioButton text="Payment" toggleGroup="$group" layoutX="179.0" layoutY="84.0" fx:id="payment"/>
-        <RadioButton text="Income" toggleGroup="$group" layoutX="281.0" layoutY="84.0" fx:id="income"/>
-        <RadioButton text="Both" toggleGroup="$group" layoutX="391.0" layoutY="84.0" fx:id="both" selected="true"/>
-        <TableView fx:id="transactionTable" layoutX="179.0" layoutY="114.0" prefHeight="346.0" prefWidth="600.0">
+        <RadioButton fx:id="payment" layoutX="219.0" layoutY="169.0" text="Payment">
+         <toggleGroup>
+            <ToggleGroup fx:id="group" />
+         </toggleGroup></RadioButton>
+        <RadioButton fx:id="income" layoutX="312.0" layoutY="169.0" text="Income" toggleGroup="$group" />
+        <RadioButton fx:id="both" layoutX="401.0" layoutY="169.0" selected="true" text="Both" toggleGroup="$group" />
+        <TableView fx:id="transactionTable" layoutX="219.0" layoutY="207.0" prefHeight="346.0" prefWidth="600.0">
             <columns>
                 <TableColumn fx:id="col1" prefWidth="75.0" text="+/-" />
                 <TableColumn fx:id="col2" prefWidth="75.0" text="Amount" />
@@ -46,10 +50,13 @@
             </columns>
         </TableView>
         <PieChart layoutY="46.0" prefHeight="146.0" prefWidth="192.0" />
-        <JFXTextField fx:id="queryString" focusColor="BLACK" layoutX="264.0" layoutY="34.0" unFocusColor="WHITE" />
-        <JFXButton layoutX="424.0" layoutY="34.0" mnemonicParsing="false" text="Search" onAction="#search" style="-fx-background-color: #B5FFE1;"/>
-        <JFXComboBox fx:id="categoryComboBox" focusColor="BLACK" layoutX="154.0" layoutY="34.0" prefHeight="25.0" prefWidth="92.0" unFocusColor="WHITE" />
-        <Label layoutX="253.0" layoutY="6.0" text="Transactions" textFill="WHITE" />
-        <Button layoutX="500.0" layoutY="10.0" text="Add" onAction="#goToAddTransaction" />
+        <JFXTextField fx:id="queryString" focusColor="BLACK" layoutX="349.0" layoutY="121.0" unFocusColor="WHITE" />
+        <JFXButton layoutX="512.0" layoutY="134.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="84.0" style="-fx-background-color: #B5FFE1;" text="Search" />
+        <JFXComboBox fx:id="categoryComboBox" focusColor="BLACK" layoutX="216.0" layoutY="121.0" prefHeight="25.0" prefWidth="116.0" unFocusColor="WHITE" />
+        <Label layoutX="451.0" layoutY="19.0" text="Transactions" textFill="WHITE">
+         <font>
+            <Font size="22.0" />
+         </font></Label>
+        <Button layoutX="512.0" layoutY="90.0" onAction="#goToAddTransaction" prefHeight="25.0" prefWidth="84.0" text="Add" />
     </children>
 </AnchorPane>
