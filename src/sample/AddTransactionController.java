@@ -8,10 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -37,13 +34,14 @@ public class AddTransactionController implements Initializable, ControlledScreen
     @FXML
     private JFXTextField imagePathField;
     @FXML
+    private Button ocrButton;
+    @FXML
+    private ImageView receiptImage;
+
+    @FXML
     private JFXTextField amountField;
     @FXML
     private JFXTextField currencyField;
-    @FXML
-    private CheckBox paymentOption;
-    @FXML
-    private CheckBox incomeOption;
     @FXML
     private JFXDatePicker datePicker;
     @FXML
@@ -56,8 +54,10 @@ public class AddTransactionController implements Initializable, ControlledScreen
     private AnchorPane ac;
     @FXML
     private AnchorPane ac2;
+
     @FXML
-    private ImageView receiptImage;
+    private Label errorLabel;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -71,7 +71,22 @@ public class AddTransactionController implements Initializable, ControlledScreen
         AnchorPane.setRightAnchor(ac2, 0.0);
         AnchorPane.setBottomAnchor(ac2, 0.0);
 
+        if (Main.currentUser != null && Main.currentUser.getOCR() == 0) {
+            imagePathField.setVisible(false);
+            ocrButton.setVisible(false);
+            receiptImage.setVisible(false);
+        }
+
+        errorLabel.setVisible(false);
+        imagePathField.setStyle("-fx-text-inner-color: white");
+        datePicker.setStyle("-fx-text-inner-color: white");
+        currencyField.setStyle("-fx-text-inner-color: white");
+        amountField.setStyle("-fx-text-inner-color: white");
+        imagePathField.setStyle("-fx-text-inner-color: white");
+        otherPartyField.setStyle("-fx-text-inner-color: white");
+
         datePicker.setValue(LocalDate.ofEpochDay(System.currentTimeMillis() / 86400000)); // millisecond to day
+
     }
 
 
@@ -131,14 +146,13 @@ public class AddTransactionController implements Initializable, ControlledScreen
 
     @FXML
     private void manualLog(ActionEvent event) {
-        boolean missingRequired = false;
+        errorLabel.setVisible(false);
+        boolean missingRequired = false, missingAmount = false, missingDate = false;
         double amount = -1;
         try {
             amount = Double.parseDouble(amountField.getText());
         } catch (NumberFormatException invalidAmountE) {
-            // TODO change the color of the amount field or something
-            System.out.println("e: amount bad");
-            missingRequired = true;
+            missingAmount = true;
         }
         String currencyAbbr = currencyField.getText().trim().toUpperCase();
         int currencyId = Currency.abbrToId(currencyAbbr);
@@ -155,46 +169,52 @@ public class AddTransactionController implements Initializable, ControlledScreen
             epoch = date.atStartOfDay(zoneId).toEpochSecond() * 1000;
         } catch (Exception e) {
             epoch = -1;
-            missingRequired = true;
-            System.out.println("e: date bad");
+            missingDate = true;
         }
 
         String otherParty = otherPartyField.getText();
         boolean typePayment = payment.isSelected();
         boolean typeIncome = income.isSelected();
 
-        if (typePayment) {
-            if (newPayment == null) {
-                newPayment = new Payment();
+        if (missingAmount || missingDate) {
+            if (missingAmount && !missingDate) {
+                errorLabel.setText("Invalid amount");
+            } else if (!missingAmount && missingDate) {
+                errorLabel.setText("Invalid date");
+            } else {
+                errorLabel.setText("Invalid amount AND invalid date");
             }
-            newPayment.setAmount(amount);
-            newPayment.setCurrencyType(currencyId);
-            newPayment.setDate(epoch);
-            newPayment.setOtherParty(otherParty);
-            newPayment.setUserId(Main.currentUser.getUserId());
-            if (!missingRequired) {
+            errorLabel.setVisible(true);
+        } else {
+            if (typePayment) {
+                if (newPayment == null) {
+                    newPayment = new Payment();
+                }
+                newPayment.setAmount(amount);
+                newPayment.setCurrencyType(currencyId);
+                newPayment.setDate(epoch);
+                newPayment.setOtherParty(otherParty);
+                newPayment.setUserId(Main.currentUser.getUserId());
+
                 newPayment.create();
                 myController.unloadScreen(Main.ViewTransactionsID);
                 myController.loadScreen(Main.ViewTransactionsID, Main.ViewTransactionsFile);
                 myController.setScreen(Main.ViewTransactionsID);
-            }
-        } else if (typeIncome) {
-            if (newIncome == null) {
-                newIncome = new Income();
-            }
-            newIncome.setAmount(amount);
-            newIncome.setCurrencyType(currencyId);
-            newIncome.setDate(epoch);
-            newIncome.setOtherParty(otherParty);
-            newIncome.setUserId(Main.currentUser.getUserId());
-            if (!missingRequired) {
+            } else if (typeIncome) {
+                if (newIncome == null) {
+                    newIncome = new Income();
+                }
+                newIncome.setAmount(amount);
+                newIncome.setCurrencyType(currencyId);
+                newIncome.setDate(epoch);
+                newIncome.setOtherParty(otherParty);
+                newIncome.setUserId(Main.currentUser.getUserId());
+
                 newIncome.create();
                 myController.unloadScreen(Main.ViewTransactionsID);
                 myController.loadScreen(Main.ViewTransactionsID, Main.ViewTransactionsFile);
                 myController.setScreen(Main.ViewTransactionsID);
             }
-        } else {
-            // TODO highlight or color the check boxes to signify that it is required
         }
     }
 
