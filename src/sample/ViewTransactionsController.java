@@ -79,7 +79,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
             categoryComboBox.setValue(categoryList.get(0));
             displayItems();
         }
-        queryString.setPromptText("abbr value");
+        queryString.setPromptText("");
         categoryComboBox.valueProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -182,7 +182,7 @@ public class ViewTransactionsController implements Initializable, ControlledScre
     @FXML
     public void displayItems() {
         categoryComboBox.setItems(categoryList);
-        categoryComboBox.setValue(categoryList.get(0));
+        categoryComboBox.setValue(categoryList.get(5));
         payData = FXCollections.observableArrayList();
         setCells();
         //TODO: use transaction/payment/income sql methods

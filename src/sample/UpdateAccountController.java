@@ -119,7 +119,7 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
 
     @FXML
     private void changePassword(ActionEvent event){
-        if (Main.currentUser.getPassword().equals(oldPassword.getText())) {
+        if (Main.currentUser.compareWithPassword(oldPassword.getText())) {
             String newPassword = newPassword1.getText();
             if (newPassword.equals(newPassword2.getText())) {
                 Main.currentUser.setPassword(newPassword);

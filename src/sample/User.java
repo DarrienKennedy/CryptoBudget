@@ -13,11 +13,15 @@ package sample;
  * passwordSalt
  *
  */
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.Random;
+
 public class User {
     private int userId;
     private int enableOCR;
@@ -40,8 +44,7 @@ public class User {
         this.setLastName("");
         //this.setLastLogin(new Date());
         this.setLastLogin(1000); // fix this
-        this.setPassword("12345");
-        this.setPasswordSalt("0");
+        this.setPasswordSalt("n");
     }
 
     public User(String uName, String fName, String lName, String pwd){
@@ -86,9 +89,32 @@ public class User {
 
     public String getPasswordSalt() { return passwordSalt; }
 
-    //TODO: password security
-    public String getPassword(){
-        return password;
+    private String hashPassword(String password) {
+        try {
+            password = passwordSalt + password;
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(password.getBytes());
+            byte[] bytes = md.digest();
+            StringBuffer hash = new StringBuffer();
+            for (byte b : bytes) {
+                hash.append(Integer.toHexString(b & 0xff).toString());
+            }
+            return hash.toString();
+        } catch (NoSuchAlgorithmException e) {
+            //e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean compareWithPassword(String compare) {
+        String hashComp = hashPassword(compare);
+        if (hashComp == null && password == null) {
+            return true;
+        } else if (hashComp == null || password == null) {
+            return false;
+        } else {
+            return hashComp.equals(password);
+        }
     }
 
     public void setUserId(int userIdToSet) {
@@ -123,8 +149,16 @@ public class User {
         lastLogin = lastLoginToSet;
     }
 
+    public void setPasswordHash(String pwHash) {
+        password = pwHash;
+    }
+
     public void setPassword(String passwordToSet){
-        password = passwordToSet;
+        if (passwordSalt.equals("n")) {
+            Random r = new Random();
+            passwordSalt = String.format("%d", r.nextInt());
+        }
+        password = hashPassword(passwordToSet);
     }
 
     public void setPasswordSalt(String passwordSaltToSet) { passwordSalt = passwordSaltToSet; }
@@ -185,7 +219,7 @@ public class User {
                 result.setPrimaryCurrency(rs.getInt("PRIMARYCURRENCY"));
                 result.setRefreshRate(rs.getString("REFRESHRATE"));
                 result.setUserName(rs.getString("USERNAME"));
-                result.setPassword(rs.getString("PASSWORD"));
+                result.setPasswordHash(rs.getString("PASSWORD"));
                 result.setPasswordSalt(rs.getString("PASSWORDSALT"));
                 result.setFirstName(rs.getString("FIRSTNAME"));
                 result.setLastName(rs.getString("LASTNAME"));
