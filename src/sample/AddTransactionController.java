@@ -151,6 +151,9 @@ public class AddTransactionController implements Initializable, ControlledScreen
         double amount = -1;
         try {
             amount = Double.parseDouble(amountField.getText());
+            if (amount <= 0.0) {
+                missingAmount = true;
+            }
         } catch (NumberFormatException invalidAmountE) {
             missingAmount = true;
         }
