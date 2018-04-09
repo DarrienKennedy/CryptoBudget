@@ -58,6 +58,12 @@ public static void updateTimer(int updatedTimer){
     }
 }
 
+    public static void closeTimer(){
+        timer.cancel();
+        timer.purge();
+    }
+
+
     public static void setTimer(int initTimer){
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -135,6 +141,11 @@ public static void updateTimer(int updatedTimer){
             createAdmin();
         }
         launch(args);
+    }
+
+    @Override
+    public void stop(){
+        closeTimer();
     }
 
     public static void createAdmin() {
