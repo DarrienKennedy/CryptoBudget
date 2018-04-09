@@ -58,6 +58,10 @@ public class UpdateAccountController implements Initializable, ControlledScreen{
         AnchorPane.setLeftAnchor(ac, 0.0);
         AnchorPane.setRightAnchor(ac, 0.0);
         AnchorPane.setBottomAnchor(ac, 0.0);
+
+        newPrimaryCurrency.setStyle("-fx-text-inner-color: white");
+        refreshComboBox.setStyle("-fx-text-inner-color: white");
+        refreshComboBox.setStyle(".label -fx-text-fill: white");
     }
 
     public void setScreenParent(ScreensController screenParent){

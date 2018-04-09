@@ -1,22 +1,43 @@
 package sample;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class OCR {
 
-    private static final String tessBin = "C:/Program Files (x86)/Tesseract-OCR/tesseract";
+    private static String binaryPath;
+
+    public static void getBinaryPath() {
+        File file = new File("tesseractbin.txt");
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(file));
+            String st;
+            while ((st = br.readLine()) != null) {
+                if (!st.trim().equals("")) {
+                    binaryPath = st;
+                    return;
+                }
+            }
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static String getTotalReceiptPrice(String imagePath) {
+        if (binaryPath == null) {
+            getBinaryPath();
+        }
+
         String outputFile = "./txt/latestImage";
         String total = "";
 
         try {
-            Process tess = Runtime.getRuntime().exec(new String[] { tessBin, imagePath, outputFile });
+            Process tess = Runtime.getRuntime().exec(new String[] { binaryPath, imagePath, outputFile });
             while (tess.isAlive()) {
                 continue;
             }
@@ -29,7 +50,7 @@ public class OCR {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return total;
     }

@@ -222,9 +222,7 @@ public class AddTransactionController implements Initializable, ControlledScreen
     private void useOCR(ActionEvent event) {
         String imagePath = imagePathField.getText();
         receiptImage.setImage(new Image(new File(imagePath).toURI().toString()));
-        if (Main.currentUser.getOCR() == 1) {
-            amountField.setText(OCR.getTotalReceiptPrice(imagePath));
-        }
+        amountField.setText(OCR.getTotalReceiptPrice(imagePath));
         imagePathField.setText("");
     }
 
