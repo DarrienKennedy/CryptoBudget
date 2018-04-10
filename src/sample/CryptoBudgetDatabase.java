@@ -156,11 +156,11 @@ public class CryptoBudgetDatabase {
                 PreparedStatement pstmt = connection.prepareStatement(sql);
 
                 for (int i = 0; i < govCurrencyNames.length; i++) {
-                    pstmt.setString(1, govCurrencyNames[i]);
+                    pstmt.setString(1, govCurrencyNames[i].toUpperCase());
                     pstmt.setDouble(2, govCurrencyValues[i]);
                     pstmt.setInt(3, 0);
                     pstmt.setString(4, "None");
-                    pstmt.setString(5, govCurrencyAbbr[i]);
+                    pstmt.setString(5, govCurrencyAbbr[i].toUpperCase());
                     pstmt.executeUpdate();
                 }
             }

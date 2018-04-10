@@ -176,7 +176,7 @@ public class HomePageController implements Initializable, ControlledScreen{
             ps = CryptoBudgetDatabase.connection.prepareStatement(selectSQL);
             ps.setInt(1, Main.currentUser.getPrimaryCurrency());
             rs = ps.executeQuery();
-            accountBalance.setText(accountBalance.getText() + "   " +rs.getString("CURRENCYNAME") + "s");
+            accountBalance.setText(accountBalance.getText() + "   " +rs.getString("CURRENCYNAME") + "S");
          } catch (SQLException e){
 
          }
