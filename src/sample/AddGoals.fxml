@@ -27,12 +27,12 @@
             <MenuItem mnemonicParsing="false" onAction="#goToLoginPage" text="Sign Out" />
          </items>
       </MenuButton>
-      <JFXDatePicker fx:id="datePicker" defaultColor="#14f5de" layoutX="30.0" layoutY="60.0" prefHeight="28.0" prefWidth="242.0" promptText="End Date" />
-      <JFXTextField fx:id="nameField" labelFloat="true" layoutX="30.0" layoutY="112.0" prefHeight="41.0" prefWidth="242.0" promptText="Name" />
-      <JFXTextField fx:id="descriptionField" labelFloat="true" layoutX="30.0" layoutY="162.0" prefHeight="41.0" prefWidth="242.0" promptText="Description" />
-      <JFXTextField fx:id="amountField" labelFloat="true" layoutX="30.0" layoutY="214.0" prefHeight="41.0" prefWidth="242.0" promptText="Goal" />
-      <JFXTextField fx:id="currencyTypeField" labelFloat="true" layoutX="30.0" layoutY="274.0" prefHeight="51.0" prefWidth="242.0" promptText="Currency Type" />
-      <JFXButton fx:id="logGoalButton" buttonType="RAISED" layoutX="30.0" layoutY="362.0" onAction="#handleAddButton" ripplerFill="#00f2fa" style="-fx-background-color: #B5FFE1;" text="Log Goal" />
+      <JFXDatePicker fx:id="datePicker" defaultColor="WHITE" layoutX="30.0" layoutY="60.0" prefHeight="28.0" prefWidth="242.0" promptText="End Date" />
+      <JFXTextField fx:id="nameField" focusColor="WHITE" labelFloat="true" layoutX="30.0" layoutY="125.0" prefHeight="41.0" prefWidth="242.0" promptText="Name" />
+      <JFXTextField fx:id="descriptionField" focusColor="WHITE" labelFloat="true" layoutX="30.0" layoutY="194.0" prefHeight="41.0" prefWidth="242.0" promptText="Description" />
+      <JFXTextField fx:id="amountField" focusColor="WHITE" labelFloat="true" layoutX="30.0" layoutY="258.0" prefHeight="41.0" prefWidth="242.0" promptText="Goal" />
+      <JFXTextField fx:id="currencyTypeField" focusColor="#f5f5f5" labelFloat="true" layoutX="30.0" layoutY="340.0" prefHeight="51.0" prefWidth="242.0" promptText="Currency Type" />
+      <JFXButton fx:id="logGoalButton" buttonType="RAISED" layoutX="30.0" layoutY="413.0" onAction="#handleAddButton" ripplerFill="#00f2fa" style="-fx-background-color: #B5FFE1;" text="Log Goal" />
       <TableView fx:id="goalsTable" layoutX="433.0" layoutY="112.0" prefHeight="476.0" prefWidth="704.0">
           <columns>
               <TableColumn fx:id="dateCol" prefWidth="75.0" text="Date" />

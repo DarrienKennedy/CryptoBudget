@@ -19,26 +19,26 @@
             </font></Label>
             <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" onAction="#goToViewTransactions" prefHeight="28.0" prefWidth="68.0" text="Back" />
 
-            <JFXTextField fx:id="imagePathField" focusColor="BLACK" labelFloat="true" layoutX="78.0" layoutY="130.0" prefHeight="45.0" prefWidth="163.0" promptText="Image Path" unFocusColor="WHITE" />
-            <Button fx:id="ocrButton" layoutX="250.0" layoutY="138.0" mnemonicParsing="false" onAction="#useOCR" prefHeight="37.0" prefWidth="91.0" text="Scan Image" />
+            <JFXTextField fx:id="imagePathField" focusColor="BLACK" labelFloat="true" layoutX="78.0" layoutY="165.0" prefHeight="45.0" prefWidth="163.0" promptText="Image Path" unFocusColor="WHITE" />
+            <Button fx:id="ocrButton" layoutX="260.0" layoutY="173.0" mnemonicParsing="false" onAction="#useOCR" prefHeight="37.0" prefWidth="91.0" text="Scan Image" />
             <ImageView fx:id="receiptImage" fitHeight="468.0" fitWidth="383.0" layoutX="540.0" layoutY="36.0" />
 
-            <JFXTextField fx:id="amountField" focusColor="BLACK" labelFloat="true" layoutX="78.0" layoutY="188.0" prefHeight="37.0" prefWidth="163.0" promptText="Amount" unFocusColor="WHITE" />
-            <JFXTextField fx:id="currencyField" focusColor="BLACK" labelFloat="true" layoutX="78.0" layoutY="238.0" prefHeight="37.0" prefWidth="163.0" promptText="Currency" unFocusColor="WHITE" />
-            <JFXDatePicker fx:id="datePicker" defaultColor="#14f5de" layoutX="80.0" layoutY="291.0" prefHeight="37.0" prefWidth="163.0" promptText="Date" />
-            <JFXTextField fx:id="otherPartyField" focusColor="BLACK" labelFloat="true" layoutX="78.0" layoutY="338.0" prefHeight="37.0" prefWidth="163.0" promptText="Other Party" unFocusColor="WHITE" />
+            <JFXTextField fx:id="amountField" focusColor="BLACK" labelFloat="true" layoutX="78.0" layoutY="233.0" prefHeight="37.0" prefWidth="163.0" promptText="Amount" unFocusColor="WHITE" />
+            <JFXTextField fx:id="currencyField" focusColor="BLACK" labelFloat="true" layoutX="78.0" layoutY="300.0" prefHeight="37.0" prefWidth="163.0" promptText="Currency" unFocusColor="WHITE" />
+            <JFXDatePicker fx:id="datePicker" defaultColor="WHITE" layoutX="78.0" layoutY="344.0" prefHeight="37.0" prefWidth="163.0" promptText="Date" />
+            <JFXTextField fx:id="otherPartyField" focusColor="BLACK" labelFloat="true" layoutX="78.0" layoutY="407.0" prefHeight="37.0" prefWidth="163.0" promptText="Other Party" unFocusColor="WHITE" />
 
             <fx:define>
                 <ToggleGroup fx:id="group" />
             </fx:define>
-            <RadioButton fx:id="payment" layoutX="78.0" layoutY="382.0" prefHeight="37.0" prefWidth="91.0" selected="true" text="Payment">
+            <RadioButton fx:id="payment" layoutX="78.0" layoutY="442.0" prefHeight="37.0" prefWidth="91.0" selected="true" text="Payment">
             <toggleGroup>
                <ToggleGroup fx:id="group" />
             </toggleGroup></RadioButton>
-            <RadioButton fx:id="income" layoutX="169.0" layoutY="382.0" prefHeight="37.0" prefWidth="91.0" text="Income" toggleGroup="$group" />
+            <RadioButton fx:id="income" layoutX="169.0" layoutY="442.0" prefHeight="37.0" prefWidth="91.0" text="Income" toggleGroup="$group" />
 
             <Label fx:id="errorLabel" layoutX="106.0" layoutY="425.0" textFill="yellowgreen" />
-            <Button layoutX="106.0" layoutY="450.0" mnemonicParsing="false" onAction="#manualLog" prefHeight="37.0" prefWidth="91.0" text="Create" />
+            <Button layoutX="106.0" layoutY="486.0" mnemonicParsing="false" onAction="#manualLog" prefHeight="37.0" prefWidth="91.0" text="Create" />
 
         </children>
     </AnchorPane>

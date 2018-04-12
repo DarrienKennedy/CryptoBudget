@@ -62,6 +62,11 @@ public class CreateAccountController implements Initializable, ControlledScreen{
             cUser.setFirstName(firstName);
             cUser.setLastName(lastName);
             cUser.create();
+            usernameField.setText("");
+            passwordField.setText("");
+            confirmationField.setText("");
+            firstNameField.setText("");
+            lastNameField.setText("");
             // Have to do a lookup to ensure that the user id is not set to 0.
             Main.currentUser = User.getUser(username);
             myController.unloadScreen(Main.HomePageID);

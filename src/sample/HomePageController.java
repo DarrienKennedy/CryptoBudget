@@ -97,8 +97,8 @@ public class HomePageController implements Initializable, ControlledScreen{
         if (allGoals != null && allGoals.length > 0) {
             displayGoal = allGoals[0];
             for (int i = 1; i <= allGoals.length - 1; i++) {
-                if (displayGoal.getGoalProgress() <= allGoals[i - 1].getGoalProgress()) {
-                    displayGoal = allGoals[i - 1];
+                if (displayGoal.getGoalProgress() <= allGoals[i].getGoalProgress()) {
+                    displayGoal = allGoals[i];
                 }
             }
 
