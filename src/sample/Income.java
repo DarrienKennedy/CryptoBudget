@@ -48,13 +48,14 @@ public class Income extends Transaction {
     public void update() {
         try {
             // Get previous amount value
-            PreparedStatement prev = CryptoBudgetDatabase.connection.prepareStatement("SELECT AMOUNT FROM INCOME " +
+            PreparedStatement prev = CryptoBudgetDatabase.connection.prepareStatement("SELECT AMOUNT, CURRENCYTYPE FROM INCOME " +
                     "WHERE INCOMEID = ? AND USERID = ?;");
             prev.setInt(1, id);
             prev.setInt(2, Main.currentUser.getUserId());
             ResultSet rs = prev.executeQuery();
             rs.next();
             double prevAmount = rs.getDouble("AMOUNT");
+            int prevCurrency = rs.getInt("CURRENCYTYPE");
 
             String update = "UPDATE INCOME SET AMOUNT = ?, DATE = ?, CURRENCYTYPE = ?, OTHERPARTY = ? " +
                     "WHERE INCOMEID = ? AND USERID = ?;";
@@ -66,7 +67,13 @@ public class Income extends Transaction {
             prep.setInt(5, id);
             prep.setInt(6, Main.currentUser.getUserId());
             prep.executeUpdate();
-            Currency.updateCurrencyAmount(currencyType, amount - prevAmount);
+
+            if (prevCurrency != currencyType) {
+                Currency.updateCurrencyAmount(prevCurrency, -prevAmount);
+                Currency.updateCurrencyAmount(currencyType, amount);
+            } else {
+                Currency.updateCurrencyAmount(currencyType, amount - prevAmount);
+            }
         } catch (SQLException e) {
             //e.printStackTrace();
         }
