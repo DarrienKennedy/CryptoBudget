@@ -41,9 +41,10 @@ public class EditGoalsController implements Initializable, ControlledScreen {
     JFXTextField currentAmountField;
     @FXML
     private AnchorPane ac;
+    public static boolean fromHomepage;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(URL location, ResourceBundle resources) {
         if(Main.currentUser != null){
             Goal goal = AddGoalsController.currentlyEditing;
             amountField.setText(String.format("%.2f", goal.getFinalGoal()));
@@ -56,7 +57,6 @@ public class EditGoalsController implements Initializable, ControlledScreen {
         AnchorPane.setLeftAnchor(ac, 0.0);
         AnchorPane.setRightAnchor(ac, 0.0);
         AnchorPane.setBottomAnchor(ac, 0.0);
-
     }
 
     @FXML
@@ -78,9 +78,17 @@ public class EditGoalsController implements Initializable, ControlledScreen {
         checkIfComplete(goal);
         goal.update();
 
-        myController.unloadScreen(Main.AddGoalsID);
-        myController.loadScreen(Main.AddGoalsID, Main.AddGoalsFile);
-        myController.setScreen(Main.AddGoalsID);
+        if(fromHomepage == true){
+            myController.unloadScreen(Main.HomePageID);
+            myController.loadScreen(Main.HomePageID, Main.HomePageFile);
+            myController.setScreen(Main.HomePageID);
+        }
+        else{
+            myController.unloadScreen(Main.AddGoalsID);
+            myController.loadScreen(Main.AddGoalsID, Main.AddGoalsFile);
+            myController.setScreen(Main.AddGoalsID);
+        }
+
 
     }
 

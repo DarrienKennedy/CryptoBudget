@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXProgressBar?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
@@ -53,8 +54,8 @@
          <font>
             <Font size="16.0" />
          </font></Label>
-      <PieChart fx:id="cur_piechart" layoutX="751.0" layoutY="121.0" prefHeight="191.0" prefWidth="270.0" />
-      <Label layoutX="808.0" layoutY="88.0" prefHeight="32.0" prefWidth="157.0" text="Account Currencies" textFill="WHITE">
+      <PieChart fx:id="cur_piechart" layoutX="808.0" layoutY="120.0" prefHeight="191.0" prefWidth="270.0" />
+      <Label layoutX="865.0" layoutY="88.0" prefHeight="32.0" prefWidth="157.0" text="Account Currencies" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font></Label>
@@ -74,5 +75,6 @@
          <font>
             <Font size="16.0" />
          </font></Label>
+      <JFXButton fx:id="editButton" layoutX="728.0" layoutY="275.0" onAction="#editHomeGoal" text="Update" textFill="WHITE" />
     </children>
 </AnchorPane>

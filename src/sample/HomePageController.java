@@ -1,5 +1,6 @@
 package sample;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -65,6 +66,8 @@ public class HomePageController implements Initializable, ControlledScreen{
     ProgressBar g_progress;
     @FXML
     PieChart cur_piechart;
+    @FXML
+    JFXButton editButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -84,6 +87,7 @@ public class HomePageController implements Initializable, ControlledScreen{
                 ed_label.setVisible(false);
                 gn_label.setVisible(false);
                 as_label.setVisible(false);
+                editButton.setVisible(false);
             }
         }
         AnchorPane.setTopAnchor(ac, 0.0);
@@ -184,6 +188,15 @@ public class HomePageController implements Initializable, ControlledScreen{
 
     public void setScreenParent(ScreensController screenParent){
         myController = screenParent;
+    }
+
+    @FXML
+    private void editHomeGoal(ActionEvent event){
+        AddGoalsController.currentlyEditing = displayGoal;
+        EditGoalsController.fromHomepage = true;
+        myController.unloadScreen(Main.EditGoalsID);
+        myController.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
+        myController.setScreen(Main.EditGoalsID);
     }
 
     @FXML

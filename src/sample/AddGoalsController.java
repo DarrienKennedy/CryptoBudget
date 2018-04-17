@@ -196,6 +196,7 @@ public class AddGoalsController implements Initializable, ControlledScreen{
                                 } else {
                                     btn.setOnAction(event -> {
                                         currentlyEditing = getTableView().getItems().get(getIndex());
+                                        EditGoalsController.fromHomepage = false;
                                         myController.unloadScreen(Main.EditGoalsID);
                                         myController.loadScreen(Main.EditGoalsID, Main.EditGoalsFile);
                                         myController.setScreen(Main.EditGoalsID);
