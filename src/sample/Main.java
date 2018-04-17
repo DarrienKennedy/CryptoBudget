@@ -138,7 +138,7 @@ public static void updateTimer(int updatedTimer){
         CryptoBudgetDatabase db = new CryptoBudgetDatabase();
         db.createDatabase();
         if (User.getUser("admin") == null) {
-            createAdmin();
+            //createAdmin();
         }
         launch(args);
     }

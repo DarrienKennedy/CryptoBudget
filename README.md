@@ -6,6 +6,8 @@ Thank you for trying out *CryptoBudget*, the last budgetting application you wil
 
 To get *CryptoBudget* up and running, first there are some configurations that must be met in order to get everything functioning correctly. If you're too excited to even bother reading through this document, please at least read through **section 2** of the document to verify that your machine is properly configured to support all of the beauty that *CryptoBudget* has to offer.
 
+Run the application by double clicking the file within the root directory `CryptoBudget.jar` or if you're a tech savy nerd, typing `java -jar CryptoBudget.jar` within your terminal while in the root directory.
+
 ## 2. Dependencies
 ## 2.1 Tesseract
 *NOTE: CryptoBudget will still work if you do not install Tesseract, but OCR functionality will not parse text from image*
@@ -38,7 +40,9 @@ One of the main design philosophies of CryptoBudget was to have a completely pri
 when storing the user's financial transaction information, rather than having to trust a server to 
 be configured securely. 
 
-This file may be copy and pasted if need be.
+This file may be copy and pasted if need be. If it is deleted or moved, a new one will be created with brand new settings.
+
+Database files must be saved as `src/CryptoBudget.db`.
 
 ### Users
 CryptoBudget supports multiple users within one database file. Users may choose their own settings preferences
