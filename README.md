@@ -33,4 +33,31 @@ Download links for each required jar for compilation:
 
 ## Key Features
 
-something something something... ?
+### Local Database
+One of the main design philosophies of CryptoBudget was to have a completely private database
+when storing the user's financial transaction information, rather than having to trust a server to 
+be configured securely. 
+
+This file may be copy and pasted if need be.
+
+### Users
+CryptoBudget supports multiple users within one database file. Users may choose their own settings preferences
+for their individual account. 
+
+#### Password
+Passwords are stored Users may choose to not have a password by simply leaving the password field blank when creating an account or changing
+their password.
+
+*NOTE: CryptoBudget has no means of password recovery, so think of a password that you can remember or alternatively do not 
+ set a password.*
+
+### Currencies
+Users may view up-to-date values for various currencies, with a focus on cryptocurrencies which a web crawler is ran in the
+background to get recent currency values.
+
+### Goals
+Users may provide multiple financial goals in currencies of their choosing. Users may edit these goals or add progress to
+a given goal.
+
+### Transactions
+Users may provide income and payments in whatever currency they choose and search, edit, or delete these transactions.
